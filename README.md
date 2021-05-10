@@ -1,4 +1,4 @@
-# Eclipse Project
+# Tractus-X Project
 https://projects.eclipse.org/projects/automotive.tractusx
  
 ## Background
