@@ -1,4 +1,4 @@
-# Eclipse Project
+# Tractus-X Project
 https://projects.eclipse.org/projects/automotive.tractusx
  
 ## Background
@@ -27,7 +27,9 @@ Since this is a PoC project we do not yet have pre-existing code.
  
 ## PoC Scheduling
 Tractus-X and its involved parties intend to move to Eclipse as soon as possible. We hope to have the initial commit accomplished by 05/2021.
+
  
 ## Contact
 To stay informed, we have a mailing list for Tractus-X you can subscribe to. Messages to the list can be sent to tractusx-dev@eclipse.org.
+
  
