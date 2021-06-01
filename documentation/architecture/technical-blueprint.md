@@ -11,7 +11,7 @@
       * Technical: HTML,CSS,JS. Framework: React (alt. Vue.js or Open UI5 tbd)
       * Mockup: Invision
     * Backend:
-      * Quarkus (Microprofile) is preferred / (alt. Spring Boot)
+      * Spring Boot for the PoC // Quarkus (Microprofile) is preferred
   * Platform:
     * Containerize where possible:
       * Kubernetes as a service
