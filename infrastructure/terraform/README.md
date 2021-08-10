@@ -18,4 +18,6 @@ Run the following commands to deploy the PoC infrastructure:
 1. From the main directory of this repository, run `terraform init`
 1. Run `terraform plan`
 1. Run `terraform apply`
+1. Need to change the admin azure ad group in the cluster configuration https://portal.azure.com/#@swbtsishowcaseoutlook.onmicrosoft.com/resource/subscriptions/f917eb77-210c-4089-ab3c-bb36b8819d84/resourceGroups/tsicatenax-dev-rg/providers/Microsoft.ContainerService/managedClusters/tsicatenax-dev-aks-services/configurationBlade to an existing AAD group (no matter what IAM says)
+1. Run `az aks get-credentials --resource-group tsicatenax-dev-rg --name tsicatenax-dev-aks-services`
 1. Deploy the CA cluster issuer for TLS with `kubectl apply -f cluster-issuer.yaml`
