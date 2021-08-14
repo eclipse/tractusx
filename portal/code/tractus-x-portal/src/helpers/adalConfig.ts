@@ -15,7 +15,7 @@
 import { AdalConfig, adalGetToken, AuthenticationContext, withAdalLogin } from 'react-adal';
 
 // Endpoint URL
-export const endpoint = 'https://catenax.azurewbsites.net/';
+export const endpoint = 'https://tsicatenaxdevaksportalsrv.germanywestcentral.cloudapp.azure.com/';
 
 export function getReplyUrl() {
   const url = new URL(window.location.href);
@@ -28,7 +28,7 @@ export function getReplyUrl() {
 }
 
 // App Registration ID bb01c83a-f70e-44d9-a0ac-f6b3b70c1775
-const appId = '4c6269ac-8106-4bbb-b0d9-6c36a6e3b131';
+const appId = '3e38d381-1310-4348-b33e-e107038a07a1';
 export const adalConfig: AdalConfig = {
   cacheLocation: 'localStorage',
   clientId: appId,
@@ -38,7 +38,7 @@ export const adalConfig: AdalConfig = {
   redirectUri: getReplyUrl(),
   // popUp: true,
   postLogoutRedirectUri: window.location.origin,
-  tenant: 'catenaxpoc.onmicrosoft.com'
+  tenant: 'swbtsishowcaseoutlook.onmicrosoft.com'
 };
 
 const ctx: any = new AuthenticationContext(adalConfig);
