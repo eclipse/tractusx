@@ -82,7 +82,7 @@ class AdalContext {
           if (error.msg === 'login_required' || error.msg === 'interaction_required') {
             this.authContext.login();
           } else {
-            // AlertDialog.(error.message);
+            alert(error.message);
           }
         }
       });
