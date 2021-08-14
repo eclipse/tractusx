@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: partsmasterdata
-        image: catenaxdevacr.azurecr.io/partsmasterdata:100
+        image: tsicatenaxdevacr.azurecr.io/partsmasterdata:0.1
         env:
           - name: HTTPUSERNAME
             value: "TractusX"

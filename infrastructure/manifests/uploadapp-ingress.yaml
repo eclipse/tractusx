@@ -15,10 +15,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - catenaxdevakssrv.germanywestcentral.cloudapp.azure.com
+    - tsicatenaxdevakssrv.germanywestcentral.cloudapp.azure.com
     secretName: tls-certificate
   rules:
-  - host: catenaxdevakssrv.germanywestcentral.cloudapp.azure.com
+  - host: tsicatenaxdevakssrv.germanywestcentral.cloudapp.azure.com
     http:
       paths:
       - path: /uploadappadapter(/|$)(.*)
