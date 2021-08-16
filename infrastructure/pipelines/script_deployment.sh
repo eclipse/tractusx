@@ -1,13 +1,13 @@
-export REGISTRY=
-export VERSION=0.3
+#export REGISTRY=
+#export VERSION=0.3
 
-export HTTPPASSWORD=    
-export STORAGEACCOUNT_CONNECTIONSTRING=
-export HTTPUSER=
-export POSTGREPARTSMASTERPASSWORD=
-export POSTGREPARTSMASTERURL=
+#export HTTPPASSWORD=    
+#export STORAGEACCOUNT_CONNECTIONSTRING=
+#export HTTPUSER=
+#export POSTGREPARTSMASTERPASSWORD=
+#export POSTGREPARTSMASTERURL=
 
-export APIID=
+#export APIID=
 
 cd ../../coreservices/connectordns
 mvn install -DskipTests
