@@ -28,7 +28,7 @@ export function getReplyUrl() {
 }
 
 // App Registration ID bb01c83a-f70e-44d9-a0ac-f6b3b70c1775
-const appId = '3e38d381-1310-4348-b33e-e107038a07a1';
+const appId = 'db41c442-ff3c-49af-8f74-fabc5c39a54e';
 export const adalConfig: AdalConfig = {
   cacheLocation: 'localStorage',
   clientId: appId,
