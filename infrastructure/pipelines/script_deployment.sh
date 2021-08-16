@@ -1,14 +1,13 @@
-export REGISTRY=tsicatenaxdevacr.azurecr.io
+export REGISTRY=
 export VERSION=0.3
 
 export HTTPPASSWORD=    
-export STORAGEACCOUNT_CONNECTIONSTRING=DefaultEndpointsProtocol=https;EndpointSuffix=core.windows.net;AccountName=tsicatenaxstorage;AccountKey=oZxAfzV+lBwuKqTZMymSiNITx5IfuKjyH0UjnvMMFHCUF+E7CNLn1WXNyZS24JbjLP3YzQCThFQUCIqskh87QQ==
+export STORAGEACCOUNT_CONNECTIONSTRING=
+export HTTPUSER=
+export POSTGREPARTSMASTERPASSWORD=
+export POSTGREPARTSMASTERURL=
 
-export HTTPUSER=TractusX
-export POSTGREPARTSMASTERPASSWORD=xanetacist42
-export POSTGREPARTSMASTERURL="jdbc:postgresql://tsicatenaxdevdb.postgres.database.azure.com:5432/partsmasterdata?user=TractusX@tsicatenaxdevdb&password=xanetacist42&sslmode=require"
-
-export APIID=3e38d381-1310-4348-b33e-e107038a07a1
+export APIID=
 
 cd ../../coreservices/connectordns
 mvn install -DskipTests
@@ -83,7 +82,7 @@ kubectl apply -f ../manifests/simplescheduler.yaml -n centralconnector
 
 cd ../../portal/code/tractus-x-portal
 
-docker build --build-arg HTTP_PROXY=http://sia-lb.telekom.de:8080 --build-arg HTTPS_PROXY=http://sia-lb.telekom.de:8080 -t $REGISTRY/portal:$VERSION .
+docker build --build-arg HTTP_PROXY=$PROXY --build-arg HTTPS_PROXY=$PROXY -t $REGISTRY/portal:$VERSION .
 docker push $REGISTRY/portal:$VERSION
 
 cd ../../../infrastructure/pipelines
@@ -111,7 +110,7 @@ helm install nginx-ingress ingress-nginx/ingress-nginx \
     --namespace ingress-portal \
     --set controller.replicaCount=1 \
     --set controller.service.loadBalancerIP=20.79.116.193 \
-    --set controller.service.annotations."service\.beta\.kubernetes\.io/azure-dns-label-name"=tsicatenaxdevaksportalsrv \
+    --set controller.service.annotations."service\.beta\.kubernetes\.io/azure-dns-label-name"=$PORTAL \
     --set controller.ingressClass=nginx-portal 
 
 kubectl create namespace portal
