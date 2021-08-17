@@ -16,7 +16,7 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 
 @observer
-export default class Vocabulary extends React.Component {
+export default class SemanticHub extends React.Component {
 
   public render() {
     return (
