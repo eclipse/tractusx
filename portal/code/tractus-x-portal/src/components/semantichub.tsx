@@ -19,15 +19,38 @@ import { observer } from 'mobx-react';
 export default class SemanticHub extends React.Component {
 
   public render() {
+    const staticModelData: any[] = [
+      {
+        name: 'TRACTUSXPoC',
+        URN: 'urn:bamm:com.catenaX:0.0.1#TRACTUSXPoC',
+        description: 'This is the BAMM Aspect Model for the data as used in the TRACTUS-X PoC.',
+        version: '0.0.1'
+      },
+      {
+        name: 'Gearbox Adhesives',
+        URN: 'urn:bamm:com.catenaX:0.0.1#GearboxAdhesives',
+        description: 'A number classifying a batch of produced materials',
+        version: '0.0.1'
+      },
+      {
+        name: 'OneID BusinessPartner',
+        URN: 'urn:bamm:com.catenaX:0.0.1#OneIDBusinessPartner',
+        description: '-',
+        version: '0.0.1'
+      },
+      
+    ]
     return (
       <div className='w100pc h100pc df fdc'>
-        <div className='ml50 mr50 mt50 bgfe w100-100 df fdc'>
-          <div className='df fdc aic'>
-            <img className='mt100' src='/comingsoon.png' width='570' height='270' alt='Coming Soon' />
-            <span className='fs18 mt40 mb50 w570'>The Vocabulary hub will be a central service that stores the CX ontology and meta data models and
-              enable collaboration. Collaboration includes search, selection, matching, updating, requests for changes, version management,
-              deletion, duplicate identification, and unused vocabularies.</span>
-          </div>
+        <div className='mt50 df fdc'>
+          {staticModelData.map((data, index) => (
+            <div key={index} className='ml50 mt10 bgpanel w100-100 df fdc br4 bsdatacatalog'>
+              <div className='df aic mt20'>
+                <span className='fs24 bold fg191 pl20'>{data.name}</span>
+              </div>
+              <span className='fs14 fg191 pl20 pt8 lh20 mr70'>{data.description}</span>
+            </div>
+          ))}
         </div>
       </div>
     );
