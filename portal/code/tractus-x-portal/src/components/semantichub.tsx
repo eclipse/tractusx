@@ -22,36 +22,37 @@ export default class SemanticHub extends React.Component {
     const staticModelData: any[] = [
       {
         name: 'TRACTUSXPoC',
-        URN: 'urn:bamm:com.catenaX:0.0.1#TRACTUSXPoC',
+        urn: 'urn:bamm:com.catenaX:0.0.1#TRACTUSXPoC',
         description: 'This is the BAMM Aspect Model for the data as used in the TRACTUS-X PoC.',
         version: '0.0.1'
       },
       {
         name: 'Gearbox Adhesives',
-        URN: 'urn:bamm:com.catenaX:0.0.1#GearboxAdhesives',
+        urn: 'urn:bamm:com.catenaX:0.0.1#GearboxAdhesives',
         description: 'A number classifying a batch of produced materials',
         version: '0.0.1'
       },
       {
         name: 'OneID BusinessPartner',
-        URN: 'urn:bamm:com.catenaX:0.0.1#OneIDBusinessPartner',
+        urn: 'urn:bamm:com.catenaX:0.0.1#OneIDBusinessPartner',
         description: '-',
         version: '0.0.1'
       },
-      
     ]
     return (
-      <div className='w100pc h100pc df fdc'>
-        <div className='mt50 df fdc'>
-          {staticModelData.map((data, index) => (
-            <div key={index} className='ml50 mt10 bgpanel w100-100 df fdc br4 bsdatacatalog'>
-              <div className='df aic mt20'>
-                <span className='fs24 bold fg191 pl20'>{data.name}</span>
-              </div>
-              <span className='fs14 fg191 pl20 pt8 lh20 mr70'>{data.description}</span>
-            </div>
-          ))}
-        </div>
+      <div className='w100pc h100pc df fwrap p44'>
+        {staticModelData.map((data, index) => (
+          <div key={index} className='m5 p20 bgpanel br4 bsdatacatalog cpointer'>
+            <span className="m0">Name:</span>
+            <h3 className='fs18 bold pb8 m0'>{data.name}</h3>
+            <p className="m0">URN:</p>
+            <p className='fs16 m0 pb8 lh20'>{data.urn}</p>
+            <p className="m0">Description:</p>
+            <p className='fs16 m0 pb8 lh20'>{data.description}</p>
+            <p className="m0">Version:</p>
+            <p className='fs16 m0 lh20'>{data.version}</p>
+          </div>
+        ))}
       </div>
     );
   }
