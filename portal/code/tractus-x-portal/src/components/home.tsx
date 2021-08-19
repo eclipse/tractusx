@@ -21,6 +21,7 @@ import Dashboard from './dashboard';
 import AppStore from './appstore';
 import DataCatalog from './datacatalog';
 import SemanticHub from './semantichub';
+import DigitalTwins from './digitaltwins';
 import DeveloperHub from './developerhub';
 import { ThemeProvider } from '@fluentui/react';
 import NotImp from './notimplemented';
@@ -178,7 +179,7 @@ const navLinkGroupsDigitalTwin: INavLinkGroup[] = [
     links: [
       {
         name: 'Browse & Search',
-        url: '/home/digitaltwin',
+        url: '/home/digitaltwins',
         key: 'key1',
         expandAriaLabel: 'Expand section',
         collapseAriaLabel: 'Collapse section',
@@ -186,7 +187,7 @@ const navLinkGroupsDigitalTwin: INavLinkGroup[] = [
       },
       {
         name: 'Resources',
-        url: '/home/digitaltwin',
+        url: '/home/digitaltwins',
         key: 'key2',
         expandAriaLabel: 'Expand section',
         collapseAriaLabel: 'Collapse section',
@@ -196,7 +197,7 @@ const navLinkGroupsDigitalTwin: INavLinkGroup[] = [
   }
 ];
 
-const noNav = ['semantichub','digitaltwin','developerhub', 'appstore', 'notification', 'organization', 'partners', 'usermanagement'];
+const noNav = ['semantichub','digitaltwins','developerhub', 'appstore', 'notification', 'organization', 'partners', 'usermanagement'];
 
 @observer
 class Home extends React.Component<RouteComponentProps> {
@@ -245,6 +246,7 @@ class Home extends React.Component<RouteComponentProps> {
               <Route path='/home/appstore' component={(props) => <AppStore {...props} />} />
               <Route path='/home/datacatalog' component={(props) => <DataCatalog {...props} />} />
               <Route path='/home/semantichub' component={(props) => <SemanticHub {...props} />} />
+              <Route path='/home/digitaltwins' component={(props) => <DigitalTwins {...props} />} />
               <Route path='/home/developerhub' component={(props) => <DeveloperHub {...props} />} />
               <Route path='/home/appdetail/:id' component={(props) => <AppDetail {...props} />} />
               <Route path='/home/mydata' component={(props) => <MyData {...props} />} />
