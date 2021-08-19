@@ -15,9 +15,9 @@ spec:
     spec:
       containers:
       - name: portal
-        image: tsicatenaxdevacr.azurecr.io/portal:0.4
+        image: tsicatenaxdevacr.azurecr.io/portal:0.6
         ports:
-        - containerPort: 80
+        - containerPort: 3000
 ---
 apiVersion: v1
 kind: Service
@@ -28,5 +28,6 @@ spec:
   type: ClusterIP
   ports:
   - port: 80
+    targetPort: 3000
   selector:
     app: portal
