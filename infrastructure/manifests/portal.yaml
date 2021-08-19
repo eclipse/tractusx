@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: portal
-        image: tsicatenaxdevacr.azurecr.io/portal:0.8
+        image: tsicatenaxdevacr.azurecr.io/portal:0.9
         ports:
         - containerPort: 3000
 ---
