@@ -1,12 +1,12 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: cdns-ingress
-  namespace: cdns
+  name: portal-ingress
+  namespace: portal
   annotations:
-    kubernetes.io/ingress.class: nginx
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    kubernetes.io/ingress.class: nginx-portal
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/cors-allow-methods: "PUT, GET, POST, OPTIONS"
@@ -15,16 +15,17 @@ metadata:
 spec:
   tls:
   - hosts:
-    - tsicatenaxdevakssrv.germanywestcentral.cloudapp.azure.com
+    - tsicatenaxdevaksportalsrv.germanywestcentral.cloudapp.azure.com
     secretName: tls-certificate
   rules:
-  - host: tsicatenaxdevakssrv.germanywestcentral.cloudapp.azure.com
+  - host: tsicatenaxdevaksportalsrv.germanywestcentral.cloudapp.azure.com
     http:
       paths:
-      - path: /cdns(/|$)(.*)
+      - path: /(.*)
         pathType: Prefix
         backend:
           service:
-            name: cdns
+            name: portal
             port:
-              number: 8080
+              number: 80
+

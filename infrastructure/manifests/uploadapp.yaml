@@ -15,14 +15,14 @@ spec:
     spec:
       containers:
       - name: uploadappadapter
-        image: catenaxdevacr.azurecr.io/uploadappadapter
+        image: tsicatenaxdevacr.azurecr.io/uploadappadapter:0.1
         env:
           - name: CONTAINERNAME
             value: "poc"
           - name: STORAGE_CONNECTIONSTRING
             valueFrom:
               secretKeyRef:
-                key: sotrage_connectionstring
+                key: storage_connectionstring
                 name: uploadappadapter-secret
           - name: HTTPUSERNAME
             value: "TractusX"

@@ -1,0 +1,20 @@
+{
+  "manufacturerProductNumber" : "123456789123456000",
+  "productionDate" : "2021-07-21",
+  "safetyInstructions" : [ {
+    "mimetype" : "application/pdf",
+    "filePath" : "./documents/instruction.pdf"
+  } ],
+  "materialComposition" : [ {
+    "material" : "Aluminium",
+    "weight" : 1500
+  } ],
+  "producerName" : "Henkel AG",
+  "disassemblyInstructions" : [ {
+    "mimetype" : "application/pdf",
+    "filePath" : "./documents/instruction.pdf"
+  } ],
+  "uniqueID" : "eOMtThyhVNLWUZNRcBaQKxI",
+  "hazardousMaterials" : "cadmium, lithium",
+  "batchNumber" : "12345ABCDE"
+}

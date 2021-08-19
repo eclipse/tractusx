@@ -150,7 +150,53 @@ const navLinkGroupsData: INavLinkGroup[] = [
   }
 ];
 
-const noNav = ['vocabulary', 'developerhub', 'appstore', 'notification', 'organization', 'partners', 'usermanagement'];
+const navLinkGroupsSemantics: INavLinkGroup[] = [
+  {
+    links: [
+      {
+        name: 'Browse & Search',
+        url: '/home/semantichub',
+        key: 'key1',
+        expandAriaLabel: 'Expand section',
+        collapseAriaLabel: 'Collapse section',
+        title: ''
+      },
+      {
+        name: 'Resources',
+        url: '/home/semantichub',
+        key: 'key2',
+        expandAriaLabel: 'Expand section',
+        collapseAriaLabel: 'Collapse section',
+        title: ''
+      }
+    ]
+  }
+];
+
+const navLinkGroupsDigitalTwin: INavLinkGroup[] = [
+  {
+    links: [
+      {
+        name: 'Browse & Search',
+        url: '/home/digitaltwin',
+        key: 'key1',
+        expandAriaLabel: 'Expand section',
+        collapseAriaLabel: 'Collapse section',
+        title: ''
+      },
+      {
+        name: 'Resources',
+        url: '/home/digitaltwin',
+        key: 'key2',
+        expandAriaLabel: 'Expand section',
+        collapseAriaLabel: 'Collapse section',
+        title: ''
+      }
+    ]
+  }
+];
+
+const noNav = ['semantichub','digitaltwin','developerhub', 'appstore', 'notification', 'organization', 'partners', 'usermanagement'];
 
 @observer
 class Home extends React.Component<RouteComponentProps> {
@@ -170,7 +216,9 @@ class Home extends React.Component<RouteComponentProps> {
   }
 
   public render() {
-    let groups = (window.location.href.indexOf('/datacatalog') >= 0) ? navLinkGroupsData : navLinkGroups;
+    let groups = navLinkGroups;
+    if (window.location.href.indexOf('/datacatalog') >= 0) groups=navLinkGroupsData
+    
     for (const nav of noNav) {
       if (window.location.href.indexOf(nav) >= 0) {
         groups = null;

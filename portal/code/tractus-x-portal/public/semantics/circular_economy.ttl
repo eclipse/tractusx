@@ -1,0 +1,140 @@
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix bamm: <urn:bamm:io.openmanufacturing:meta-model:1.0.0#>.
+@prefix unit: <urn:bamm:io.openmanufacturing:unit:1.0.0#>.
+@prefix bamm-c: <urn:bamm:io.openmanufacturing:characteristic:1.0.0#>.
+@prefix bamm-e: <urn:bamm:io.openmanufacturing:entity:1.0.0#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix : <urn:bamm:com.catenaX:0.0.1#>.
+
+:GearboxAdhesives a bamm:Aspect;
+    bamm:name "GearboxAdhesives";
+    bamm:properties (:batchNumber :disassemblyInstructions :manufacturerProductNumber :materialComposition :producerName :productionDate :uniqueID :hazardousMaterials :safetyInstructions);
+    bamm:operations ();
+    bamm:preferredName "Gearbox Adhesives"@en.
+:batchNumber a bamm:Property;
+    bamm:name "batchNumber";
+    bamm:characteristic :BatchNumberTrait;
+    bamm:preferredName "Batch Number"@en;
+    bamm:exampleValue "12345ABCDE";
+    bamm:description "A number classifying a batch of produced materials"@en.
+:AlphanumericCharacteristic a bamm:Characteristic;
+    bamm:name "AlphanumericCharacteristic";
+    bamm:dataType xsd:string;
+    bamm:preferredName "Alphanumeric"@en.
+:BatchNumberTrait a bamm-c:Trait;
+    bamm:name "BatchNumberTrait";
+    bamm-c:baseCharacteristic :AlphanumericCharacteristic;
+    bamm-c:constraint :LengthOfBatchNumber.
+:LengthOfBatchNumber a bamm-c:LengthConstraint;
+    bamm:name "LengthOfBatchNumber";
+    bamm:preferredName "Length of Batch Number"@en;
+    bamm-c:maxValue "10"^^xsd:nonNegativeInteger.
+:disassemblyInstructions a bamm:Property;
+    bamm:name "disassemblyInstructions";
+    bamm:characteristic :DocumentsCharacteristic;
+    bamm:preferredName "Disassembly Instructions"@en;
+    bamm:description "Manufacturer documents for describing debonding processes (incl. Tooling) for multiple aggregations"@en.
+:DocumentEntity a bamm:Entity;
+    bamm:name "DocumentEntity";
+    bamm:properties (:mimetype :filePath);
+    bamm:preferredName "Document Entity "@en.
+:mimetype a bamm:Property;
+    bamm:name "mimetype";
+    bamm:characteristic bamm-c:MimeType;
+    bamm:preferredName "Mime Type"@en;
+    bamm:exampleValue "application/pdf".
+:filePath a bamm:Property;
+    bamm:name "filePath";
+    bamm:characteristic bamm-c:ResourcePath;
+    bamm:preferredName "File Path"@en;
+    bamm:exampleValue "./documents/instruction.pdf"^^xsd:anyURI.
+:DocumentsCharacteristic a bamm-c:Set;
+    bamm:name "DocumentsCharacteristic";
+    bamm:dataType :DocumentEntity;
+    bamm:preferredName "Documents Characteristic"@en.
+:manufacturerProductNumber a bamm:Property;
+    bamm:name "manufacturerProductNumber";
+    bamm:characteristic :ManufacturerProductNumberTrait;
+    bamm:preferredName "Manufacturer Product Number"@en;
+    bamm:exampleValue "123456789123456000"^^xsd:string;
+    bamm:description "Part number given by the part's manufacturer  (not unique for a single physical part)"@en.
+:ManufacturerProductNumberTrait a bamm-c:Trait;
+    bamm:name "ManufacturerProductNumberTrait";
+    bamm-c:baseCharacteristic :ProductNumberCharacteristic;
+    bamm-c:constraint :LengthOfProductNumber.
+:materialComposition a bamm:Property;
+    bamm:name "materialComposition";
+    bamm:characteristic :ListOfMaterialsCharacteristic;
+    bamm:preferredName "Material Composition"@en;
+    bamm:description "Associated materials of (sub) components."@en.
+:ListOfMaterialsCharacteristic a bamm-c:List;
+    bamm:name "ListOfMaterialsCharacteristic";
+    bamm:dataType :MaterialEntity;
+    bamm:preferredName "List of Materials Characteristic"@en.
+:MaterialEntity a bamm:Entity;
+    bamm:name "MaterialEntity";
+    bamm:properties (:material :weight);
+    bamm:preferredName "Material"@en.
+:material a bamm:Property;
+    bamm:name "material";
+    bamm:characteristic :MaterialCharacteristic;
+    bamm:preferredName "Material"@en;
+    bamm:exampleValue "Aluminium".
+:weight a bamm:Property;
+    bamm:name "weight";
+    bamm:characteristic :WeightMeasurement;
+    bamm:preferredName "Weight"@en;
+    bamm:exampleValue "1500"^^xsd:integer.
+:MaterialCharacteristic a bamm:Characteristic;
+    bamm:name "MaterialCharacteristic";
+    bamm:dataType xsd:string;
+    bamm:preferredName "Material Characteristic"@en.
+:WeightMeasurement a bamm-c:Measurement;
+    bamm:name "WeightMeasurement";
+    bamm:dataType xsd:integer;
+    bamm:preferredName "Weight Measurement"@en;
+    bamm-c:unit unit:gram.
+:producerName a bamm:Property;
+    bamm:name "producerName";
+    bamm:characteristic bamm-c:Text;
+    bamm:preferredName "Producer Name"@en;
+    bamm:exampleValue "Henkel AG";
+    bamm:description "Name of (sub)component manufacturer"@en.
+:productionDate a bamm:Property;
+    bamm:name "productionDate";
+    bamm:characteristic :ProductionDateTrait;
+    bamm:preferredName "Production Date"@en;
+    bamm:exampleValue "2021-07-21"^^xsd:dateTime.
+:ProductionDateTrait a bamm-c:Trait;
+    bamm:name "ProductionDateTrait";
+    bamm-c:baseCharacteristic bamm-c:Timestamp;
+    bamm-c:constraint :Date.
+:Date a bamm-c:RegularExpressionConstraint;
+    bamm:name "Date";
+    bamm:preferredName "Date"@en;
+    bamm:value "YYYY-MM-DD".
+:uniqueID a bamm:Property;
+    bamm:name "uniqueID";
+    bamm:characteristic :AlphanumericCharacteristic;
+    bamm:preferredName "Unique ID"@en.
+:hazardousMaterials a bamm:Property;
+    bamm:name "hazardousMaterials";
+    bamm:characteristic bamm-c:Text;
+    bamm:preferredName "Hazardous Materials"@en;
+	bamm:exampleValue "cadmium, lithium";
+    bamm:description "List of hazardous substances."@en.
+:safetyInstructions a bamm:Property;
+    bamm:name "safetyInstructions";
+    bamm:characteristic :DocumentsCharacteristic;
+    bamm:preferredName "Safety Instructions"@en;
+    bamm:description "Technical data sheet with safety instructions for debonding based on usage (at least pictures of IDIS),  material classification (explosive, flammable…) and accident prevention regulations"@en.
+:LengthOfProductNumber a bamm-c:LengthConstraint;
+    bamm:name "LengthOfProductNumber";
+    bamm:preferredName "Length Of Product Number"@en;
+    bamm:description "Part number given by the part's manufacturer  (not unique for a single physical part)"@en;
+    bamm-c:maxValue "18"^^xsd:nonNegativeInteger.
+:ProductNumberCharacteristic a bamm:Characteristic;
+    bamm:name "ProductNumberCharacteristic";
+    bamm:dataType xsd:string;
+    bamm:preferredName "Product Number Characteristic"@en;
+	bamm:description "Only numeric"@en.
