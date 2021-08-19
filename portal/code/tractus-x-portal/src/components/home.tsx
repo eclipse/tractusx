@@ -20,7 +20,7 @@ import { Redirect, Route, RouteComponentProps, Switch, withRouter } from 'react-
 import Dashboard from './dashboard';
 import AppStore from './appstore';
 import DataCatalog from './datacatalog';
-import Vocabulary from './vocabulary';
+import SemanticHub from './semantichub';
 import DeveloperHub from './developerhub';
 import { ThemeProvider } from '@fluentui/react';
 import NotImp from './notimplemented';
@@ -150,7 +150,53 @@ const navLinkGroupsData: INavLinkGroup[] = [
   }
 ];
 
-const noNav = ['vocabulary', 'developerhub', 'appstore', 'notification', 'organization', 'partners', 'usermanagement'];
+const navLinkGroupsSemantics: INavLinkGroup[] = [
+  {
+    links: [
+      {
+        name: 'Browse & Search',
+        url: '/home/semantichub',
+        key: 'key1',
+        expandAriaLabel: 'Expand section',
+        collapseAriaLabel: 'Collapse section',
+        title: ''
+      },
+      {
+        name: 'Resources',
+        url: '/home/semantichub',
+        key: 'key2',
+        expandAriaLabel: 'Expand section',
+        collapseAriaLabel: 'Collapse section',
+        title: ''
+      }
+    ]
+  }
+];
+
+const navLinkGroupsDigitalTwin: INavLinkGroup[] = [
+  {
+    links: [
+      {
+        name: 'Browse & Search',
+        url: '/home/digitaltwin',
+        key: 'key1',
+        expandAriaLabel: 'Expand section',
+        collapseAriaLabel: 'Collapse section',
+        title: ''
+      },
+      {
+        name: 'Resources',
+        url: '/home/digitaltwin',
+        key: 'key2',
+        expandAriaLabel: 'Expand section',
+        collapseAriaLabel: 'Collapse section',
+        title: ''
+      }
+    ]
+  }
+];
+
+const noNav = ['semantichub','digitaltwin','developerhub', 'appstore', 'notification', 'organization', 'partners', 'usermanagement'];
 
 @observer
 class Home extends React.Component<RouteComponentProps> {
@@ -170,7 +216,9 @@ class Home extends React.Component<RouteComponentProps> {
   }
 
   public render() {
-    let groups = (window.location.href.indexOf('/datacatalog') >= 0) ? navLinkGroupsData : navLinkGroups;
+    let groups = navLinkGroups;
+    if (window.location.href.indexOf('/datacatalog') >= 0) groups=navLinkGroupsData
+    
     for (const nav of noNav) {
       if (window.location.href.indexOf(nav) >= 0) {
         groups = null;
@@ -196,7 +244,7 @@ class Home extends React.Component<RouteComponentProps> {
               <Route path='/home/dashboard' component={(props) => <Dashboard {...props} />} />
               <Route path='/home/appstore' component={(props) => <AppStore {...props} />} />
               <Route path='/home/datacatalog' component={(props) => <DataCatalog {...props} />} />
-              <Route path='/home/vocabulary' component={(props) => <Vocabulary {...props} />} />
+              <Route path='/home/semantichub' component={(props) => <SemanticHub {...props} />} />
               <Route path='/home/developerhub' component={(props) => <DeveloperHub {...props} />} />
               <Route path='/home/appdetail/:id' component={(props) => <AppDetail {...props} />} />
               <Route path='/home/mydata' component={(props) => <MyData {...props} />} />

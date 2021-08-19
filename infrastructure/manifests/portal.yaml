@@ -15,7 +15,11 @@ spec:
     spec:
       containers:
       - name: portal
+<<<<<<< HEAD
         image: tsicatenaxdevacr.azurecr.io/portal:0.7
+=======
+        image: tsicatenaxdevacr.azurecr.io/portal:0.6
+>>>>>>> feature/semantic-hub-mock
         ports:
         - containerPort: 3000
 ---

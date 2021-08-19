@@ -1,0 +1,203 @@
+---
+openapi: 3.0.3
+info:
+  title: TRACTUS-X PoC
+  version: v0
+servers:
+- url: http://test.com/api/v0
+  variables:
+    api-version:
+      default: v0
+paths:
+  /{tenant-id}/t-r-a-c-t-u-s-x-po-c:
+    get:
+      tags:
+      - TRACTUSXPoC
+      operationId: getTRACTUSXPoC
+      parameters:
+      - name: tenant-id
+        in: path
+        description: The ID of the tenant owning the requested Twin.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          $ref: '#/components/responses/TRACTUSXPoC'
+        "401":
+          $ref: '#/components/responses/ClientError'
+        "402":
+          $ref: '#/components/responses/Unauthorized'
+        "403":
+          $ref: '#/components/responses/Forbidden'
+        "404":
+          $ref: '#/components/responses/NotFoundError'
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          $ref: '#/components/schemas/Error'
+    Error:
+      type: object
+      required:
+      - details
+      properties:
+        message:
+          type: string
+          minLength: 1
+        path:
+          type: string
+          minLength: 1
+        details:
+          type: object
+          minLength: 1
+          additionalProperties:
+            type: object
+        code:
+          type: string
+          nullable: true
+    urn_bamm_com.catenaX_0.0.1_CountryCodeCharacteristic:
+      type: string
+    urn_bamm_com.catenaX_0.0.1_DateWithoutTimestamp:
+      type: string
+      format: date
+    urn_bamm_com.catenaX_0.0.1_IndividualDataCharacteristic:
+      type: object
+      properties:
+        productionCountryCode:
+          $ref: '#/components/schemas/urn_bamm_com.catenaX_0.0.1_CountryCodeCharacteristic'
+        productionDateGMT:
+          $ref: '#/components/schemas/urn_bamm_com.catenaX_0.0.1_DateWithoutTimestamp'
+      required:
+      - productionCountryCode
+      - productionDateGMT
+    urn_bamm_com.catenaX_0.0.1_IsParentOfCharacteristic:
+      type: array
+      items:
+        type: string
+      uniqueItems: true
+    urn_bamm_com.catenaX_0.0.1_PartTreeCharacteristic:
+      type: object
+      properties:
+        isParentOf:
+          $ref: '#/components/schemas/urn_bamm_com.catenaX_0.0.1_IsParentOfCharacteristic'
+      required:
+      - isParentOf
+    urn_bamm_io.openmanufacturing_characteristic_1.0.0_Boolean:
+      type: boolean
+    urn_bamm_com.catenaX_0.0.1_QualityTypeEnum:
+      type: string
+      enum:
+      - major
+      - minor
+      - critical
+    urn_bamm_com.catenaX_0.0.1_QualityAlertDataCharacteristic:
+      type: object
+      properties:
+        qualityAlert:
+          $ref: '#/components/schemas/urn_bamm_io.openmanufacturing_characteristic_1.0.0_Boolean'
+        qualityType:
+          $ref: '#/components/schemas/urn_bamm_com.catenaX_0.0.1_QualityTypeEnum'
+      required:
+      - qualityAlert
+      - qualityType
+    urn_bamm_com.catenaX_0.0.1_OneIDBusinessPartner:
+      type: string
+    urn_bamm_io.openmanufacturing_characteristic_1.0.0_Text:
+      type: string
+    urn_bamm_com.catenaX_0.0.1_PartNumberCharacteristic:
+      type: string
+    urn_bamm_com.catenaX_0.0.1_StaticDataCharacteristic:
+      type: object
+      properties:
+        customerContractOneID:
+          $ref: '#/components/schemas/urn_bamm_com.catenaX_0.0.1_OneIDBusinessPartner'
+        customerOneID:
+          $ref: '#/components/schemas/urn_bamm_com.catenaX_0.0.1_OneIDBusinessPartner'
+        manufactureContractOneID:
+          $ref: '#/components/schemas/urn_bamm_com.catenaX_0.0.1_OneIDBusinessPartner'
+        manufacturerOneID:
+          $ref: '#/components/schemas/urn_bamm_com.catenaX_0.0.1_OneIDBusinessPartner'
+        partNameCustomer:
+          $ref: '#/components/schemas/urn_bamm_io.openmanufacturing_characteristic_1.0.0_Text'
+        partNameManufacturer:
+          $ref: '#/components/schemas/urn_bamm_io.openmanufacturing_characteristic_1.0.0_Text'
+        partNumberCustomer:
+          $ref: '#/components/schemas/urn_bamm_com.catenaX_0.0.1_PartNumberCharacteristic'
+        partNumberManufacturer:
+          $ref: '#/components/schemas/urn_bamm_com.catenaX_0.0.1_PartNumberCharacteristic'
+      required:
+      - customerContractOneID
+      - customerOneID
+      - manufactureContractOneID
+      - manufacturerOneID
+      - partNameCustomer
+      - partNameManufacturer
+      - partNumberCustomer
+      - partNumberManufacturer
+    urn_bamm_com.catenaX_0.0.1_IdCharacteristic:
+      type: string
+    urn_bamm_com.catenaX_0.0.1_UniqueDataCharacteristic:
+      type: object
+      properties:
+        customerUniqueID:
+          $ref: '#/components/schemas/urn_bamm_com.catenaX_0.0.1_IdCharacteristic'
+        manufacturerUniqueID:
+          $ref: '#/components/schemas/urn_bamm_com.catenaX_0.0.1_IdCharacteristic'
+        uniqueID:
+          $ref: '#/components/schemas/urn_bamm_com.catenaX_0.0.1_IdCharacteristic'
+      required:
+      - customerUniqueID
+      - manufacturerUniqueID
+      - uniqueID
+    TRACTUSXPoC:
+      type: object
+      properties:
+        individualData:
+          $ref: '#/components/schemas/urn_bamm_com.catenaX_0.0.1_IndividualDataCharacteristic'
+        partTree:
+          $ref: '#/components/schemas/urn_bamm_com.catenaX_0.0.1_PartTreeCharacteristic'
+        qualityAlertData:
+          $ref: '#/components/schemas/urn_bamm_com.catenaX_0.0.1_QualityAlertDataCharacteristic'
+        staticData:
+          $ref: '#/components/schemas/urn_bamm_com.catenaX_0.0.1_StaticDataCharacteristic'
+        uniqueData:
+          $ref: '#/components/schemas/urn_bamm_com.catenaX_0.0.1_UniqueDataCharacteristic'
+      required:
+      - individualData
+      - partTree
+      - qualityAlertData
+      - staticData
+      - uniqueData
+  responses:
+    Unauthorized:
+      description: The requesting user or client is not authenticated.
+    Forbidden:
+      description: The requesting user or client is not authorized to access resources
+        for the given tenant.
+    NotFoundError:
+      description: The requested Twin has not been found.
+    ClientError:
+      description: Payload or user input is invalid. See error details in the payload
+        for more.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    TRACTUSXPoC:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TRACTUSXPoC'
+      description: The request was successful.
+  requestBodies:
+    TRACTUSXPoC:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TRACTUSXPoC'

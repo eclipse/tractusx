@@ -1,0 +1,155 @@
+---
+openapi: 3.0.3
+info:
+  title: GPDM Aspect
+  version: v0
+servers:
+- url: http://test.com/api/v0
+  variables:
+    api-version:
+      default: v0
+paths:
+  /{tenant-id}/g-p-d-m-aspect-po-c:
+    get:
+      tags:
+      - GPDMAspectPoC
+      operationId: getGPDMAspectPoC
+      parameters:
+      - name: tenant-id
+        in: path
+        description: The ID of the tenant owning the requested Twin.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          $ref: '#/components/responses/GPDMAspectPoC'
+        "401":
+          $ref: '#/components/responses/ClientError'
+        "402":
+          $ref: '#/components/responses/Unauthorized'
+        "403":
+          $ref: '#/components/responses/Forbidden'
+        "404":
+          $ref: '#/components/responses/NotFoundError'
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          $ref: '#/components/schemas/Error'
+    Error:
+      type: object
+      required:
+      - details
+      properties:
+        message:
+          type: string
+          minLength: 1
+        path:
+          type: string
+          minLength: 1
+        details:
+          type: object
+          minLength: 1
+          additionalProperties:
+            type: object
+        code:
+          type: string
+          nullable: true
+    urn_bamm_com.catenaX_0.0.1_OneIDBusinessPartner:
+      type: string
+    urn_bamm_com.catenaX_0.0.1_BusinessPartnerTypeCharacteristic:
+      type: string
+    urn_bamm_io.openmanufacturing_characteristic_1.0.0_Text:
+      type: string
+    urn_bamm_com.catenaX_0.0.1_BusinessPartnerNameTypeEnum:
+      type: string
+      enum:
+      - registered_name
+      - local_name
+      - international_name
+      - transliterated_name
+      - DBA_name
+      - VAT_registered_name
+    urn_bamm_com.catenaX_0.0.1_SetOfBusinessPartnerName:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            $ref: '#/components/schemas/urn_bamm_io.openmanufacturing_characteristic_1.0.0_Text'
+          type:
+            $ref: '#/components/schemas/urn_bamm_com.catenaX_0.0.1_BusinessPartnerNameTypeEnum'
+          legalForm:
+            $ref: '#/components/schemas/urn_bamm_io.openmanufacturing_characteristic_1.0.0_Text'
+        required:
+        - name
+        - type
+        - legalForm
+      uniqueItems: true
+    urn_bamm_com.catenaX_0.0.1_BusinessPartnerDataCharacteristic:
+      type: object
+      properties:
+        oneId:
+          $ref: '#/components/schemas/urn_bamm_com.catenaX_0.0.1_OneIDBusinessPartner'
+        businessPartnerType:
+          $ref: '#/components/schemas/urn_bamm_com.catenaX_0.0.1_BusinessPartnerTypeCharacteristic'
+        businessPartnerNames:
+          $ref: '#/components/schemas/urn_bamm_com.catenaX_0.0.1_SetOfBusinessPartnerName'
+      required:
+      - businessPartnerType
+      - businessPartnerNames
+    urn_bamm_com.catenaX_0.0.1_EMailAddressTrait:
+      type: string
+      pattern: tbd
+    urn_bamm_io.openmanufacturing_characteristic_1.0.0_ResourcePath:
+      type: string
+      format: uri
+    urn_bamm_com.catenaX_0.0.1_ContactDataCharacteristic:
+      type: object
+      properties:
+        eMailAddress:
+          $ref: '#/components/schemas/urn_bamm_com.catenaX_0.0.1_EMailAddressTrait'
+        url:
+          $ref: '#/components/schemas/urn_bamm_io.openmanufacturing_characteristic_1.0.0_ResourcePath'
+    GPDMAspectPoC:
+      type: object
+      properties:
+        businessPartnerData:
+          $ref: '#/components/schemas/urn_bamm_com.catenaX_0.0.1_BusinessPartnerDataCharacteristic'
+        contactData:
+          $ref: '#/components/schemas/urn_bamm_com.catenaX_0.0.1_ContactDataCharacteristic'
+      required:
+      - contactData
+  responses:
+    Unauthorized:
+      description: The requesting user or client is not authenticated.
+    Forbidden:
+      description: The requesting user or client is not authorized to access resources
+        for the given tenant.
+    NotFoundError:
+      description: The requested Twin has not been found.
+    ClientError:
+      description: Payload or user input is invalid. See error details in the payload
+        for more.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    GPDMAspectPoC:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GPDMAspectPoC'
+      description: The request was successful.
+  requestBodies:
+    GPDMAspectPoC:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GPDMAspectPoC'
