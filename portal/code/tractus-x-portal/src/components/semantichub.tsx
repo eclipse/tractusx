@@ -43,35 +43,46 @@ export default class SemanticHub extends React.Component {
   public render() {
     const staticModelData: any[] = [
       {
-        name: 'TRACTUSXPoC',
-        urn: 'urn:bamm:com.catenaX:0.0.1#TRACTUSXPoC',
-        description: 'This is the BAMM Aspect Model for the data as used in the TRACTUS-X PoC.',
-        show: 'semantics/bamm.html',
-        download: 'semantics/bamm.ttl',
+        name: 'Catena-X Traceability Aspect',
+        URN: 'urn:bamm:com.catenaX:0.0.1#TRACTUSXPoC',
+        description: 'This is the BAMM Aspect Model for the data as used in the Traceability part of TRACTUS-X PoC.',
+        show: '/semantics/traceability_en.html',
+        download: '/semantics/traceability.ttl',
         version: '0.0.1',
         public: false,
-        vocabulary: 'RDF/SHACL'
+        vocabulary: 'BAMM'
       },
       {
-        name: 'Gearbox Adhesives',
-        urn: 'urn:bamm:com.catenaX:0.0.1#GearboxAdhesives',
-        description: 'A number classifying a batch of produced materials',
-        download: 'semantics/circular_economy.ttl',
-        show: 'semantics/circular_economy.html',
+        name: 'Catena-X Circular Economy Aspect',
+        URN: 'urn:bamm:com.catenaX:0.0.1#GearboxAdhesives',
+        description: 'Example gearbox modelling of the circular economy aspect/requirements.',
+        download: '/semantics/circular_economy.ttl',
+        show: '/semantics/circular_economy_en.html',
         version: '0.0.1',
         public: true,
         vocabulary: 'BAMM'
       },
       {
-        name: 'OneID BusinessPartner',
-        urn: 'urn:bamm:com.catenaX:0.0.1#OneIDBusinessPartner',
+        name: 'Catena-X GPDM Aspect',
+        URN: 'urn:bamm:com.catenaX:0.0.1#OneIDBusinessPartner',
         description: '-',
-        download: 'semantics/business_partner.ttl',
-        show: 'semantics/business_partner.html',
+        download: '/semantics/gdpm.ttl',
+        show: '/semantics/gdpm_en.html',
         version: '0.0.1',
         public: true,
-        vocabulary: 'OWL'
+        vocabulary: 'BAMM'
       },
+      {
+        name: 'International Data Spaces Vocabulary',
+        URN: 'https://w3id.org/idsa',
+        description: 'Official W3C specification',
+        download: 'https://international-data-spaces-association.github.io/InformationModel/docs/4.1.0/serializations/ontology.ttl',
+        show: 'https://international-data-spaces-association.github.io/InformationModel/docs/index.html',
+        version: '4.1.0',
+        public: true,
+        vocabulary: 'OWL'
+      }
+      
     ]
     return (
       <div className='w100pc h100pc df fdc'>
@@ -79,7 +90,7 @@ export default class SemanticHub extends React.Component {
           {staticModelData.map((data, index) => (
             <div key={index} className='ml50 mt10 bgpanel w100-100 df fdc br4 bsdatacatalog'>
               <div className='df aic mt20'>
-                <span className='fs24 bold fg191 pl20'><a href="{data.show}">{data.name}</a></span><span>&nbsp;(<a href="{data.download}">Download</a>)</span>
+                <span className='fs24 bold fg191 pl20'><a href={data.show}>{data.name}</a></span><span>&nbsp;(<a href={data.download}>Download</a>)</span>
                 <div className='flex1'/>
                 {this.getIcon(data)}
               </div>
@@ -91,10 +102,10 @@ export default class SemanticHub extends React.Component {
                   <span className='fs14 fg5a pl20 pt28 fggrey lh16'>Model Version</span>
                   <span className='fs14 fg5a pl29 pt28 fg5a mr30'>{data.version}</span>
                   <br />
-                  <span className='fs14 fg5a pl20 pt28 fggrey lh16'>Vocabulary</span>
+                  <span className='fs14 fg5a pl20 pt28 fggrey lh16'>Bas Vocabulary</span>
                   <span className='fs14 fg5a pl29 pt28 fg5a mr30'>{data.vocabulary}</span>
                   <br />
-                  <span className='fs14 fg5a pl20 pt28 fggrey lh16'>Model Public</span>
+                  <span className='fs14 fg5a pl20 pt28 fggrey lh16'>Public Available</span>
                   <span className='fs14 fg5a pl29 pt28 fg5a mr30'>{data.public ? 'true' : 'false'}</span>
                 </div>
 

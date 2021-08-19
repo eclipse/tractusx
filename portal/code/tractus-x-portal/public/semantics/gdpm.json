@@ -1,0 +1,15 @@
+{
+  "contactData" : {
+    "eMailAddress" : "tbd",
+    "url" : "telnet://192.0.2.16:80/"
+  },
+  "businessPartnerData" : {
+    "businessPartnerNames" : [ {
+      "name" : "JxkyvRnL",
+      "type" : "registered_name",
+      "legalForm" : "RYtGKbgicZaHCBRQDSx"
+    } ],
+    "oneId" : "eOMtThyhVNLWUZNRcBaQKxI",
+    "businessPartnerType" : "yedUsFwdkelQbxeTeQOvaScfqIOOmaa"
+  }
+}
