@@ -354,6 +354,7 @@ iframe {border-style: none;}
 .minw30 {min-width:30px;}
 .minw100-100 {min-width:calc(100% - 100px);}
 .minw100 {min-width:100px;}
+.minw150 {min-width:150px;}
 .minw200 {min-width:200px;}
 .minw300 {min-width:300px;}
 .minw540 {min-width:540px;}

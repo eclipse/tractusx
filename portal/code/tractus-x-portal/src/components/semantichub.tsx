@@ -90,25 +90,24 @@ export default class SemanticHub extends React.Component {
           {staticModelData.map((data, index) => (
             <div key={index} className='m5 p20 bgpanel w100-100 br4 bsdatacatalog'>
               <div className='df aic mt20'>
-                <span className='fs24 bold fg191 pl20'><a href={data.show}>{data.name}</a></span><span>&nbsp;(<a href={data.download}>Download</a>)</span>
+                <span className='fs24 bold fg191'><a href={data.show}>{data.name}</a></span><span>&nbsp;(<a href={data.download}>Download</a>)</span>
                 <div className='flex1'/>
                 {this.getIcon(data)}
               </div>
-              <span className='fs14 fg191 pl20 pt8 lh20 mr70'>{data.description}</span>
+              <span className='fs14 fg191 pt8 lh20 mr70'>{data.description}</span>
               <div className='mt20 mb30'>
-                  <span className='fs14 fg5a pl20 fggrey lh16'>Namespace</span>
-                  <span className='fs14 fg5a pl50 fg5a mr30'>{data.URN}</span>
-                  <br />
-                  <span className='fs14 fg5a pl20 fggrey lh16'>Model Version</span>
-                  <span className='fs14 fg5a pl29 fg5a mr30'>{data.version}</span>
-                  <br />
-                  <span className='fs14 fg5a pl20 fggrey lh16'>Bas Vocabulary</span>
-                  <span className='fs14 fg5a pl29 fg5a mr30'>{data.vocabulary}</span>
-                  <br />
-                  <span className='fs14 fg5a pl20 fggrey lh16'>Public Available</span>
-                  <span className='fs14 fg5a pl29 fg5a mr30'>{data.public ? 'true' : 'false'}</span>
-                </div>
-
+                <span className='dib minw150 fs14 fggrey'>Namespace</span>
+                <span className='fs14 fg5a'>{data.URN}</span>
+                <br />
+                <span className='dib minw150 fs14 fggrey'>Model Version</span>
+                <span className='fs14 fg5a'>{data.version}</span>
+                <br />
+                <span className='dib minw150 fs14 fggrey'>Bas Vocabulary</span>
+                <span className='fs14 fg5a'>{data.vocabulary}</span>
+                <br />
+                <span className='dib minw150 fs14 fggrey'>Public Available</span>
+                <span className='fs14 fg5a'>{data.public ? 'true' : 'false'}</span>
+              </div>
             </div>
           ))}
         </div>
