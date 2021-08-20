@@ -21,6 +21,7 @@ import Dashboard from './dashboard';
 import AppStore from './appstore';
 import DataCatalog from './datacatalog';
 import SemanticHub from './semantichub';
+import SemanticModelDetail from './semanticmodeldetail';
 import DeveloperHub from './developerhub';
 import { ThemeProvider } from '@fluentui/react';
 import NotImp from './notimplemented';
@@ -245,6 +246,7 @@ class Home extends React.Component<RouteComponentProps> {
               <Route path='/home/appstore' component={(props) => <AppStore {...props} />} />
               <Route path='/home/datacatalog' component={(props) => <DataCatalog {...props} />} />
               <Route path='/home/semantichub' component={(props) => <SemanticHub {...props} />} />
+              <Route path='/home/semantichub/model/:id' component={(props) => <SemanticModelDetail {...props} />} />
               <Route path='/home/developerhub' component={(props) => <DeveloperHub {...props} />} />
               <Route path='/home/appdetail/:id' component={(props) => <AppDetail {...props} />} />
               <Route path='/home/mydata' component={(props) => <MyData {...props} />} />
