@@ -79,46 +79,44 @@ export default class DigitalTwins extends React.Component {
       }
     ]
     return (
-      <div className='w100pc h100pc df fdc'>
+      <div className='w100pc h100pc df fdc p44'>
         <div className='mt50 df fdc'>
           {staticTwinData.map((data, index) => (
-            <div key={index} className='ml50 mt10 bgpanel w100-100 df fdc br4 bsdatacatalog'>
+            <div key={index} className='m5 p20 bgpanel w100-100 br4 bsdatac'>
               <div className='df aic mt20'>
-                <span className='fs24 bold fg191 pl20'>{data.id.namespace}#{data.id.name}</span>
+                <span className='fs24 bold'>{data.id.namespace}#{data.id.name}</span>
                 <div className='flex1'/>
                 {this.getIcon(data)}
               </div>
-              <span className='fs14 fg191 pl20 pt8 lh20 mr70'>{data.description}</span>
+              <p className='fs14 pt8 lh20 mr70'>{data.description}</p>
               <div className='mt20 mb30'>
-                  <span className='fs14 fg5a pl20 pt28 fggrey lh16'>Aliases</span>
-                  <span className='fs12 fg5a pl50 pt28 fg5a mr30'>{data.aliases.map( alias => (<span>{alias.namespace}#{alias.name}&nbsp;</span>))}</span>
+                  <span className='dib minw150 fs14 fggrey'>Aliases</span>
+                  <span className='fs14 fg5a'>{data.aliases.map( alias => (<span>{alias.namespace}#{alias.name}&nbsp;</span>))}</span>
                   {data.aspects.map( aspect => (
                     <div>
                     <br />
-                    <span className='fs14 fg5a pl20 pt28 fggrey lh16'>Aspect</span>
-                    <span className='fs12 fg5a pl29 pt28 fg5a mr30'><a href={'semantichub#'+aspect.model}>{aspect.name}</a></span>
+                    <span className='dib minw150 fs14 fggrey'>Aspect</span>
+                    <span className='fs14 fg5a'><a href={'semantichub#'+aspect.model}>{aspect.name}</a></span>
                     <br />
-                    <span className='fs14 fg5a pl20 pt28 fggrey lh16'>Endpoint</span>
-                    <span className='fs12 fg5a pl29 pt28 fg5a mr30'>{
+                    <span className='dib minw150 fs14 fggrey'>Endpoint</span>
+                    <span className='fs14 fg5a'>{
                       aspect.url ?  
                         <a href={aspect.service.url}>{aspect.service.uri}</a> 
                       : 
                         <span>{aspect.service.uri}</span>
                     }</span>
                     <br />
-                    <span className='fs14 fg5a pl20 pt28 fggrey lh16'>Methods</span>
-                    <span className='fs12 fg5a pl29 pt28 fg5a mr30'>{
-                        <span>{aspect.service.methods}</span>
-                    }</span>
+                    <span className='dib minw150 fs14 fggrey'>Methods</span>
+                    <span className='fs14 fg5a'>{aspect.service.methods}</span>
                     {Object.keys(aspect.service.params).map((key,index)=> (
-                    <div>
-                      <span className='fs14 fg5a pl20 pt28 fggrey lh16'>Param{index}</span>
-                      <span className='fs12 fg5a pl29 pt28 fg5a mr30'>{key}={aspect.service.params[key]}</span>
-                    </div>
+                      <div>
+                        <span className='dib minw150 fs14 fggrey'>Param{index}</span>
+                        <span className='fs14 fg5a'>{key}={aspect.service.params[key]}</span>
+                      </div>
                     ))
                     }
-                    <span className='fs14 fg5a pl20 pt28 fggrey lh16'>App</span>
-                    <span className='fs12 fg5a pl29 pt28 fg5a mr30'>
+                    <span className='dib minw150 fs14 fggrey'>App</span>
+                    <span className='fs14 fg5a'>
                         <a href={aspect.app.uri}>{aspect.app.uri}</a> 
                     </span>
                     </div>

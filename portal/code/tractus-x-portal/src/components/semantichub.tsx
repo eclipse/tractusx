@@ -86,15 +86,15 @@ export default class SemanticHub extends React.Component {
     ]
     return (
       <div className='w100pc h100pc df fdc p44'>
-        <div className='mt50 df fdc'>
+        <div className='df fdc'>
           {staticModelData.map((data, index) => (
             <div key={index} className='m5 p20 bgpanel w100-100 br4 bsdatacatalog'>
               <div className='df aic mt20'>
-                <span className='fs24 bold fg191'><a href={data.show}>{data.name}</a></span><span>&nbsp;(<a href={data.download}>Download</a>)</span>
+                <span className='fs24 bold'><a href={data.show}>{data.name}</a></span><span>&nbsp;(<a href={data.download}>Download</a>)</span>
                 <div className='flex1'/>
                 {this.getIcon(data)}
               </div>
-              <span className='fs14 fg191 pt8 lh20 mr70'>{data.description}</span>
+              <span className='fs14 pt8 lh20 mr70'>{data.description}</span>
               <div className='mt20 mb30'>
                 <span className='dib minw150 fs14 fggrey'>Namespace</span>
                 <span className='fs14 fg5a'>{data.URN}</span>
