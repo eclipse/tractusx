@@ -95,14 +95,15 @@ export default class SemanticHub extends React.Component {
           {staticModelData.map((data, index) => (
             <div key={index} className='m5 p20 bgpanel w100-100 br4 bsdatacatalog'>
               <div className='df aic mt20'>
-                <Link to={{
-                    pathname: `/home/semanticmodel/${data.id}`,
-                    state: data
-                  }}
-                  >
-                  <span className='fs24 bold fg191'>{data.name}</span>
-                </Link>;
-                <a href={data.download}>Download</a>
+                <div className="df aib mb15">
+                  <Link className="mr20 tdn" to={{
+                      pathname: `/home/semanticmodel/${data.id}`,
+                      state: data
+                  }}>
+                    <span className='fs24 bold fg191'>{data.name}</span>
+                  </Link>
+                  <a href={data.download} className="tdn" target="_blank">(Download)</a>
+                </div>
                 <div className='flex1'/>
                 {this.getIcon(data)}
               </div>
