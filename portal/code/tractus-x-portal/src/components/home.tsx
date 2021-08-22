@@ -198,7 +198,7 @@ const navLinkGroupsDigitalTwin: INavLinkGroup[] = [
   }
 ];
 
-const noNav = ['semantichub','digitaltwins','developerhub', 'appstore', 'notification', 'organization', 'partners', 'usermanagement'];
+const noNav = ['semanticmodel', 'semantichub','digitaltwins','developerhub', 'appstore', 'notification', 'organization', 'partners', 'usermanagement'];
 
 @observer
 class Home extends React.Component<RouteComponentProps> {
