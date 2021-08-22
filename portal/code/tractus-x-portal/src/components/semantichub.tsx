@@ -14,6 +14,7 @@
 
 import * as React from 'react';
 import { observer } from 'mobx-react';
+import { Link } from 'react-router-dom';
 
 @observer
 export default class SemanticHub extends React.Component {
@@ -43,6 +44,7 @@ export default class SemanticHub extends React.Component {
   public render() {
     const staticModelData: any[] = [
       {
+        id: 1,
         name: 'Catena-X Traceability Aspect',
         URN: 'urn:bamm:com.catenaX:0.0.1#TRACTUSXPoC',
         description: 'This is the BAMM Aspect Model for the data as used in the Traceability part of TRACTUS-X PoC.',
@@ -53,6 +55,7 @@ export default class SemanticHub extends React.Component {
         vocabulary: 'BAMM'
       },
       {
+        id: 2,
         name: 'Catena-X Circular Economy Aspect',
         URN: 'urn:bamm:com.catenaX:0.0.1#GearboxAdhesives',
         description: 'Example gearbox modelling of the circular economy aspect/requirements.',
@@ -63,6 +66,7 @@ export default class SemanticHub extends React.Component {
         vocabulary: 'BAMM'
       },
       {
+        id: 3,
         name: 'Catena-X GPDM Aspect',
         URN: 'urn:bamm:com.catenaX:0.0.1#OneIDBusinessPartner',
         description: '-',
@@ -72,7 +76,8 @@ export default class SemanticHub extends React.Component {
         public: true,
         vocabulary: 'BAMM'
       },
-      {
+      { 
+        id: 4,
         name: 'International Data Spaces Vocabulary',
         URN: 'https://w3id.org/idsa',
         description: 'Official W3C specification',
@@ -86,11 +91,18 @@ export default class SemanticHub extends React.Component {
     ]
     return (
       <div className='w100pc h100pc df fdc p44'>
-        <div className='mt50 df fdc'>
+        <div className='df fdc'>
           {staticModelData.map((data, index) => (
             <div key={index} className='m5 p20 bgpanel w100-100 br4 bsdatacatalog'>
               <div className='df aic mt20'>
-                <span className='fs24 bold fg191'><a href={data.show}>{data.name}</a></span><span>&nbsp;(<a href={data.download}>Download</a>)</span>
+                <Link to={{
+                    pathname: `/home/semanticmodel/${data.id}`,
+                    state: data
+                  }}
+                  >
+                  <span className='fs24 bold fg191'>{data.name}</span>
+                </Link>;
+                <a href={data.download}>Download</a>
                 <div className='flex1'/>
                 {this.getIcon(data)}
               </div>
