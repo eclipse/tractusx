@@ -102,12 +102,12 @@ export default class SemanticHub extends React.Component {
                   }}>
                     <span className='fs24 bold fg191'>{data.name}</span>
                   </Link>
-                  <a href={data.download} className="tdn" target="_blank">(Download)</a>
+                  <a href={data.download} className="tdn fg191" target="_blank">(Download)</a>
                 </div>
                 <div className='flex1'/>
                 {this.getIcon(data)}
               </div>
-              <span className='fs14 fg191 pt8 lh20 mr70'>{data.description}</span>
+              <span className='fs14 pt8 mr70'>{data.description}</span>
               <div className='mt20 mb30'>
                 <span className='dib minw150 fs14 fggrey'>Namespace</span>
                 <span className='fs14 fg5a'>{data.URN}</span>
