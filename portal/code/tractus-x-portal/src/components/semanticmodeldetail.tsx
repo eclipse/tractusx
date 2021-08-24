@@ -16,7 +16,7 @@ const SemanticModelDetail = (props) => {
   console.log(props.location.state.name)
   return(
     <div className='w100pc h100pc df fdc p44'>
-      <h1>{props.location.state.name}</h1>
+      <h1 className="m0 pb20">{props.location.state.name}</h1>
       <iframe height="100%" title={props.location.state.name} src={props.location.state.show}></iframe>
     </div>
   );

@@ -164,8 +164,8 @@ const navLinkGroupsSemantics: INavLinkGroup[] = [
         title: ''
       },
       {
-        name: 'Resources',
-        url: '/home/semantichub',
+        name: 'New model',
+        url: '/home/semantichub/add',
         key: 'key2',
         expandAriaLabel: 'Expand section',
         collapseAriaLabel: 'Collapse section',
@@ -175,30 +175,7 @@ const navLinkGroupsSemantics: INavLinkGroup[] = [
   }
 ];
 
-const navLinkGroupsDigitalTwin: INavLinkGroup[] = [
-  {
-    links: [
-      {
-        name: 'Browse & Search',
-        url: '/home/digitaltwins',
-        key: 'key1',
-        expandAriaLabel: 'Expand section',
-        collapseAriaLabel: 'Collapse section',
-        title: ''
-      },
-      {
-        name: 'Resources',
-        url: '/home/digitaltwins',
-        key: 'key2',
-        expandAriaLabel: 'Expand section',
-        collapseAriaLabel: 'Collapse section',
-        title: ''
-      }
-    ]
-  }
-];
-
-const noNav = ['semanticmodel', 'semantichub','digitaltwins','developerhub', 'appstore', 'notification', 'organization', 'partners', 'usermanagement'];
+const noNav = ['semanticmodel', 'developerhub', 'appstore', 'notification', 'organization', 'partners', 'usermanagement'];
 
 @observer
 class Home extends React.Component<RouteComponentProps> {
@@ -208,6 +185,8 @@ class Home extends React.Component<RouteComponentProps> {
   linkClick(ev: React.MouseEvent<HTMLElement, MouseEvent>, item: INavLink): void {
     ev.stopPropagation();
     ev.preventDefault();
+    console.log(Home.selectedKey1);
+    console.log(Home.selectedKey2);
     Home.selectedKey1 = 'key' + (navLinkGroups[0].links.indexOf(item) + 1).toString();
     Home.selectedKey2 = 'key' + (navLinkGroups2[0].links.indexOf(item) + 4).toString();
     if (Home.selectedKey1 === 'key0' && Home.selectedKey2 === 'key3') {
@@ -217,23 +196,22 @@ class Home extends React.Component<RouteComponentProps> {
     this.props.history.push(item.url);
   }
 
+  hasLeftTopNavi(): boolean{
+    return noNav.filter(nav => window.location.href.includes(nav)).length === 0;
+  }
+
   public render() {
     let groups = navLinkGroups;
-    if (window.location.href.indexOf('/datacatalog') >= 0) groups=navLinkGroupsData
-    
-    for (const nav of noNav) {
-      if (window.location.href.indexOf(nav) >= 0) {
-        groups = null;
-      }
-    }
-
+    if (window.location.href.includes('/datacatalog')) groups=navLinkGroupsData;
+    if (window.location.href.includes('/semantichub') || window.location.href.includes('/digitaltwins')) groups=navLinkGroupsSemantics;
+  
     return (
       <div className='w100pc h100pc df fdc bgf5'>
         <Header href={window.location.href} />
         <div className='df w100pc flex1'>
           <ThemeProvider theme={{ palette: { themePrimary: '#E6AA1E' } }}>
             <div className='df fdc w250 h100pc'>
-              {groups && <Nav className='bgwhite' selectedKey={Home.selectedKey1} ariaLabel='Navigation panel' styles={navStyles} groups={groups}
+              {this.hasLeftTopNavi() && <Nav className='bgwhite' selectedKey={Home.selectedKey1} ariaLabel='Navigation panel' styles={navStyles} groups={groups}
                 onLinkClick={(ev, item) => this.linkClick(ev, item)} />}
               <div className='flex1 bgwhite' />
               <Nav className='bgwhite' selectedKey={Home.selectedKey2} ariaLabel='Navigation panel' styles={navStyles} groups={navLinkGroups2}
