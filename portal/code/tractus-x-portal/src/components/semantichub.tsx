@@ -90,40 +90,37 @@ export default class SemanticHub extends React.Component {
       
     ]
     return (
-      <div className='w100pc h100pc df fdc p44'>
-        <div className='df fdc'>
-          {staticModelData.map((data, index) => (
-            <div key={index} className='m5 p20 bgpanel w100-100 br4 bsdatacatalog'>
-              <div className='df aic mt20'>
-                <div className="df aib mb15">
-                  <Link className="mr20 tdn" to={{
-                      pathname: `/home/semanticmodel/${data.id}`,
-                      state: data
-                  }}>
-                    <span className='fs24 bold fg191'>{data.name}</span>
-                  </Link>
-                  <a href={data.download} className="tdn fggrey" target="_blank">(Download)</a>
-                </div>
-                <div className='flex1'/>
-                {this.getIcon(data)}
+      <div className='df fwrap p44'>
+        {staticModelData.map((data, index) => (
+          <div key={index} className='m5 p20 bgpanel flex40 br4 bsdatacatalog'>
+            <div className='df aifs mt20'>
+              <div className="df aib mb15">
+                <Link className="mr20 tdn" to={{
+                    pathname: `/home/semanticmodel/${data.id}`,
+                    state: data
+                }}>
+                  <span className='fs24 bold fg191'>{data.name}</span>
+                </Link>
               </div>
-              <span className='fs14 pt8 mr70'>{data.description}</span>
-              <div className='mt20 mb30'>
-                <span className='dib minw150 fs14 fggrey'>Namespace</span>
-                <span className='fs14 fg5a'>{data.URN}</span>
-                <br />
-                <span className='dib minw150 fs14 fggrey'>Model Version</span>
-                <span className='fs14 fg5a'>{data.version}</span>
-                <br />
-                <span className='dib minw150 fs14 fggrey'>Bas Vocabulary</span>
-                <span className='fs14 fg5a'>{data.vocabulary}</span>
-                <br />
-                <span className='dib minw150 fs14 fggrey'>Public Available</span>
-                <span className='fs14 fg5a'>{data.public ? 'true' : 'false'}</span>
-              </div>
+              <div className='flex1'/>
+              {this.getIcon(data)}
             </div>
-          ))}
-        </div>
+            <span className='fs14 pt8'>{data.description}</span>
+            <div className='mt20 mb30'>
+              <span className='dib minw150 fs14 fggrey'>Namespace</span>
+              <span className='fs14 fg5a'>{data.URN}</span>
+              <br />
+              <span className='dib minw150 fs14 fggrey'>Model Version</span>
+              <span className='fs14 fg5a'>{data.version}</span>
+              <br />
+              <span className='dib minw150 fs14 fggrey'>Bas Vocabulary</span>
+              <span className='fs14 fg5a'>{data.vocabulary}</span>
+              <br />
+              <span className='dib minw150 fs14 fggrey'>Public Available</span>
+              <span className='fs14 fg5a'>{data.public ? 'true' : 'false'}</span>
+            </div>
+          </div>
+        ))}
       </div>
     );
   }
