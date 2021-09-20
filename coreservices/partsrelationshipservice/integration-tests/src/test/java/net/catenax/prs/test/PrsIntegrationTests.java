@@ -12,10 +12,9 @@ import org.springframework.http.HttpStatus;
 
 import static com.catenax.partsrelationshipservice.dtos.PartsTreeView.AS_MAINTAINED;
 import static io.restassured.RestAssured.given;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.json;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 
 @SpringBootTest(classes = {PrsApplication.class}, webEnvironment = RANDOM_PORT)
@@ -31,11 +30,9 @@ public class PrsIntegrationTests {
 
     @Test
     public void getPartsTreeByVin() throws Exception {
-        // Arrange
         var objectMapper = new ObjectMapper();
         var expected = objectMapper.readValue(getClass().getClassLoader().getResourceAsStream("response_1631610272167.json"), PartRelationshipsWithInfos.class);
 
-        // Act
         var response =
             given()
                 .pathParam("vin", "BMWOVCDI21L5DYEUU")
@@ -47,7 +44,29 @@ public class PrsIntegrationTests {
                     .statusCode(HttpStatus.OK.value())
             .extract().asString();
 
-        // Assert
         assertThatJson(response).isEqualTo(json(expected));
+    }
+
+    @Test
+    public void getPartsTreeByVin_nonExistingVIN_returns404() {
+        given()
+            .pathParam("vin", "not-existing-vin")
+            .queryParam("view", AS_MAINTAINED)
+        .when()
+            .get("/api/v0.1/vins/{vin}/partsTree")
+        .then()
+            .assertThat()
+            .statusCode(HttpStatus.NOT_FOUND.value());
+    }
+
+    @Test
+    public void getPartsTreeByVin_noView_returns400() {
+        given()
+            .pathParam("vin", "BMWOVCDI21L5DYEUU")
+        .when()
+            .get("/api/v0.1/vins/{vin}/partsTree")
+        .then()
+            .assertThat()
+            .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 }

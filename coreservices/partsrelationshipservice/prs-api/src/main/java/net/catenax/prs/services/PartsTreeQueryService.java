@@ -12,6 +12,7 @@ package net.catenax.prs.services;
 import com.catenax.partsrelationshipservice.dtos.PartRelationshipsWithInfos;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.catenax.prs.requests.PartsTreeRequest;
 import net.catenax.prs.requests.VinPartsTreeRequest;
 import net.catenax.prs.util.StubResourcesHelper;
 import org.springdoc.api.annotations.ParameterObject;
@@ -37,5 +38,9 @@ public class PartsTreeQueryService {
      */
     public PartRelationshipsWithInfos getPartsTree(final @ParameterObject VinPartsTreeRequest request) {
         return stubResourcesHelper.getStubbedPartsTreeData();
+    }
+
+    public PartRelationshipsWithInfos getPartsTree(PartsTreeRequest request) {
+        return null;
     }
 }

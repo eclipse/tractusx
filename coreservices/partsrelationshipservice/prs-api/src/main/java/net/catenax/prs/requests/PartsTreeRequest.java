@@ -28,10 +28,15 @@ import static io.swagger.v3.oas.annotations.enums.ParameterIn.PATH;
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @SuppressWarnings("PMD.CommentRequired")
-public class VinPartsTreeRequest {
+public class PartsTreeRequest {
+
     @NotBlank
-    @Parameter(description = "Vehicle Identification Number", in = PATH, required = true)
-    String vin;
+    @Parameter(description = "Readable ID of manufacturer including plant", in = PATH, required = true)
+    String oneIDManufacturer;
+
+    @NotBlank
+    @Parameter(description = "Unique identifier of a single, unique physical (sub)component/part/batch, given by its manufacturer", in = PATH, required = true)
+    String objectIDManufacturer;
 
     @NotNull
     @Parameter(description = "PartsTree View to retrieve", required = true)
