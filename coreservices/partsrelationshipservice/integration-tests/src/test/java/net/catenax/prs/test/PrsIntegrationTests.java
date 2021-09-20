@@ -69,4 +69,16 @@ public class PrsIntegrationTests {
             .assertThat()
             .statusCode(HttpStatus.BAD_REQUEST.value());
     }
+
+    @Test
+    public void getPartsTreeByVin_invalidView_returns400() {
+        given()
+            .pathParam("vin", "BMWOVCDI21L5DYEUU")
+            .queryParam("view", "not-valid")
+        .when()
+            .get("/api/v0.1/vins/{vin}/partsTree")
+        .then()
+            .assertThat()
+            .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
 }

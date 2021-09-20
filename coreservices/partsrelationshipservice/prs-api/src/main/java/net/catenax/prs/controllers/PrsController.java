@@ -74,12 +74,12 @@ public class PrsController {
      */
     @Operation(operationId = "getPartsTreeByOneIdAndObjectId", summary = "Get a PartsTree for a part")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Found the PartsTree",
-                content = {@Content(mediaType = "application/json",
+        @ApiResponse(responseCode = "200", description = "Found the PartsTree",
+            content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = PartRelationshipsWithInfos.class))}),
-            @ApiResponse(responseCode = "404", description = "PartsTree not found",
-                content = {@Content(mediaType = "application/json",
-                        schema = @Schema(implementation = ErrorResponse.class))})
+        @ApiResponse(responseCode = "404", description = "PartsTree not found",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorResponse.class))})
     })
     @GetMapping("/parts/{oneIDManufacturer}/{objectIDManufacturer}/partsTree")
     public PartRelationshipsWithInfos getPartsTree(@Valid @ParameterObject PartsTreeRequest request) {

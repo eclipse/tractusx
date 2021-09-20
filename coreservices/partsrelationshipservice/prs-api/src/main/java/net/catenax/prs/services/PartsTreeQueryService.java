@@ -40,6 +40,12 @@ public class PartsTreeQueryService {
         return stubResourcesHelper.getStubbedPartsTreeData();
     }
 
+    /**
+     * Get a PartsTree for a part
+     *
+     * @param request Request.
+     * @return PartsTree with parts info.
+     */
     public PartRelationshipsWithInfos getPartsTree(PartsTreeRequest request) {
         return null;
     }
