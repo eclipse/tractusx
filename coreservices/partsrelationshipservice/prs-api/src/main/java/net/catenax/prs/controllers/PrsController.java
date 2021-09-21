@@ -21,10 +21,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.catenax.prs.PrsApplication;
 import net.catenax.prs.annotations.ExcludeFromCodeCoverageGeneratedReport;
-import net.catenax.prs.requests.PartsTreeRequest;
+import net.catenax.prs.requests.PartsTreeByObjectIdRequest;
 import net.catenax.prs.requests.VinPartsTreeRequest;
 import net.catenax.prs.services.PartsTreeQueryService;
 import org.springdoc.api.annotations.ParameterObject;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -62,8 +63,8 @@ public class PrsController {
                         schema = @Schema(implementation = ErrorResponse.class))})
     })
     @GetMapping("/vins/{vin}/partsTree")
-    public PartRelationshipsWithInfos getPartsTree(@Valid @ParameterObject VinPartsTreeRequest request) {
-        return queryService.getPartsTree(request);
+    public ResponseEntity<PartRelationshipsWithInfos> getPartsTree(@Valid @ParameterObject VinPartsTreeRequest request) {
+        return ResponseEntity.of(queryService.getPartsTree(request));
     }
 
     /**
@@ -82,7 +83,7 @@ public class PrsController {
                     schema = @Schema(implementation = ErrorResponse.class))})
     })
     @GetMapping("/parts/{oneIDManufacturer}/{objectIDManufacturer}/partsTree")
-    public PartRelationshipsWithInfos getPartsTree(@Valid @ParameterObject PartsTreeRequest request) {
+    public PartRelationshipsWithInfos getPartsTree(@Valid @ParameterObject PartsTreeByObjectIdRequest request) {
         return queryService.getPartsTree(request);
     }
 }

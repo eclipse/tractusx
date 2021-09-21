@@ -28,7 +28,7 @@ import static io.swagger.v3.oas.annotations.enums.ParameterIn.PATH;
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @SuppressWarnings("PMD.CommentRequired")
-public class PartsTreeRequest {
+public class PartsTreeByObjectIdRequest {
 
     @NotBlank
     @Parameter(description = "Readable ID of manufacturer including plant", in = PATH, required = true)

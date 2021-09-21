@@ -9,14 +9,18 @@
 //
 package net.catenax.prs.services;
 
+import com.catenax.partsrelationshipservice.dtos.PartInfo;
 import com.catenax.partsrelationshipservice.dtos.PartRelationshipsWithInfos;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.catenax.prs.requests.PartsTreeRequest;
+import net.catenax.prs.requests.PartsTreeByObjectIdRequest;
 import net.catenax.prs.requests.VinPartsTreeRequest;
 import net.catenax.prs.util.StubResourcesHelper;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Service for retrieving parts tree.
@@ -36,8 +40,22 @@ public class PartsTreeQueryService {
      * @param request Request.
      * @return PartsTree with parts info.
      */
-    public PartRelationshipsWithInfos getPartsTree(final @ParameterObject VinPartsTreeRequest request) {
-        return stubResourcesHelper.getStubbedPartsTreeData();
+    public Optional<PartRelationshipsWithInfos> getPartsTree(final @ParameterObject VinPartsTreeRequest request) {
+        PartRelationshipsWithInfos partsTree = stubResourcesHelper.getStubbedPartsTreeData();
+
+        Optional<PartInfo> vehicle = partsTree.getPartInfos().stream()
+                .filter(p -> "vehicle".equals(p.getPartTypeName()))
+                .findFirst();
+        if (vehicle.isEmpty()) {
+            return Optional.empty();
+        }
+
+        String vehicleObjectId = vehicle.get().getPart().getObjectIDManufacturer();
+        if (!Objects.equals(vehicleObjectId, request.getVin())) {
+            return Optional.empty();
+        }
+
+        return Optional.of(partsTree);
     }
 
     /**
@@ -46,7 +64,9 @@ public class PartsTreeQueryService {
      * @param request Request.
      * @return PartsTree with parts info.
      */
-    public PartRelationshipsWithInfos getPartsTree(PartsTreeRequest request) {
-        return null;
+    public PartRelationshipsWithInfos getPartsTree(PartsTreeByObjectIdRequest request) {
+        PartRelationshipsWithInfos partsTree = stubResourcesHelper.getStubbedPartsTreeData();
+        // search for subtree
+        return partsTree;
     }
 }
