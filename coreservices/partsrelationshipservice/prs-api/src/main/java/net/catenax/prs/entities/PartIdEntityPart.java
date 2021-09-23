@@ -26,7 +26,7 @@ import java.io.Serializable;
 @Embeddable
 @Getter
 @Setter
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString // safe on this entity as it has no relationships

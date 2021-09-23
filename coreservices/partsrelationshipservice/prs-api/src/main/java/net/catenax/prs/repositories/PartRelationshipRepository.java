@@ -22,17 +22,25 @@ import java.util.List;
  */
 public interface PartRelationshipRepository extends JpaRepository<PartRelationshipEntity, PartRelationshipEntityKey> {
     /**
-     * Call stored procedure to recursively retrieve the parts tree from a given part.
+     * Call database function (analog to a stored procedure)
+     * to recursively retrieve the parts tree from a given part.
+     * <p>
+     * Note that this method does not validate its parameters, and validation
+     * must be performed by the caller.
      *
      * @param oneIDManufacturer    see {@link PartIdEntityPart#getOneIDManufacturer()}.
+     *                             Must not be {@literal null} or blank.
      * @param objectIDManufacturer see {@link PartIdEntityPart#getObjectIDManufacturer()}.
+     *                             Must not be {@literal null} or blank.
      * @param maxDepth             maximum depth to traverse the tree.
-     * @return edges in the parts tree below the given part.
+     *                             Must be strictly positive.
+     * @return edges in the parts tree below the given part, or an empty list if no edges
+     * are found. Guaranteed to never return {@literal null}.
      */
     @Query(nativeQuery = true, value = "SELECT * FROM get_parts_tree(:oneIDManufacturer, :objectIDManufacturer, :maxDepth)")
     List<PartRelationshipEntity> getPartsTree(
-        String oneIDManufacturer,
-        String objectIDManufacturer,
-        int maxDepth);
+            String oneIDManufacturer,
+            String objectIDManufacturer,
+            int maxDepth);
 }
 

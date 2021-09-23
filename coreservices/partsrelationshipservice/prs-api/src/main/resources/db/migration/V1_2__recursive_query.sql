@@ -13,7 +13,7 @@ WITH RECURSIVE r(
     depth,
     path
 ) AS (
-    -- ROOT node query
+    -- root node query
     SELECT edge,
         parent_oneidmanufacturer,
         parent_objectidmanufacturer,
@@ -38,13 +38,11 @@ WITH RECURSIVE r(
     WHERE e.parent_oneidmanufacturer = r.oneidmanufacturer
         and e.parent_objectidmanufacturer = r.objectidmanufacturer
         AND (
-            (
                 e.parent_oneidmanufacturer,
                 e.parent_objectidmanufacturer
             ) <> ALL(r.path) -- avoid cycles
-        )
-        and depth<max_depth
+        and depth < max_depth
 )
-SELECT (r.edge).*
+SELECT DISTINCT (r.edge).*
 FROM r
 $$;
