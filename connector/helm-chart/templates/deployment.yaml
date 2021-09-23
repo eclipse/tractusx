@@ -1,0 +1,159 @@
+#
+# Copyright 2020 Fraunhofer Institute for Software and Systems Engineering
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "dataspace-connector.fullname" . }}
+  labels:
+    {{- include "dataspace-connector.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "dataspace-connector.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "dataspace-connector.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      initContainers:
+      - name: init-adjust-config
+        env:
+          {{- include "dataspace-connector.env-variables" . | nindent 8 }}
+        image: mintel/docker-alpine-bash-curl-jq
+        command: 
+        - "sh"
+        - "-c"
+        args:
+        - |
+          apk add --update coreutils
+          cp /app/default-config/* /app/config/
+          PUBKEY_B64=$(openssl pkcs12 -in ${CERTIFICATE_PATH}${KEYSTORE_FILENAME} -password pass:${KEYSTORE_PASSWORD} -clcerts -nokeys | openssl x509 -pubkey -in - -noout | base64 -w 0)
+          jq -r --arg PUBKEY_B64 "$PUBKEY_B64" \
+            --arg CERTIFICATE_PATH "$CERTIFICATE_PATH" \
+            --arg KEYSTORE_FILENAME "$KEYSTORE_FILENAME" \
+            --arg TRUSTSTORE_FILENAME "$TRUSTSTORE_FILENAME" \
+            --arg DEPLOY_MODE "$DEPLOY_MODE" \
+            '
+            ."ids:connectorDescription"."ids:publicKey"."ids:keyValue" = $PUBKEY_B64 |
+            ."ids:trustStore"."@id" = "file://\($CERTIFICATE_PATH)\($TRUSTSTORE_FILENAME)" |
+            ."ids:keyStore"."@id" = "file://\($CERTIFICATE_PATH)\($KEYSTORE_FILENAME)" |
+            ."ids:connectorDeployMode"."@id" = $DEPLOY_MODE
+            ' \
+            /app/default-config/config.json > /app/config/config.json
+        volumeMounts:
+        - name: certificates
+          mountPath: {{ .Values.env.config.CERTIFICATE_PATH }}
+          readOnly: true
+        - name: default-config
+          mountPath: /app/default-config/
+          readOnly: true
+        - name: config
+          mountPath: /app/config/
+          readOnly: false
+      
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          env:
+            {{- include "dataspace-connector.env-variables" . | nindent 12 }}
+          ports:
+            - name: http
+              containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+              {{- if .Values.env.config.SERVER_SSL_ENABLED }}
+              scheme: HTTPS
+              {{- else }}
+              scheme: HTTP
+              {{- end }}              
+            initialDelaySeconds: 15
+            failureThreshold: 1
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+              {{- if .Values.env.config.SERVER_SSL_ENABLED }}
+              scheme: HTTPS
+              {{- else }}
+              scheme: HTTP
+              {{- end }}
+            initialDelaySeconds: 10
+            periodSeconds: 3
+          startupProbe:
+            httpGet:
+              path: /
+              port: http
+              {{- if .Values.env.config.SERVER_SSL_ENABLED }}
+              scheme: HTTPS
+              {{- else }}
+              scheme: HTTP
+              {{- end }}
+            failureThreshold: 30
+            periodSeconds: 3
+          volumeMounts:
+            - name: certificates
+              mountPath: {{ .Values.env.config.CERTIFICATE_PATH }}
+              readOnly: true
+            - name: config
+              mountPath: {{ .Values.env.config.CONFIGURATION_DIR }}
+              readOnly: true
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+      - name: certificates
+        projected:
+          sources:
+          - secret:
+              name: {{ include "dataspace-connector.fullname" . }}-tls
+              items:
+                - key: keystore.p12
+                  path: {{ .Values.env.config.KEYSTORE_FILENAME }}
+          - secret:
+              name: {{ include "dataspace-connector.fullname" . }}-truststore
+              items:
+                - key: truststore.p12
+                  path: {{ .Values.env.config.TRUSTSTORE_FILENAME }}
+      - name: default-config
+        secret:
+          secretName: {{ include "dataspace-connector.fullname" . }}-config
+      - name: config
+        emptyDir: {}

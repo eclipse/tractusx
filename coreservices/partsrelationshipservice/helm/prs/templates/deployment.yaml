@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prs-api
+  labels:
+    app.kubernetes.io/name: prs-api
+    app.kubernetes.io/part-of: prs
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: prs-api
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: prs-api
+    spec:
+      containers:
+        - name: prs
+          image: "{{ .Values.prs.image.repository }}:{{ .Values.prs.image.tag }}"
+          ports:
+            - containerPort: 8080
+              name: http
+            - containerPort: 4004
+              name: actuator
+          env:
+            - name: spring.datasource.url
+              value: {{ .Values.postgresql.url | quote }}
+            - name: spring.datasource.username
+              value: {{ .Values.postgresql.postgresqlUsername | quote }}
+            - name: spring.datasource.password
+              valueFrom:
+                secretKeyRef:
+                  name: prs-secrets
+                  key: postgresql_password
+            - name: kafka.topic
+              value: {{ .Values.eventHubs.name | quote }}
+            - name: kafka.properties.group_id
+              value: prsapp
+            - name: kafka.properties.bootstrap_servers
+              value: {{ printf "%s.servicebus.windows.net:9093" .Values.eventHubs.namespace | quote }}
+            - name: kafka.properties.security_protocol
+              value: SASL_SSL
+            - name: kafka.properties.sasl_mechanism
+              value: PLAIN
+            - name: kafka.properties.sasl_jaas_config
+              valueFrom:
+                secretKeyRef:
+                  name: prs-secrets
+                  key: eventhubs_listen
+            - name: kafka.properties.request_timeout_ms
+              value: "60000"
+            - name: APPLICATIONINSIGHTS_CONNECTION_STRING
+              value: "{{ .Values.applicationInsights.connectionString }}"
+            - name: APPLICATIONINSIGHTS_ROLE_NAME
+              value: PRS
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: actuator
+            periodSeconds: 3
+            timeoutSeconds: 1
+            failureThreshold: 30
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: actuator
+            periodSeconds: 3
+            timeoutSeconds: 1
+            failureThreshold: 30

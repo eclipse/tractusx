@@ -26,6 +26,7 @@ import moment from 'moment';
 import adalContext from '../../helpers/adalConfig';
 import { ProgressIndicator } from '@fluentui/react/lib/ProgressIndicator';
 import { PrimaryButton, Checkbox} from '@fluentui/react';
+import BackLink from '../navigation/backlink';
 
 const uploadUrl = 'https://catenaxdevakssrv.germanywestcentral.cloudapp.azure.com/uploadappadapter/api/upload';
 const auth = 'VHJhY3R1c1g6NFpxQTo9N003Z3lySFR6Tg==';
@@ -49,14 +50,6 @@ class DataUpload2 extends React.Component<RouteComponentProps> {
     const files = window.localStorage.getItem('uploads');
     if (files) {
       this.files = JSON.parse(files);
-    }
-  }
-  
-  private backClick(): void {
-    if (this.props.history.length > 1) {
-      this.props.history.goBack();
-    } else {
-      this.props.history.push('/home/dashboard');
     }
   }
 
@@ -182,9 +175,7 @@ class DataUpload2 extends React.Component<RouteComponentProps> {
         <Header href={window.location.href} hidePivot appTitle='Data Upload Appplication' />
         <div className='h1 bgde w100pc' />
         <div className='df aic'>
-          <div className='fgblack fs15 fw600 tdn df mt30 mb10 aic cpointer ml150 w100' onClick={() => this.backClick()}>
-            <Icon className='fgblack fs20 mt2 mr7' iconName='SkypeArrow' />BACK
-          </div>
+          <BackLink history={this.props.history}/>
           <div className='df w100pc mt20'>
             <span className='fs22 bold fgblack ml12'>Part Chain</span>
             <div className='flex1' />

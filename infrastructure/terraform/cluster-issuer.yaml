@@ -1,18 +1,33 @@
+#
+# Copyright (c) 2021 T-Systems International GmbH (Catena-X Consortium)
+#
+# See the AUTHORS file(s) distributed with this work for additional
+# information regarding authorship.
+#
+# See the LICENSE file(s) distributed with this work for
+# additional information regarding license terms.
+#
+
+# Template Manifest for cluster issuers using the letsencrypt provider.
+# We aim to have prod (no suffix) and staging ("-staging" suffix) issuers depending on the requirements for the authority. This is steered by the $CLUSTER_ISSUER environment variable.
+# We aim to have service (no suffix) and portal ("-portal" suffix) issuers for the different ingresses/network layers. This is steered by the $ISSUER_VARIANT environment variable.
+# Use envsubst before applying with kubectl
+
 apiVersion: cert-manager.io/v1alpha2
 kind: ClusterIssuer
 metadata:
-  name: letsencrypt-staging
+  name: letsencrypt${CLUSTER_ISSUER}${ISSUER_VARIANT}
   namespace: cert-manager
 spec:
   acme:
-    server: https://acme-staging-v02.api.letsencrypt.org/directory
-    email: admin@example.com
+    server: https://acme${CLUSTER_ISSUER}-v02.api.letsencrypt.org/directory
+    email: $CATENA_ADMIN_MAIL
     privateKeySecretRef:
-      name: letsencrypt-staging
+      name: letsencrypt${CLUSTER_ISSUER}${ISSUER_VARIANT}-key
     solvers:
     - http01:
         ingress:
-          class: nginx
+          class: nginx${ISSUER_VARIANT}
           podTemplate:
             spec:
               nodeSelector:

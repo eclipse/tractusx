@@ -1,0 +1,107 @@
+#
+# Copyright (c) 2021 T-Systems International GmbH (Catena-X Consortium)
+#
+# See the AUTHORS file(s) distributed with this work for additional
+# information regarding authorship.
+#
+# See the LICENSE file(s) distributed with this work for
+# additional information regarding license terms.
+#
+@prefix : <urn:bamm:net.catenax.semantics:1.0.0#> .
+@prefix bamm: <urn:bamm:io.openmanufacturing:meta-model:1.0.0#> .
+@prefix bamm-c: <urn:bamm:io.openmanufacturing:characteristic:1.0.0#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:SemanticHub a bamm:Aspect ;
+   bamm:name "SemanticHub" ;
+   bamm:preferredName "Semantic Hub"@en ;
+   bamm:description "The Semantic Hub is a Service Aspect of Catena-X which manages the ontologies and vocabularies used by all Catena-X components."@en ;
+   bamm:properties ( ) ;
+   bamm:operations ( :ListModels :FindModelById ) .
+
+:ListModels a bamm:Operation ;
+   bamm:name "ListModels" ;
+   bamm:preferredName "List Models Operation"@en ;
+   bamm:description "An operation which returns the list of registered models that is visible to the calling principal."@en ;
+   bamm:input ( ) ;
+   bamm:output :modelListOutput .
+
+:FindModelById a bamm:Operation ;
+   bamm:name "FindModelById" ;
+   bamm:preferredName "Find Model By Id Operation"@en ;
+   bamm:description "An operation which finds a particular registered model that is visible to the calling principal by its id."@en ;
+   bamm:input ( :id ) ;
+   bamm:output :modelOption .
+
+:modelListOutput a bamm:Property ;
+   bamm:name "modelList" ;
+   bamm:preferredName "Model List Property"@en ;
+   bamm:description "A property which hosts a list of models."@en ;
+   bamm:characteristic :ModelList .
+
+:modelOption a bamm:Property ;
+   bamm:name "modelOption" ;
+   bamm:preferredName "Optional Model Property"@en ;
+   bamm:description "A property which optionally hosts a model."@en ;
+   bamm:characteristic :ModelOption .
+
+:ModelOption a bamm-c:SingleEntity ;
+   bamm:name "ModelOption" ;
+   bamm:preferredName "Model Option"@en ;
+   bamm:description "An optional model."@en ;
+   bamm:dataType :Model .
+
+:ModelList a bamm-c:List ;
+   bamm:name "ModelList" ;
+   bamm:preferredName "Model List"@en ;
+   bamm:description "A list of models."@en ;
+   bamm:dataType :Model .
+
+:Model a bamm:Entity ;
+   bamm:name "Model" ;
+   bamm:preferredName "Model"@en ;
+   bamm:description "A (semantic) model is a formal description of a business or technical component of Catena-X. Typically this would comprise the functional, behavourial & structual aspects of digital twins to real-world business entities or processes. On the technical level, a model collects data structures and provisioned operations. And this could also comprise so-called mapping models which bridge between the technical and the business level. On the technical level, a model collects data structures and provisioned operations. And this could also comprise so-called mapping models which bridge between the technical and the business level. Common to all semantic models is their ability to serve as the axiomatic basis for reasoning, i.e. the automated detection of inconsistencies, consequences or even hypotheses about the described part of the Catena-X system."@en ;
+   bamm:properties ( :id :version :name :ontology :publisher :private ) .
+
+:id a bamm:Property ;
+   bamm:name "id" ;
+   bamm:preferredName "Id Property"@en ;
+   bamm:description "An Id property which is typically a unique identifier for a model. Should ahere to the URN syntax [rfc2141]."@en ;
+   bamm:characteristic bamm-c:ResourcePath .
+
+:version a bamm:Property ;
+   bamm:name "version" ;
+   bamm:preferredName "Version Property"@en ;
+   bamm:description "An Version property which determines the incremental state of the model."@en ;
+   bamm:characteristic bamm-c:Text .
+
+:name a bamm:Property ;
+   bamm:name "name" ;
+   bamm:preferredName "Name Property"@en ;
+   bamm:description "A Name property which names a model."@en ;
+   bamm:characteristic bamm-c:Text .
+
+:ontology a bamm:Property ;
+   bamm:name "ontology" ;
+   bamm:preferredName "Ontology Property"@en ;
+   bamm:description "An ontology property which describes the ontological formalism used by the semantic entity."@en ;
+   bamm:characteristic :Ontology .
+
+:Ontology a bamm-c:Enumeration ;
+   bamm:name "Ontology" ;
+   bamm:preferredName "Ontology Enumeration"@en ;
+   bamm:description "An ontology enumeration lists the ontological formalisms used/supported by Catena-X."@en ;
+   bamm:dataType xsd:string ;
+   bamm-c:values ( "BAMM/RDF" "OWL2" "RDF" ) .
+
+:publisher a bamm:Property ;
+   bamm:name "publisher" ;
+   bamm:preferredName "Publisher Property"@en ;
+   bamm:description "A publisher property which links to the publishing principal/organisation of a model."@en ;
+   bamm:characteristic bamm-c:ResourcePath .
+
+:private a bamm:Property ;
+   bamm:name "private" ;
+   bamm:preferredName "Private Property"@en ;
+   bamm:description "A private property describes whether this model should be visible to only the publisher or whole Catena-X."@en ;
+   bamm:characteristic bamm-c:Boolean .

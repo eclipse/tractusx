@@ -1,0 +1,62 @@
+#
+# Copyright (c) 2021 T-Systems International GmbH (Catena-X Consortium)
+#
+# See the AUTHORS file(s) distributed with this work for additional
+# information regarding authorship.
+#
+# See the LICENSE file(s) distributed with this work for
+# additional information regarding license terms.
+#
+
+# K8 Manifest to expose a the portal on an extra ingress plane
+# Use envsubst before applying the descriptor
+
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  # different name
+  name: certificate${CLUSTER_ISSUER}
+  namespace: portal
+spec:
+  # dedicate secret for the TLS cert
+  secretName: certificate${CLUSTER_ISSUER}-secret
+  issuerRef:
+    # referencing the production issuer
+    name: letsencrypt${CLUSTER_ISSUER}-portal
+    kind: ClusterIssuer
+  dnsNames:
+  - ${CATENA_PORTAL_URL}
+---
+
+# K8 portal ingress 
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: portal-ingress
+  namespace: portal
+  annotations:
+    kubernetes.io/ingress.class: nginx-portal
+    cert-manager.io/cluster-issuer: letsencrypt${CLUSTER_ISSUER}-portal
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "PUT, GET, POST, OPTIONS"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+spec:
+  tls:
+  - hosts:
+    - ${CATENA_PORTAL_URL}
+    secretName: certificate${CLUSTER_ISSUER}-secret
+  rules:
+  - host: ${CATENA_PORTAL_URL}
+    http:
+      paths:
+      - path: /(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: portal
+            port:
+              number: 80
+

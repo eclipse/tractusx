@@ -1,0 +1,3484 @@
+{
+	"info": {
+		"_postman_id": "3a08a99b-5741-4358-8c5d-4d17cf4cc220",
+		"name": "Catenax",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "IDS Connector Data Exchange v4",
+			"item": [
+				{
+					"name": "1 - Public Endpoint for Connector Self-description",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{providerConnectorUrl}}/",
+							"host": [
+								"{{providerConnectorUrl}}"
+							],
+							"path": [
+								""
+							]
+						},
+						"description": "Get the connector's reduced self-description."
+					},
+					"response": [
+						{
+							"name": "Ok",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "proident velit"
+						},
+						{
+							"name": "Internal server error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										""
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "proident velit"
+						}
+					]
+				},
+				{
+					"name": "2 - Register Resource",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"ExampleResource\",\n  \"description\": \"ExampleResourceDescription\",\n  \"policy\": \"Example policy\",\n  \"representations\": [\n    {\n      \"uuid\": \"f73a6c7f-8bed-4d53-80fa-da189ed023c7\",\n      \"type\": \"XML\",\n      \"byteSize\": 101,\n      \"name\": \"Example Representation\",\n      \"source\": {\n        \"type\": \"local\"\n      }\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{providerConnectorUrl}}/admin/api/resources/resource?id=5fc90930-fa81-4214-abe7-63f30fc9b0e1",
+							"host": [
+								"{{providerConnectorUrl}}"
+							],
+							"path": [
+								"admin",
+								"api",
+								"resources",
+								"resource"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "5fc90930-fa81-4214-abe7-63f30fc9b0e1"
+								}
+							]
+						},
+						"description": "Register a resource by its metadata."
+					},
+					"response": [
+						{
+							"name": "Internal server error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"value\": \"<Circular reference to #/components/schemas/ResourceMetadata detected>\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/admin/api/resources/resource?id=<uuid>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"api",
+										"resources",
+										"resource"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "<uuid>"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "proident velit"
+						},
+						{
+							"name": "Resource created",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"value\": \"<Circular reference to #/components/schemas/ResourceMetadata detected>\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/admin/api/resources/resource?id=<uuid>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"api",
+										"resources",
+										"resource"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "<uuid>"
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "proident velit"
+						},
+						{
+							"name": "Invalid resource",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"value\": \"<Circular reference to #/components/schemas/ResourceMetadata detected>\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/admin/api/resources/resource?id=<uuid>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"api",
+										"resources",
+										"resource"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "<uuid>"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "proident velit"
+						},
+						{
+							"name": "Resource already exists",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"value\": \"<Circular reference to #/components/schemas/ResourceMetadata detected>\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/admin/api/resources/resource?id=<uuid>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"api",
+										"resources",
+										"resource"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "<uuid>"
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "proident velit"
+						}
+					]
+				},
+				{
+					"name": "3 - Publish Resource Data String",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<!--\r\nCopyright (c) 2021 T-Systems International GmbH (Catena-X Consortium)\r\n\r\nSee the AUTHORS file(s) distributed with this work for additional\r\ninformation regarding authorship.\r\n\r\nSee the LICENSE file(s) distributed with this work for\r\nadditional information regarding license terms.\r\n-->\r\n<project xmlns=\"http://maven.apache.org/POM/4.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\r\n         xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd\">\r\n    <modelVersion>4.0.0</modelVersion>\r\n    <groupId>net.catenax</groupId>\r\n    <artifactId>data</artifactId>\r\n    <version>latest</version>\r\n    <name>Catena-X Test Data Module</name>\r\n    <description>All code related to managing test data</description>\r\n    <properties>\r\n        <java.version>11</java.version>\r\n        <maven.compiler.source>11</maven.compiler.source>\r\n        <maven.compiler.target>11</maven.compiler.target>\r\n    </properties>\r\n    <dependencies>\r\n        <dependency>\r\n\t\t\t<groupId>com.microsoft.azure</groupId>\r\n\t\t\t<artifactId>azure-storage</artifactId>\r\n\t\t\t<version>8.6.6</version>\r\n\t\t</dependency>\r\n        <dependency>\r\n            <groupId>org.json</groupId>\r\n            <artifactId>json</artifactId>\r\n            <version>20210307</version>\r\n        </dependency>\r\n    </dependencies>\r\n    <build>\r\n        <plugins>\r\n        <plugin>\r\n        <artifactId>maven-assembly-plugin</artifactId>\r\n        <executions>\r\n          <execution>\r\n            <phase>package</phase>\r\n            <goals>\r\n              <goal>single</goal>\r\n            </goals>\r\n          </execution>\r\n        </executions>\r\n        <configuration>\r\n          <descriptorRefs>\r\n            <descriptorRef>jar-with-dependencies</descriptorRef>\r\n          </descriptorRefs>\r\n        </configuration>\r\n      </plugin>\t\t\r\n      </plugins> \r\n    </build>\r\n</project>\r\n"
+						},
+						"url": {
+							"raw": "{{providerConnectorUrl}}/admin/api/resources/:resource-id/data",
+							"host": [
+								"{{providerConnectorUrl}}"
+							],
+							"path": [
+								"admin",
+								"api",
+								"resources",
+								":resource-id",
+								"data"
+							],
+							"variable": [
+								{
+									"key": "resource-id",
+									"value": "{{resource}}",
+									"description": "(Required) The resource uuid."
+								}
+							]
+						},
+						"description": "Publish resource data as string."
+					},
+					"response": [
+						{
+							"name": "Not found",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "\"<string>\""
+								},
+								"url": {
+									"raw": "{{baseUrl}}/admin/api/resources/:resource-id/data",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"api",
+										"resources",
+										":resource-id",
+										"data"
+									],
+									"variable": [
+										{
+											"key": "resource-id"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "proident velit"
+						},
+						{
+							"name": "Resource created",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "\"<string>\""
+								},
+								"url": {
+									"raw": "{{baseUrl}}/admin/api/resources/:resource-id/data",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"api",
+										"resources",
+										":resource-id",
+										"data"
+									],
+									"variable": [
+										{
+											"key": "resource-id"
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "proident velit"
+						},
+						{
+							"name": "Internal server error",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "\"<string>\""
+								},
+								"url": {
+									"raw": "{{baseUrl}}/admin/api/resources/:resource-id/data",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"api",
+										"resources",
+										":resource-id",
+										"data"
+									],
+									"variable": [
+										{
+											"key": "resource-id"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "proident velit"
+						},
+						{
+							"name": "Invalid resource",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "\"<string>\""
+								},
+								"url": {
+									"raw": "{{baseUrl}}/admin/api/resources/:resource-id/data",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"api",
+										"resources",
+										":resource-id",
+										"data"
+									],
+									"variable": [
+										{
+											"key": "resource-id"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "proident velit"
+						}
+					]
+				},
+				{
+					"name": "4 - Get Resource Representation",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{providerConnectorUrl}}/admin/api/resources/:resource-id/:representation-id",
+							"host": [
+								"{{providerConnectorUrl}}"
+							],
+							"path": [
+								"admin",
+								"api",
+								"resources",
+								":resource-id",
+								":representation-id"
+							],
+							"variable": [
+								{
+									"key": "resource-id",
+									"value": "{{resource}}",
+									"description": "(Required) The resource uuid."
+								},
+								{
+									"key": "representation-id",
+									"value": "{{xmlRepresentation}}",
+									"description": "(Required) The representation uuid."
+								}
+							]
+						},
+						"description": "Get the resource's representation by its uuid."
+					},
+					"response": [
+						{
+							"name": "Not found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/admin/api/resources/:resource-id/:representation-id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"api",
+										"resources",
+										":resource-id",
+										":representation-id"
+									],
+									"variable": [
+										{
+											"key": "resource-id"
+										},
+										{
+											"key": "representation-id"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Ok",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/admin/api/resources/:resource-id/:representation-id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"api",
+										"resources",
+										":resource-id",
+										":representation-id"
+									],
+									"variable": [
+										{
+											"key": "resource-id"
+										},
+										{
+											"key": "representation-id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal server error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/admin/api/resources/:resource-id/:representation-id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"api",
+										"resources",
+										":resource-id",
+										":representation-id"
+									],
+									"variable": [
+										{
+											"key": "resource-id"
+										},
+										{
+											"key": "representation-id"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "5 - Endpoint for Policy Negotiation Status",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{providerConnectorUrl}}/admin/api/negotiation?status=false",
+							"host": [
+								"{{providerConnectorUrl}}"
+							],
+							"path": [
+								"admin",
+								"api",
+								"negotiation"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "false",
+									"description": "(Required) "
+								}
+							]
+						},
+						"description": "Turn the policy negotiation on or off."
+					},
+					"response": [
+						{
+							"name": "Ok",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/admin/api/negotiation?status=<boolean>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"api",
+										"negotiation"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "<boolean>"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "proident velit"
+						}
+					]
+				},
+				{
+					"name": "6 - Get Resource Contract",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{providerConnectorUrl}}/admin/api/resources/:resource-id/contract",
+							"host": [
+								"{{providerConnectorUrl}}"
+							],
+							"path": [
+								"admin",
+								"api",
+								"resources",
+								":resource-id",
+								"contract"
+							],
+							"variable": [
+								{
+									"key": "resource-id",
+									"value": "{{resource}}",
+									"description": "(Required) The resource uuid."
+								}
+							]
+						},
+						"description": "Get the resource's usage policy."
+					},
+					"response": [
+						{
+							"name": "Ok",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/admin/api/resources/:resource-id/contract",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"api",
+										"resources",
+										":resource-id",
+										"contract"
+									],
+									"variable": [
+										{
+											"key": "resource-id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "proident velit"
+						},
+						{
+							"name": "Internal server error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/admin/api/resources/:resource-id/contract",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"api",
+										"resources",
+										":resource-id",
+										"contract"
+									],
+									"variable": [
+										{
+											"key": "resource-id"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "proident velit"
+						},
+						{
+							"name": "Not found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/admin/api/resources/:resource-id/contract",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"api",
+										"resources",
+										":resource-id",
+										"contract"
+									],
+									"variable": [
+										{
+											"key": "resource-id"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "proident velit"
+						}
+					]
+				},
+				{
+					"name": "7 - Contract Request",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"@context\" : {\r\n    \"ids\" : \"https://w3id.org/idsa/core/\"\r\n  },\r\n  \"@type\" : \"ids:ContractOffer\",\r\n  \"@id\" : \"https://w3id.org/idsa/autogen/contractOffer/ce1d9ba5-d582-4ecc-a96d-fbc37239fbe0\",\r\n  \"ids:permission\" : [ {\r\n    \"@type\" : \"ids:Permission\",\r\n    \"@id\" : \"https://w3id.org/idsa/autogen/permission/cce49bf3-bbbc-4d7f-873e-e83239deb57f\",\r\n    \"ids:description\" : [ {\r\n      \"@value\" : \"provide-access\",\r\n      \"@type\" : \"http://www.w3.org/2001/XMLSchema#string\"\r\n    } ],\r\n    \"ids:title\" : [ {\r\n      \"@value\" : \"Example Usage Policy\",\r\n      \"@type\" : \"http://www.w3.org/2001/XMLSchema#string\"\r\n    } ],\r\n    \"ids:action\" : [ {\r\n      \"@id\" : \"idsc:USE\"\r\n    } ]\r\n  } ]\r\n}"
+						},
+						"url": {
+							"raw": "{{consumerConnectorUrl}}/admin/api/request/contract?recipient={{providerConnectorUrl}}/api/ids/data&requestedArtifact=https://w3id.org/idsa/autogen/resource/{{xmlRepresentation}}",
+							"host": [
+								"{{consumerConnectorUrl}}"
+							],
+							"path": [
+								"admin",
+								"api",
+								"request",
+								"contract"
+							],
+							"query": [
+								{
+									"key": "recipient",
+									"value": "{{providerConnectorUrl}}/api/ids/data",
+									"description": "(Required) The URI of the requested IDS connector."
+								},
+								{
+									"key": "requestedArtifact",
+									"value": "https://w3id.org/idsa/autogen/resource/{{xmlRepresentation}}",
+									"description": "(Required) The URI of the requested artifact."
+								}
+							]
+						},
+						"description": "Send a contract request to another IDS connector.\r\nPut the contract delivered by \"6\" into the body."
+					},
+					"response": [
+						{
+							"name": "Internal server error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "\"<string>\""
+								},
+								"url": {
+									"raw": "{{baseUrl}}/admin/api/request/contract?recipient=https://localhost:8080/api/ids/data&requestedArtifact=https://w3id.org/idsa/autogen/artifact/a4212311-86e4-40b3-ace3-ef29cd687cf9",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"api",
+										"request",
+										"contract"
+									],
+									"query": [
+										{
+											"key": "recipient",
+											"value": "https://localhost:8080/api/ids/data"
+										},
+										{
+											"key": "requestedArtifact",
+											"value": "https://w3id.org/idsa/autogen/artifact/a4212311-86e4-40b3-ace3-ef29cd687cf9"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "proident velit"
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "\"<string>\""
+								},
+								"url": {
+									"raw": "{{baseUrl}}/admin/api/request/contract?recipient=https://localhost:8080/api/ids/data&requestedArtifact=https://w3id.org/idsa/autogen/artifact/a4212311-86e4-40b3-ace3-ef29cd687cf9",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"api",
+										"request",
+										"contract"
+									],
+									"query": [
+										{
+											"key": "recipient",
+											"value": "https://localhost:8080/api/ids/data"
+										},
+										{
+											"key": "requestedArtifact",
+											"value": "https://w3id.org/idsa/autogen/artifact/a4212311-86e4-40b3-ace3-ef29cd687cf9"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "proident velit"
+						},
+						{
+							"name": "Ok",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "\"<string>\""
+								},
+								"url": {
+									"raw": "{{baseUrl}}/admin/api/request/contract?recipient=https://localhost:8080/api/ids/data&requestedArtifact=https://w3id.org/idsa/autogen/artifact/a4212311-86e4-40b3-ace3-ef29cd687cf9",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"api",
+										"request",
+										"contract"
+									],
+									"query": [
+										{
+											"key": "recipient",
+											"value": "https://localhost:8080/api/ids/data"
+										},
+										{
+											"key": "requestedArtifact",
+											"value": "https://w3id.org/idsa/autogen/artifact/a4212311-86e4-40b3-ace3-ef29cd687cf9"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "proident velit"
+						}
+					]
+				},
+				{
+					"name": "8 - Description Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{consumerConnectorUrl}}/admin/api/request/description?recipient={{providerConnectorUrl}}/api/ids/data&requestedResource=https://w3id.org/idsa/autogen/resource/{{resource}}",
+							"host": [
+								"{{consumerConnectorUrl}}"
+							],
+							"path": [
+								"admin",
+								"api",
+								"request",
+								"description"
+							],
+							"query": [
+								{
+									"key": "recipient",
+									"value": "{{providerConnectorUrl}}/api/ids/data",
+									"description": "(Required) The URI of the requested IDS connector."
+								},
+								{
+									"key": "requestedResource",
+									"value": "https://w3id.org/idsa/autogen/resource/{{resource}}",
+									"description": "The URI of the requested resource."
+								}
+							]
+						},
+						"description": "Request metadata from another IDS connector."
+					},
+					"response": [
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/admin/api/request/description?recipient=https://localhost:8080/api/ids/data&requestedResource=https://w3id.org/idsa/autogen/resource/a4212311-86e4-40b3-ace3-ef29cd687cf9",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"api",
+										"request",
+										"description"
+									],
+									"query": [
+										{
+											"key": "recipient",
+											"value": "https://localhost:8080/api/ids/data"
+										},
+										{
+											"key": "requestedResource",
+											"value": "https://w3id.org/idsa/autogen/resource/a4212311-86e4-40b3-ace3-ef29cd687cf9"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "proident velit"
+						},
+						{
+							"name": "Internal server error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/admin/api/request/description?recipient=https://localhost:8080/api/ids/data&requestedResource=https://w3id.org/idsa/autogen/resource/a4212311-86e4-40b3-ace3-ef29cd687cf9",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"api",
+										"request",
+										"description"
+									],
+									"query": [
+										{
+											"key": "recipient",
+											"value": "https://localhost:8080/api/ids/data"
+										},
+										{
+											"key": "requestedResource",
+											"value": "https://w3id.org/idsa/autogen/resource/a4212311-86e4-40b3-ace3-ef29cd687cf9"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "proident velit"
+						},
+						{
+							"name": "Ok",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/admin/api/request/description?recipient=https://localhost:8080/api/ids/data&requestedResource=https://w3id.org/idsa/autogen/resource/a4212311-86e4-40b3-ace3-ef29cd687cf9",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"api",
+										"request",
+										"description"
+									],
+									"query": [
+										{
+											"key": "recipient",
+											"value": "https://localhost:8080/api/ids/data"
+										},
+										{
+											"key": "requestedResource",
+											"value": "https://w3id.org/idsa/autogen/resource/a4212311-86e4-40b3-ace3-ef29cd687cf9"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "proident velit"
+						}
+					]
+				},
+				{
+					"name": "9 - Artifact Request",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n}"
+						},
+						"url": {
+							"raw": "{{consumerConnectorUrl}}/admin/api/request/artifact?recipient={{providerConnectorUrl}}/api/ids/data&requestedArtifact=https://w3id.org/idsa/autogen/resource/{{xmlRepresentation}}&transferContract=https://w3id.org/idsa/autogen/contractAgreement/166027ac-9934-4750-bb96-4adfc80c72c8&key=30d64e09-0241-4281-9cd1-4a60d77ee201",
+							"host": [
+								"{{consumerConnectorUrl}}"
+							],
+							"path": [
+								"admin",
+								"api",
+								"request",
+								"artifact"
+							],
+							"query": [
+								{
+									"key": "recipient",
+									"value": "{{providerConnectorUrl}}/api/ids/data",
+									"description": "(Required) The URI of the requested IDS connector."
+								},
+								{
+									"key": "requestedArtifact",
+									"value": "https://w3id.org/idsa/autogen/resource/{{xmlRepresentation}}",
+									"description": "(Required) The URI of the requested artifact."
+								},
+								{
+									"key": "transferContract",
+									"value": "https://w3id.org/idsa/autogen/contractAgreement/166027ac-9934-4750-bb96-4adfc80c72c8",
+									"description": "The URI of the contract agreement."
+								},
+								{
+									"key": "key",
+									"value": "30d64e09-0241-4281-9cd1-4a60d77ee201",
+									"description": "(Required) A unique validation key."
+								}
+							]
+						},
+						"description": "Request data from another IDS connector. \r\nPut in the contract agreement from 7 into \"transferContract\" param.\r\nPut in the validation token from 8 into \"key\" param."
+					},
+					"response": [
+						{
+							"name": "Internal server error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"value\": \"<Circular reference to #/components/schemas/QueryInput detected>\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/admin/api/request/artifact?recipient=https://localhost:8080/api/ids/data&requestedArtifact=https://w3id.org/idsa/autogen/artifact/a4212311-86e4-40b3-ace3-ef29cd687cf9&transferContract=https://w3id.org/idsa/autogen/contractAgreement/a4212311-86e4-40b3-ace3-ef29cd687cf9&key=<uuid>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"api",
+										"request",
+										"artifact"
+									],
+									"query": [
+										{
+											"key": "recipient",
+											"value": "https://localhost:8080/api/ids/data"
+										},
+										{
+											"key": "requestedArtifact",
+											"value": "https://w3id.org/idsa/autogen/artifact/a4212311-86e4-40b3-ace3-ef29cd687cf9"
+										},
+										{
+											"key": "transferContract",
+											"value": "https://w3id.org/idsa/autogen/contractAgreement/a4212311-86e4-40b3-ace3-ef29cd687cf9"
+										},
+										{
+											"key": "key",
+											"value": "<uuid>"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "proident velit"
+						},
+						{
+							"name": "Forbidden",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"value\": \"<Circular reference to #/components/schemas/QueryInput detected>\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/admin/api/request/artifact?recipient=https://localhost:8080/api/ids/data&requestedArtifact=https://w3id.org/idsa/autogen/artifact/a4212311-86e4-40b3-ace3-ef29cd687cf9&transferContract=https://w3id.org/idsa/autogen/contractAgreement/a4212311-86e4-40b3-ace3-ef29cd687cf9&key=<uuid>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"api",
+										"request",
+										"artifact"
+									],
+									"query": [
+										{
+											"key": "recipient",
+											"value": "https://localhost:8080/api/ids/data"
+										},
+										{
+											"key": "requestedArtifact",
+											"value": "https://w3id.org/idsa/autogen/artifact/a4212311-86e4-40b3-ace3-ef29cd687cf9"
+										},
+										{
+											"key": "transferContract",
+											"value": "https://w3id.org/idsa/autogen/contractAgreement/a4212311-86e4-40b3-ace3-ef29cd687cf9"
+										},
+										{
+											"key": "key",
+											"value": "<uuid>"
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "proident velit"
+						},
+						{
+							"name": "Artifact Request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n}"
+								},
+								"url": {
+									"raw": "{{consumerConnectorUrl}}/admin/api/request/artifact?recipient={{providerConnectorUrl}}/api/ids/data&requestedArtifact=https://w3id.org/idsa/autogen/resource/{{xmlRepresentation}}&transferContract=https://w3id.org/idsa/autogen/resource/{{xmlRepresentation}}&key=cac2c460-cd44-4b1d-a250-e1b89ec3723f",
+									"host": [
+										"{{consumerConnectorUrl}}"
+									],
+									"path": [
+										"admin",
+										"api",
+										"request",
+										"artifact"
+									],
+									"query": [
+										{
+											"key": "recipient",
+											"value": "{{providerConnectorUrl}}/api/ids/data",
+											"description": "(Required) The URI of the requested IDS connector."
+										},
+										{
+											"key": "requestedArtifact",
+											"value": "https://w3id.org/idsa/autogen/resource/{{xmlRepresentation}}",
+											"description": "(Required) The URI of the requested artifact."
+										},
+										{
+											"key": "transferContract",
+											"value": "https://w3id.org/idsa/autogen/resource/{{xmlRepresentation}}",
+											"description": "The URI of the contract agreement."
+										},
+										{
+											"key": "key",
+											"value": "cac2c460-cd44-4b1d-a250-e1b89ec3723f",
+											"description": "(Required) A unique validation key."
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "text/plain;charset=UTF-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "53"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 03 Sep 2021 08:44:25 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "Your key is not valid. Please request metadata first."
+						},
+						{
+							"name": "Ok",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"value\": \"<Circular reference to #/components/schemas/QueryInput detected>\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/admin/api/request/artifact?recipient=https://localhost:8080/api/ids/data&requestedArtifact=https://w3id.org/idsa/autogen/artifact/a4212311-86e4-40b3-ace3-ef29cd687cf9&transferContract=https://w3id.org/idsa/autogen/contractAgreement/a4212311-86e4-40b3-ace3-ef29cd687cf9&key=<uuid>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"api",
+										"request",
+										"artifact"
+									],
+									"query": [
+										{
+											"key": "recipient",
+											"value": "https://localhost:8080/api/ids/data"
+										},
+										{
+											"key": "requestedArtifact",
+											"value": "https://w3id.org/idsa/autogen/artifact/a4212311-86e4-40b3-ace3-ef29cd687cf9"
+										},
+										{
+											"key": "transferContract",
+											"value": "https://w3id.org/idsa/autogen/contractAgreement/a4212311-86e4-40b3-ace3-ef29cd687cf9"
+										},
+										{
+											"key": "key",
+											"value": "<uuid>"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "proident velit"
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"value\": \"<Circular reference to #/components/schemas/QueryInput detected>\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/admin/api/request/artifact?recipient=https://localhost:8080/api/ids/data&requestedArtifact=https://w3id.org/idsa/autogen/artifact/a4212311-86e4-40b3-ace3-ef29cd687cf9&transferContract=https://w3id.org/idsa/autogen/contractAgreement/a4212311-86e4-40b3-ace3-ef29cd687cf9&key=<uuid>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"api",
+										"request",
+										"artifact"
+									],
+									"query": [
+										{
+											"key": "recipient",
+											"value": "https://localhost:8080/api/ids/data"
+										},
+										{
+											"key": "requestedArtifact",
+											"value": "https://w3id.org/idsa/autogen/artifact/a4212311-86e4-40b3-ace3-ef29cd687cf9"
+										},
+										{
+											"key": "transferContract",
+											"value": "https://w3id.org/idsa/autogen/contractAgreement/a4212311-86e4-40b3-ace3-ef29cd687cf9"
+										},
+										{
+											"key": "key",
+											"value": "<uuid>"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "proident velit"
+						}
+					]
+				},
+				{
+					"name": "10 - Request (Transferred) Data String",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"headers\": {\n  },\n  \"params\": {\n  },\n  \"pathVariables\": {\n  }\n}"
+						},
+						"url": {
+							"raw": "{{consumerConnectorUrl}}/admin/api/resources/:resource-id/data",
+							"host": [
+								"{{consumerConnectorUrl}}"
+							],
+							"path": [
+								"admin",
+								"api",
+								"resources",
+								":resource-id",
+								"data"
+							],
+							"variable": [
+								{
+									"key": "resource-id",
+									"value": "30d64e09-0241-4281-9cd1-4a60d77ee201",
+									"description": "(Required) The resource uuid."
+								}
+							]
+						},
+						"description": "Get a resource's data as a string."
+					},
+					"response": [
+						{
+							"name": "Internal server error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"value\": \"<Circular reference to #/components/schemas/QueryInput detected>\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/admin/api/resources/:resource-id/data",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"api",
+										"resources",
+										":resource-id",
+										"data"
+									],
+									"variable": [
+										{
+											"key": "resource-id"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "proident velit"
+						},
+						{
+							"name": "Not found",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"value\": \"<Circular reference to #/components/schemas/QueryInput detected>\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/admin/api/resources/:resource-id/data",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"api",
+										"resources",
+										":resource-id",
+										"data"
+									],
+									"variable": [
+										{
+											"key": "resource-id"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "proident velit"
+						},
+						{
+							"name": "Ok",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"value\": \"<Circular reference to #/components/schemas/QueryInput detected>\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/admin/api/resources/:resource-id/data",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"api",
+										"resources",
+										":resource-id",
+										"data"
+									],
+									"variable": [
+										{
+											"key": "resource-id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "proident velit"
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "basic",
+				"basic": [
+					{
+						"key": "password",
+						"value": "password",
+						"type": "string"
+					},
+					{
+						"key": "username",
+						"value": "admin",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Semantic Layer",
+			"item": [
+				{
+					"name": "Semantic Hub",
+					"item": [
+						{
+							"name": "{model-id}",
+							"item": [
+								{
+									"name": "get Model By Id",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{serviceUrl}}/{{semantics}}/models/:model-id",
+											"host": [
+												"{{serviceUrl}}"
+											],
+											"path": [
+												"{{semantics}}",
+												"models",
+												":model-id"
+											],
+											"variable": [
+												{
+													"key": "model-id",
+													"value": "<string>",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Internal Server Error",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/models/:model-id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"models",
+														":model-id"
+													],
+													"variable": [
+														{
+															"key": "model-id"
+														}
+													]
+												}
+											},
+											"status": "Internal Server Error",
+											"code": 500,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Bad Request",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/models/:model-id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"models",
+														":model-id"
+													],
+													"variable": [
+														{
+															"key": "model-id"
+														}
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Unauthorized",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/models/:model-id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"models",
+														":model-id"
+													],
+													"variable": [
+														{
+															"key": "model-id"
+														}
+													]
+												}
+											},
+											"status": "Unauthorized",
+											"code": 401,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "The resulting model entry.",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/models/:model-id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"models",
+														":model-id"
+													],
+													"variable": [
+														{
+															"key": "model-id"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n \"id\": \"nulla veniam culpa aliqua occaecat\",\n \"publisher\": \"aute pariatur\",\n \"version\": -31538568,\n \"name\": \"ex id\",\n \"private\": false,\n \"type\": \"BAMM\"\n}"
+										},
+										{
+											"name": "Not Found",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/models/:model-id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"models",
+														":model-id"
+													],
+													"variable": [
+														{
+															"key": "model-id"
+														}
+													]
+												}
+											},
+											"status": "Not Found",
+											"code": 404,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								},
+								{
+									"name": "modify Model",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"publisher\": \"<string>\",\n    \"private\": \"<boolean>\",\n    \"type\": \"<string>\",\n    \"model\": \"<string>\"\n}"
+										},
+										"url": {
+											"raw": "{{serviceUrl}}/{{semantics}}/models/:model-id",
+											"host": [
+												"{{serviceUrl}}"
+											],
+											"path": [
+												"{{semantics}}",
+												"models",
+												":model-id"
+											],
+											"variable": [
+												{
+													"key": "model-id",
+													"value": "<string>",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Unauthorized",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"publisher\": \"<string>\",\n    \"private\": \"<boolean>\",\n    \"type\": \"<string>\",\n    \"model\": \"<string>\"\n}"
+												},
+												"url": {
+													"raw": "{{baseUrl}}/models/:model-id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"models",
+														":model-id"
+													],
+													"variable": [
+														{
+															"key": "model-id"
+														}
+													]
+												}
+											},
+											"status": "Unauthorized",
+											"code": 401,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "The resulting model entry.",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"publisher\": \"<string>\",\n    \"private\": \"<boolean>\",\n    \"type\": \"<string>\",\n    \"model\": \"<string>\"\n}"
+												},
+												"url": {
+													"raw": "{{baseUrl}}/models/:model-id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"models",
+														":model-id"
+													],
+													"variable": [
+														{
+															"key": "model-id"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n \"id\": \"nulla veniam culpa aliqua occaecat\",\n \"publisher\": \"aute pariatur\",\n \"version\": -31538568,\n \"name\": \"ex id\",\n \"private\": false,\n \"type\": \"BAMM\"\n}"
+										},
+										{
+											"name": "Bad Request",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"publisher\": \"<string>\",\n    \"private\": \"<boolean>\",\n    \"type\": \"<string>\",\n    \"model\": \"<string>\"\n}"
+												},
+												"url": {
+													"raw": "{{baseUrl}}/models/:model-id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"models",
+														":model-id"
+													],
+													"variable": [
+														{
+															"key": "model-id"
+														}
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Not Found",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"publisher\": \"<string>\",\n    \"private\": \"<boolean>\",\n    \"type\": \"<string>\",\n    \"model\": \"<string>\"\n}"
+												},
+												"url": {
+													"raw": "{{baseUrl}}/models/:model-id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"models",
+														":model-id"
+													],
+													"variable": [
+														{
+															"key": "model-id"
+														}
+													]
+												}
+											},
+											"status": "Not Found",
+											"code": 404,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Internal Server Error",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"publisher\": \"<string>\",\n    \"private\": \"<boolean>\",\n    \"type\": \"<string>\",\n    \"model\": \"<string>\"\n}"
+												},
+												"url": {
+													"raw": "{{baseUrl}}/models/:model-id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"models",
+														":model-id"
+													],
+													"variable": [
+														{
+															"key": "model-id"
+														}
+													]
+												}
+											},
+											"status": "Internal Server Error",
+											"code": 500,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								},
+								{
+									"name": "delete Model",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{serviceUrl}}/{{semantics}}/models/:model-id",
+											"host": [
+												"{{serviceUrl}}"
+											],
+											"path": [
+												"{{semantics}}",
+												"models",
+												":model-id"
+											],
+											"variable": [
+												{
+													"key": "model-id",
+													"value": "<string>",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Not Found",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/models/:model-id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"models",
+														":model-id"
+													],
+													"variable": [
+														{
+															"key": "model-id"
+														}
+													]
+												}
+											},
+											"status": "Not Found",
+											"code": 404,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Unauthorized",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/models/:model-id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"models",
+														":model-id"
+													],
+													"variable": [
+														{
+															"key": "model-id"
+														}
+													]
+												}
+											},
+											"status": "Unauthorized",
+											"code": 401,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Internal Server Error",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/models/:model-id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"models",
+														":model-id"
+													],
+													"variable": [
+														{
+															"key": "model-id"
+														}
+													]
+												}
+											},
+											"status": "Internal Server Error",
+											"code": 500,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "The resource was deleted successfully.",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/models/:model-id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"models",
+														":model-id"
+													],
+													"variable": [
+														{
+															"key": "model-id"
+														}
+													]
+												}
+											},
+											"status": "No Content",
+											"code": 204,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Bad Request",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/models/:model-id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"models",
+														":model-id"
+													],
+													"variable": [
+														{
+															"key": "model-id"
+														}
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								},
+								{
+									"name": "get Model File",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{serviceUrl}}/{{semantics}}/models/:model-id/file",
+											"host": [
+												"{{serviceUrl}}"
+											],
+											"path": [
+												"{{semantics}}",
+												"models",
+												":model-id",
+												"file"
+											],
+											"variable": [
+												{
+													"key": "model-id",
+													"value": "<string>",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Bad Request",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/models/:model-id/file",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"models",
+														":model-id",
+														"file"
+													],
+													"variable": [
+														{
+															"key": "model-id"
+														}
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Not Found",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/models/:model-id/file",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"models",
+														":model-id",
+														"file"
+													],
+													"variable": [
+														{
+															"key": "model-id"
+														}
+													]
+												}
+											},
+											"status": "Not Found",
+											"code": 404,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Unauthorized",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/models/:model-id/file",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"models",
+														":model-id",
+														"file"
+													],
+													"variable": [
+														{
+															"key": "model-id"
+														}
+													]
+												}
+											},
+											"status": "Unauthorized",
+											"code": 401,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Internal Server Error",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/models/:model-id/file",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"models",
+														":model-id",
+														"file"
+													],
+													"variable": [
+														{
+															"key": "model-id"
+														}
+													]
+												}
+											},
+											"status": "Internal Server Error",
+											"code": 500,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "The raw RDF based model definition.",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/models/:model-id/file",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"models",
+														":model-id",
+														"file"
+													],
+													"variable": [
+														{
+															"key": "model-id"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/turtle"
+												}
+											],
+											"cookie": [],
+											"body": "@prefix : <urn:bamm:net.catenax.semantics:1.0.0#> .\n@prefix bamm: <urn:bamm:io.openmanufacturing:meta-model:1.0.0#> .\n@prefix bamm-c: <urn:bamm:io.openmanufacturing:characteristic:1.0.0#> .\n@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n\n:TestAspect a bamm:Aspect ;\n   bamm:name \"Test\" ;\n   bamm:preferredName \"Test Aspect\"@en ;\n   bamm:description \"This is a Test Aspect.\"@en ;\n   bamm:properties (  ) ;\n   bamm:operations (  ) .\n"
+										}
+									]
+								},
+								{
+									"name": "get Model Tree",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{serviceUrl}}/{{semantics}}/models/:model-id/diagram",
+											"host": [
+												"{{serviceUrl}}"
+											],
+											"path": [
+												"{{semantics}}",
+												"models",
+												":model-id",
+												"diagram"
+											],
+											"variable": [
+												{
+													"key": "model-id",
+													"value": "<string>",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Internal Server Error",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/models/:model-id/diagram",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"models",
+														":model-id",
+														"diagram"
+													],
+													"variable": [
+														{
+															"key": "model-id"
+														}
+													]
+												}
+											},
+											"status": "Internal Server Error",
+											"code": 500,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/models/:model-id/diagram",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"models",
+														":model-id",
+														"diagram"
+													],
+													"variable": [
+														{
+															"key": "model-id"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "image/png"
+												}
+											],
+											"cookie": [],
+											"body": "dolor do"
+										},
+										{
+											"name": "Not Found",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/models/:model-id/diagram",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"models",
+														":model-id",
+														"diagram"
+													],
+													"variable": [
+														{
+															"key": "model-id"
+														}
+													]
+												}
+											},
+											"status": "Not Found",
+											"code": 404,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Bad Request",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/models/:model-id/diagram",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"models",
+														":model-id",
+														"diagram"
+													],
+													"variable": [
+														{
+															"key": "model-id"
+														}
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Unauthorized",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/models/:model-id/diagram",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"models",
+														":model-id",
+														"diagram"
+													],
+													"variable": [
+														{
+															"key": "model-id"
+														}
+													]
+												}
+											},
+											"status": "Unauthorized",
+											"code": 401,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								},
+								{
+									"name": "get Model Docu",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{serviceUrl}}/{{semantics}}/models/:model-id/documentation",
+											"host": [
+												"{{serviceUrl}}"
+											],
+											"path": [
+												"{{semantics}}",
+												"models",
+												":model-id",
+												"documentation"
+											],
+											"variable": [
+												{
+													"key": "model-id",
+													"value": "<string>",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Internal Server Error",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/models/:model-id/documentation",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"models",
+														":model-id",
+														"documentation"
+													],
+													"variable": [
+														{
+															"key": "model-id"
+														}
+													]
+												}
+											},
+											"status": "Internal Server Error",
+											"code": 500,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Unauthorized",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/models/:model-id/documentation",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"models",
+														":model-id",
+														"documentation"
+													],
+													"variable": [
+														{
+															"key": "model-id"
+														}
+													]
+												}
+											},
+											"status": "Unauthorized",
+											"code": 401,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Bad Request",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/models/:model-id/documentation",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"models",
+														":model-id",
+														"documentation"
+													],
+													"variable": [
+														{
+															"key": "model-id"
+														}
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/models/:model-id/documentation",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"models",
+														":model-id",
+														"documentation"
+													],
+													"variable": [
+														{
+															"key": "model-id"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/html"
+												}
+											],
+											"cookie": [],
+											"body": "<!DOCTYPE html>\n<html>\n<head>\n</head>\n<body>\n  Aspect Description\n</body>\n</html>\n"
+										},
+										{
+											"name": "Not Found",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/models/:model-id/documentation",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"models",
+														":model-id",
+														"documentation"
+													],
+													"variable": [
+														{
+															"key": "model-id"
+														}
+													]
+												}
+											},
+											"status": "Not Found",
+											"code": 404,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "get Model List",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{serviceUrl}}/{{semantics}}/models",
+									"host": [
+										"{{serviceUrl}}"
+									],
+									"path": [
+										"{{semantics}}",
+										"models"
+									],
+									"query": [
+										{
+											"key": "namespaceFilter",
+											"value": "<string>",
+											"disabled": true
+										},
+										{
+											"key": "nameFilter",
+											"value": "<string>",
+											"disabled": true
+										},
+										{
+											"key": "isPublic",
+											"value": "<boolean>",
+											"disabled": true
+										},
+										{
+											"key": "type",
+											"value": "<string>",
+											"disabled": true
+										},
+										{
+											"key": "pageSize",
+											"value": "<integer>",
+											"disabled": true
+										},
+										{
+											"key": "page",
+											"value": "<integer>",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Unauthorized",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/models?namespaceFilter=<string>&nameFilter=<string>&isPublic=<boolean>&type=<string>&pageSize=<integer>&page=<integer>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"models"
+											],
+											"query": [
+												{
+													"key": "namespaceFilter",
+													"value": "<string>"
+												},
+												{
+													"key": "nameFilter",
+													"value": "<string>"
+												},
+												{
+													"key": "isPublic",
+													"value": "<boolean>"
+												},
+												{
+													"key": "type",
+													"value": "<string>"
+												},
+												{
+													"key": "pageSize",
+													"value": "<integer>"
+												},
+												{
+													"key": "page",
+													"value": "<integer>"
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "A list of models, matching the provided filter options.",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/models?namespaceFilter=<string>&nameFilter=<string>&isPublic=<boolean>&type=<string>&pageSize=<integer>&page=<integer>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"models"
+											],
+											"query": [
+												{
+													"key": "namespaceFilter",
+													"value": "<string>"
+												},
+												{
+													"key": "nameFilter",
+													"value": "<string>"
+												},
+												{
+													"key": "isPublic",
+													"value": "<boolean>"
+												},
+												{
+													"key": "type",
+													"value": "<string>"
+												},
+												{
+													"key": "pageSize",
+													"value": "<integer>"
+												},
+												{
+													"key": "page",
+													"value": "<integer>"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "[\n {\n  \"id\": \"voluptate laborum commodo\",\n  \"publisher\": \"sit consectetur con\",\n  \"version\": -87996845,\n  \"name\": \"sint sunt\",\n  \"private\": false,\n  \"type\": \"OWL\"\n },\n {\n  \"id\": \"nisi irure eiusmod\",\n  \"publisher\": \"cupidatat\",\n  \"version\": -82378436,\n  \"name\": \"velit do\",\n  \"private\": false,\n  \"type\": \"BAMM\"\n }\n]"
+								},
+								{
+									"name": "Internal Server Error",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/models?namespaceFilter=<string>&nameFilter=<string>&isPublic=<boolean>&type=<string>&pageSize=<integer>&page=<integer>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"models"
+											],
+											"query": [
+												{
+													"key": "namespaceFilter",
+													"value": "<string>"
+												},
+												{
+													"key": "nameFilter",
+													"value": "<string>"
+												},
+												{
+													"key": "isPublic",
+													"value": "<boolean>"
+												},
+												{
+													"key": "type",
+													"value": "<string>"
+												},
+												{
+													"key": "pageSize",
+													"value": "<integer>"
+												},
+												{
+													"key": "page",
+													"value": "<integer>"
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/models?namespaceFilter=<string>&nameFilter=<string>&isPublic=<boolean>&type=<string>&pageSize=<integer>&page=<integer>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"models"
+											],
+											"query": [
+												{
+													"key": "namespaceFilter",
+													"value": "<string>"
+												},
+												{
+													"key": "nameFilter",
+													"value": "<string>"
+												},
+												{
+													"key": "isPublic",
+													"value": "<boolean>"
+												},
+												{
+													"key": "type",
+													"value": "<string>"
+												},
+												{
+													"key": "pageSize",
+													"value": "<integer>"
+												},
+												{
+													"key": "page",
+													"value": "<integer>"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "create Model With Id",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"publisher\": \"<string>\",\n    \"private\": \"<boolean>\",\n    \"type\": \"<string>\",\n    \"model\": \"<string>\"\n}"
+								},
+								"url": {
+									"raw": "{{serviceUrl}}/{{semantics}}/models",
+									"host": [
+										"{{serviceUrl}}"
+									],
+									"path": [
+										"{{semantics}}",
+										"models"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Internal Server Error",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"publisher\": \"<string>\",\n    \"private\": \"<boolean>\",\n    \"type\": \"<string>\",\n    \"model\": \"<string>\"\n}"
+										},
+										"url": {
+											"raw": "{{baseUrl}}/models",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"models"
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "The resulting model entry.",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"publisher\": \"<string>\",\n    \"private\": \"<boolean>\",\n    \"type\": \"<string>\",\n    \"model\": \"<string>\"\n}"
+										},
+										"url": {
+											"raw": "{{baseUrl}}/models",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"models"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n \"id\": \"nulla veniam culpa aliqua occaecat\",\n \"publisher\": \"aute pariatur\",\n \"version\": -31538568,\n \"name\": \"ex id\",\n \"private\": false,\n \"type\": \"BAMM\"\n}"
+								},
+								{
+									"name": "Unauthorized",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"publisher\": \"<string>\",\n    \"private\": \"<boolean>\",\n    \"type\": \"<string>\",\n    \"model\": \"<string>\"\n}"
+										},
+										"url": {
+											"raw": "{{baseUrl}}/models",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"models"
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"publisher\": \"<string>\",\n    \"private\": \"<boolean>\",\n    \"type\": \"<string>\",\n    \"model\": \"<string>\"\n}"
+										},
+										"url": {
+											"raw": "{{baseUrl}}/models",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"models"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Core Services",
+			"item": [
+				{
+					"name": "Get Business Partner",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{serviceUrl}}/businesspartners/businesspartner?businessPartnerOneId=Partner_00001_BOSCH",
+							"host": [
+								"{{serviceUrl}}"
+							],
+							"path": [
+								"businesspartners",
+								"businesspartner"
+							],
+							"query": [
+								{
+									"key": "businessPartnerOneId",
+									"value": "Partner_00001_BOSCH"
+								}
+							]
+						},
+						"description": "Gets basic info about a business partner"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Connector DNS for Business Partner",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{serviceUrl}}/cdns/dns?businessPartnerOneID=Partner_00001_BOSCH",
+							"host": [
+								"{{serviceUrl}}"
+							],
+							"path": [
+								"cdns",
+								"dns"
+							],
+							"query": [
+								{
+									"key": "businessPartnerOneID",
+									"value": "Partner_00001_BOSCH"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Connector DNS for connector id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{serviceUrl}}/cdns/dns?connectorId=956e8672-f217-4c27-84c2-478336dafcba",
+							"host": [
+								"{{serviceUrl}}"
+							],
+							"path": [
+								"cdns",
+								"dns"
+							],
+							"query": [
+								{
+									"key": "connectorId",
+									"value": "956e8672-f217-4c27-84c2-478336dafcba"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Portal",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{portalUrl}}",
+					"host": [
+						"{{portalUrl}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "xanetacist",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "TractusX",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080"
+		},
+		{
+			"key": "service",
+			"value": "",
+			"disabled": true
+		}
+	]
+}

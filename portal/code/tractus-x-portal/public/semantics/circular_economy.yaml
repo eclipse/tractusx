@@ -1,0 +1,201 @@
+---
+openapi: 3.0.3
+info:
+  title: Gearbox Adhesives
+  version: v0
+servers:
+- url: http://test.com/api/v0
+  variables:
+    api-version:
+      default: v0
+paths:
+  /{tenant-id}/gearbox-adhesives:
+    get:
+      tags:
+      - GearboxAdhesives
+      operationId: getGearboxAdhesives
+      parameters:
+      - name: tenant-id
+        in: path
+        description: The ID of the tenant owning the requested Twin.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: start
+        in: query
+        description: Starting index which is starting by 0
+        required: false
+        schema:
+          type: number
+      - name: count
+        in: query
+        description: Number of items to return per call.
+        required: false
+        schema:
+          type: number
+      - name: totalItemCount
+        in: query
+        description: Flag that indicates that the total counts should be returned.
+        required: false
+        schema:
+          type: boolean
+      responses:
+        "200":
+          $ref: '#/components/responses/GearboxAdhesives'
+        "401":
+          $ref: '#/components/responses/ClientError'
+        "402":
+          $ref: '#/components/responses/Unauthorized'
+        "403":
+          $ref: '#/components/responses/Forbidden'
+        "404":
+          $ref: '#/components/responses/NotFoundError'
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          $ref: '#/components/schemas/Error'
+    Error:
+      type: object
+      required:
+      - details
+      properties:
+        message:
+          type: string
+          minLength: 1
+        path:
+          type: string
+          minLength: 1
+        details:
+          type: object
+          minLength: 1
+          additionalProperties:
+            type: object
+        code:
+          type: string
+          nullable: true
+    PagingSchema:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/GearboxAdhesives'
+        totalItems:
+          type: number
+        totalPages:
+          type: number
+        pageSize:
+          type: number
+        currentPage:
+          type: number
+    urn_bamm_com.catenaX_0.0.1_BatchNumberTrait:
+      type: string
+      maxLength: 10
+    urn_bamm_io.openmanufacturing_characteristic_1.0.0_MimeType:
+      type: string
+    urn_bamm_io.openmanufacturing_characteristic_1.0.0_ResourcePath:
+      type: string
+      format: uri
+    urn_bamm_com.catenaX_0.0.1_DocumentsCharacteristic:
+      type: array
+      items:
+        type: object
+        properties:
+          mimetype:
+            $ref: '#/components/schemas/urn_bamm_io.openmanufacturing_characteristic_1.0.0_MimeType'
+          filePath:
+            $ref: '#/components/schemas/urn_bamm_io.openmanufacturing_characteristic_1.0.0_ResourcePath'
+        required:
+        - mimetype
+        - filePath
+      uniqueItems: true
+    urn_bamm_com.catenaX_0.0.1_ManufacturerProductNumberTrait:
+      type: string
+      maxLength: 18
+    urn_bamm_com.catenaX_0.0.1_MaterialCharacteristic:
+      type: string
+    urn_bamm_com.catenaX_0.0.1_WeightMeasurement:
+      type: number
+    urn_bamm_com.catenaX_0.0.1_ListOfMaterialsCharacteristic:
+      type: array
+      items:
+        type: object
+        properties:
+          material:
+            $ref: '#/components/schemas/urn_bamm_com.catenaX_0.0.1_MaterialCharacteristic'
+          weight:
+            $ref: '#/components/schemas/urn_bamm_com.catenaX_0.0.1_WeightMeasurement'
+        required:
+        - material
+        - weight
+    urn_bamm_io.openmanufacturing_characteristic_1.0.0_Text:
+      type: string
+    urn_bamm_com.catenaX_0.0.1_ProductionDateTrait:
+      type: string
+      pattern: YYYY-MM-DD
+    urn_bamm_com.catenaX_0.0.1_AlphanumericCharacteristic:
+      type: string
+    GearboxAdhesives:
+      type: object
+      properties:
+        batchNumber:
+          $ref: '#/components/schemas/urn_bamm_com.catenaX_0.0.1_BatchNumberTrait'
+        disassemblyInstructions:
+          $ref: '#/components/schemas/urn_bamm_com.catenaX_0.0.1_DocumentsCharacteristic'
+        manufacturerProductNumber:
+          $ref: '#/components/schemas/urn_bamm_com.catenaX_0.0.1_ManufacturerProductNumberTrait'
+        materialComposition:
+          $ref: '#/components/schemas/urn_bamm_com.catenaX_0.0.1_ListOfMaterialsCharacteristic'
+        producerName:
+          $ref: '#/components/schemas/urn_bamm_io.openmanufacturing_characteristic_1.0.0_Text'
+        productionDate:
+          $ref: '#/components/schemas/urn_bamm_com.catenaX_0.0.1_ProductionDateTrait'
+        uniqueID:
+          $ref: '#/components/schemas/urn_bamm_com.catenaX_0.0.1_AlphanumericCharacteristic'
+        hazardousMaterials:
+          $ref: '#/components/schemas/urn_bamm_io.openmanufacturing_characteristic_1.0.0_Text'
+        safetyInstructions:
+          $ref: '#/components/schemas/urn_bamm_com.catenaX_0.0.1_DocumentsCharacteristic'
+      required:
+      - batchNumber
+      - disassemblyInstructions
+      - manufacturerProductNumber
+      - materialComposition
+      - producerName
+      - productionDate
+      - uniqueID
+      - hazardousMaterials
+      - safetyInstructions
+  responses:
+    Unauthorized:
+      description: The requesting user or client is not authenticated.
+    Forbidden:
+      description: The requesting user or client is not authorized to access resources
+        for the given tenant.
+    NotFoundError:
+      description: The requested Twin has not been found.
+    ClientError:
+      description: Payload or user input is invalid. See error details in the payload
+        for more.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    GearboxAdhesives:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PagingSchema'
+      description: The request was successful.
+  requestBodies:
+    GearboxAdhesives:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GearboxAdhesives'

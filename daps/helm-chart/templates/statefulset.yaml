@@ -1,0 +1,172 @@
+{{- $fullName := include "omejdn-server.fullname" . -}}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "omejdn-server.fullname" . }}
+  labels:
+    {{- include "omejdn-server.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  serviceName: {{ include "omejdn-server.fullname" . }}
+  selector:
+    matchLabels:
+      {{- include "omejdn-server.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "omejdn-server.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "omejdn-server.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+      - name: init-fill-pvc
+        image: busybox
+        command: 
+        - "sh"
+        - "-c"
+        args:
+        - |
+          ls /tmp/
+          if [ ! -f /tmp/users.yml ]; then
+            echo "File users.yml not found in pvc!. Creating empty file"
+            touch /tmp/users.yml
+          fi
+          if [ ! -f /tmp/clients.yml ]; then
+            echo "File clients.yml not found in pvc! Creating a new one with default admin client"
+            {{- if .Values.omejdn.createDefaultAdmin }}
+            cp /tmp2/clients.yml /tmp/clients.yml
+            {{- else }}
+            touch /tmp/clients.yml
+            {{- end }}
+          fi
+          if [ ! -d /tmp/keys ]; then
+            echo "keys directory not found in pvc! Creating empty dit"
+            mkdir /tmp/keys
+          fi      
+        volumeMounts:
+        - name: config
+          mountPath: /tmp/
+          readOnly: false
+        - mountPath: /tmp2/clients.yml
+          name: clients-config
+          subPath: clients.yml
+        - mountPath: /opt/keys
+          name: config
+          subPath: keys
+          readOnly: false
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          - name: OMEJDN_JWT_AUD_OVERRIDE
+            value: "idsc:IDS_CONNECTORS_ALL"
+          {{- if .Values.omejdn.createDefaultAdmin }}
+          - name: OMEJDN_ADMIN
+            value: {{ .Values.omejdn.defaultAdminUser }}
+          {{- end }}
+          {{- range $key, $val := .Values.env.secret }}
+          - name: {{ $key }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ $fullName }}
+                key: {{ $key }}
+          {{- end}}
+          {{- range $key, $val := .Values.env.config }}
+          - name: {{ $key }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ $fullName }}
+                key: {{ $key }}
+          {{- end}}
+          ports:
+            - name: http
+              containerPort: 4567
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+          - mountPath: /opt/config/omejdn.yml
+            name: omejdn-config
+            subPath: omejdn.yml
+          {{- if .Values.omejdn.serverKey }}
+          - mountPath: {{ .Values.omejdn.serverKeyFolderPath }}/key.pem
+            name: server-key
+            subPath: key.pem
+          {{- end }}
+          - mountPath: /opt/config/users.yml
+            name: config
+            subPath: users.yml
+            readOnly: false
+          - mountPath: /opt/config/clients.yml
+            name: config
+            subPath: clients.yml
+            readOnly: false
+          - mountPath: /opt/keys
+            name: config
+            subPath: keys
+            readOnly: false  
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      
+      volumes:
+      {{- if not .Values.persistence.enabled }}
+      - name: config
+        emptyDir: {}
+      {{- end }}
+      {{- if .Values.omejdn.serverKey }}
+      - name: server-key
+        secret:
+          secretName: {{ include "omejdn-server.fullname" . }}
+          items:
+          - key: key.pem
+            path: key.pem
+      {{- end }}
+      - name: omejdn-config
+        configMap:
+          name: {{ include "omejdn-server.fullname" . }}
+          items:
+          - key: omejdn.yml
+            path: omejdn.yml
+      - name: clients-config
+        configMap:
+          name: {{ include "omejdn-server.fullname" . }}
+          items:
+          - key: clients.yml
+            path: clients.yml
+
+{{- if .Values.persistence.enabled }}
+  volumeClaimTemplates:
+  - metadata:
+      name: config
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: {{ .Values.persistence.storageClass }}
+      resources:
+        requests:
+          storage: {{ .Values.persistence.storageSize }}
+  {{- end }}
+

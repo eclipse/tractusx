@@ -1,0 +1,32 @@
+#
+# Copyright (c) 2021 T-Systems International GmbH (Catena-X Consortium)
+#
+# See the AUTHORS file(s) distributed with this work for additional
+# information regarding authorship.
+#
+# See the LICENSE file(s) distributed with this work for
+# additional information regarding license terms.
+#
+
+# K8 portal loadbalancer (if https termination is done int the service)
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    service.beta.kubernetes.io/do-loadbalancer-certificate-id: "$CLIENT_ISSUER"
+    cert-manager.io/cluster-issuer: "$CLIENT_ISSUER"
+    service.beta.kubernetes.io/azure-load-balancer-resource-group: $NODE_RESOURCE_GROUP
+  name: portal-load-balancer
+  namespace: portal
+spec:
+  loadBalancerIP: $PORTAL_IP
+  type: LoadBalancer
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+  - name: https
+    port: 443
+    targetPort: 80
+  selector:
+    app: portal

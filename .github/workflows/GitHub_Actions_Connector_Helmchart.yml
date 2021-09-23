@@ -1,0 +1,43 @@
+# This is a basic workflow to help you get started with Actions
+
+name: helm chart connector
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  
+env:
+  HELM_EXPERIMENTAL_OCI: 1
+  ACR_NAME: catenaxdev001acr.azurecr.io
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: install helm
+      uses: Azure/setup-helm@v1
+      with:
+            version: 3.5.0
+    - name: Clone public tractusx PUBLIC repository
+      uses: GuillaumeFalourd/clone-github-repo-action@v1
+      with:
+        owner: 'catenax'
+        repository: 'tractusx'
+
+    - name: login to acr using helm
+      run: |
+       echo ${{ secrets.AZURE_REGISTRY_PASSWORD }} | helm registry login ${{ env.ACR_NAME }} --username ${{ secrets.AZURE_REGISTRY_USERNAME }} --password-stdin 
+    - name: save helm chart to local registry
+      run: |
+        helm chart save tractusx/connector/infrastructure/dataspaceconnector ${{ env.ACR_NAME }}/helm/connector:latest
+      
+    - name: publish chart to acr
+      run: |
+       helm chart push ${{ env.ACR_NAME }}/helm/connector:latest
+

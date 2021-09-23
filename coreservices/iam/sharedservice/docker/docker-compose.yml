@@ -1,0 +1,37 @@
+version: '3'
+
+volumes:
+  keycloak_data:
+
+services:
+  postgres:
+      image: postgres
+      volumes:
+        - keycloak_data:/var/lib/postgresql/data
+      restart: always
+      environment:
+        POSTGRES_DB: ${DB_NAME}
+        POSTGRES_USER: ${DB_USER}
+        POSTGRES_PASSWORD: ${DB_PWD}
+  
+  keycloak:
+      image: jboss/keycloak:latest
+      environment:
+        DB_VENDOR: POSTGRES
+        DB_ADDR: postgres
+        DB_DATABASE: ${DB_NAME}
+        DB_USER: ${DB_USER}
+        DB_SCHEMA: public
+        DB_PASSWORD: ${DB_PWD}
+        KEYCLOAK_USER: ${KEYCLOAK_ADMIN_USER}
+        KEYCLOAK_PASSWORD: ${KEYCLOAK_ADMIN_PWD}
+        # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the PostgreSQL JDBC driver documentation in order to use it.
+        #JDBC_PARAMS: "ssl=true"
+      ports:
+        - 9090:8080
+      restart: always
+      depends_on:
+        - postgres
+      
+networks:
+  default:

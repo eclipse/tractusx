@@ -1,0 +1,176 @@
+{{- $fullName := include "metadata-broker-open-core.fullname" . -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "metadata-broker-open-core.fullname" . }}
+  labels:
+    {{- include "metadata-broker-open-core.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "metadata-broker-open-core.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "metadata-broker-open-core.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "metadata-broker-open-core.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+      - name: change-keystore
+        image: "{{ .Values.image.brokerCoreImage }}:{{ .Values.image.brokerCoreImageTag }}"
+        command: 
+        - "sh"
+        - "-c"
+        env:
+          {{- range $key, $val := .Values.env.secret }}
+          - name: {{ $key }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ $fullName }}
+                key: {{ $key }}
+          {{- end }}
+        args:
+        - |
+          mkdir -p broker
+          unzip broker-core.jar -d ./broker  > /dev/null 2>&1
+          apk add openssl  > /dev/null 2>&1
+          cd /cert
+          openssl req -x509 -new -key key.pem -days 10000 -out cert.pem -subj "/CN=catenaxdev001akssrv.germanywestcentral.cloudapp.azure.com"
+          openssl pkcs12 -export -in cert.pem -inkey key.pem -out a.p12 -name ${KEYSTORE_ALIAS} -password pass:${KEYSTORE_PASSWORD}
+          keytool -importkeystore -deststorepass ${KEYSTORE_PASSWORD} -destkeypass ${KEYSTORE_PASSWORD} -destkeystore keystore.jks -srckeystore a.p12 -srcstoretype jks -srcstorepass ${KEYSTORE_PASSWORD} -srcalias ${KEYSTORE_ALIAS} -destalias ${KEYSTORE_ALIAS} > /dev/null 2>&1
+
+          cd /broker
+          mv /cert/keystore.jks ./BOOT-INF/classes/isstbroker-keystore.jks
+          jar cmvf0 META-INF/MANIFEST.MF /hacks/broker-core.jar *  > /dev/null 2>&1
+
+          cd /cert
+          export SKI=$(openssl x509 -in cert.pem -ext "subjectKeyIdentifier" -noout | sed -n 2p | xargs)
+          export AKI=$(openssl x509 -in cert.pem -ext "authorityKeyIdentifier" -noout | sed -n 2p | xargs)
+          echo ClientID:
+          echo $SKI:$AKI
+          echo
+          echo Certificate file:
+          cat /cert/cert.pem
+        volumeMounts:
+        - mountPath: /cert/key.pem
+          name: key
+          subPath: key.pem
+        - mountPath: /hacks
+          name: config
+          readOnly: false
+      containers:
+        - name: broker-core
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.brokerCoreImage }}:{{ .Values.image.brokerCoreImageTag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+          - "java"
+          args:
+          - "-Djava.security.egd=file:/dev/./urandom"
+          {{- if .Values.broker.core.debugOptions }}
+          - "{{ .Values.broker.core.debugOptions }}"
+          {{- end }}
+          {{- if .Values.broker.truststore.p12 }}
+          - "-Djavax.net.ssl.trustStore=/truststore.12"
+          - "-Djavax.net.ssl.trustStorePassword=${TRUSTSTORE_PASSWORD}"
+          {{- end }}
+          - "-jar"
+          - "/hacks/broker-core.jar"
+          envFrom:
+          - configMapRef:
+              name: {{ include "metadata-broker-open-core.fullname" . }}
+          env:
+          {{- if .Values.broker.truststore.p12 }}
+          - name: TRUSTSTORE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "metadata-broker-open-core.fullname" . }}
+                key: truststore_password
+          {{- end }}
+          {{- range $key, $val := .Values.env.secret }}
+          - name: {{ $key }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ $fullName }}
+                key: {{ $key }}
+          {{- end }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          {{- if .Values.broker.core.debugOptions }}
+            - name: debug
+              containerPort: 5005
+              protocol: TCP
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+          {{- if .Values.broker.truststore.p12 }}
+          - name: truststore
+            mountPath: "/truststore.p12"
+            readOnly: true
+          {{- end }}
+          - mountPath: /hacks
+            name: config
+            readOnly: false
+        - name: broker-fuseki
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.brokerFusekiImage }}:{{ .Values.image.brokerFusekiImageTag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          - name: ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "metadata-broker-open-core.fullname" . }}
+                key: ADMIN_PASSWORD
+          ports:
+            - name: http
+              containerPort: 3030
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+      {{- if .Values.broker.truststore.p12 }}
+      - name: truststore
+        secret:
+          secretName: {{ include "metadata-broker-open-core.fullname" . }}
+          items:
+          - key: truststore
+            path: truststore.p12
+      {{- end }}
+      - name: key
+        secret:
+          secretName: {{ include "metadata-broker-open-core.fullname" . }}
+          items:
+          - key: key
+            path: key.pem
+      - name: config
+        emptyDir: {}

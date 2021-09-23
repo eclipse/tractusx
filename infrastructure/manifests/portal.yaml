@@ -1,3 +1,14 @@
+#
+# Copyright (c) 2021 T-Systems International GmbH (Catena-X Consortium)
+#
+# See the AUTHORS file(s) distributed with this work for additional
+# information regarding authorship.
+#
+# See the LICENSE file(s) distributed with this work for
+# additional information regarding license terms.
+#
+
+# K8 portal deployment and service 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -15,21 +26,31 @@ spec:
     spec:
       containers:
       - name: portal
-        image: catenaxdevacr.azurecr.io/portal
+# We should use the latest version semantics
+        image: tsicatenaxdevacr.azurecr.io/portal:latest
+# and a pull policy (at least in dev/integration) which allows for simple rollout deployment
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  annotations:
-    service.beta.kubernetes.io/azure-load-balancer-resource-group: catenax-dev-node-rg
-  name: portal-load-balancer
+# If you wanna have a loadbalancer as a service (https termination and certificates must then go into the app/pod!)
+  #annotations:
+  #  service.beta.kubernetes.io/azure-load-balancer-resource-group: catenax-dev-node-rg
+  #name: portal-load-balancer
+# If you wanna have an ingress instead
+  name: portal
   namespace: portal
 spec:
-  loadBalancerIP: 20.79.77.83
-  type: LoadBalancer
+# If you wanna have a loadbalancer as a service
+  #loadBalancerIP: 20.79.77.83
+  #type: LoadBalancer
+# If you wanna have an ingress instead
+  type: ClusterIP
   ports:
   - port: 80
+    targetPort: 80
   selector:
     app: portal

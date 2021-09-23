@@ -1,0 +1,54 @@
+spring:
+  application:
+    name: parts-relationship-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: compose-postgres
+    password: compose-postgres
+    ## default connection pool
+    hikari:
+      connectionTimeout: 20000
+      maximumPoolSize: 5
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,flyway,threaddump,loggers
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      group:
+        readiness:
+          include: readinessState, db, diskSpace
+      show-details: always
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  server:
+    port: 4004
+
+logging:
+  pattern:
+    console: "%d %-5level %logger : %msg%n"
+  level:
+    root: WARN
+    org.springframework: INFO
+    org.flywaydb: INFO
+    net.catenax.prs: INFO
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui
+  writer-with-order-by-keys: true
+
+prs:
+  apiUrl: http://localhost:8080

@@ -15,7 +15,8 @@ spec:
     spec:
       containers:
       - name: partsmasterdata
-        image: catenaxdevacr.azurecr.io/partsmasterdata:100
+        image: $CONTAINER_REGISTRY/partsmasterdata:$VERSION
+        imagePullPolicy: $IMAGE_PULL_POLICY
         env:
           - name: HTTPUSERNAME
             value: "TractusX"

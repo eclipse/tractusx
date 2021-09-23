@@ -1,0 +1,87 @@
+{{- if .Values.ingress.enabled -}}
+{{- $fullName := include "omejdn-server.fullname" . -}}
+{{- $ingressExtraPaths := .Values.ingress.extraPaths -}}
+{{- $svcName := include "omejdn-server.fullname" . -}}
+{{- $svcPort := .Values.service.port -}}
+{{- if semverCompare ">=1.20-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1
+{{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
+apiVersion: extensions/v1beta1
+{{- end }}
+kind: Ingress
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "omejdn-server.labels" . | nindent 4 }}
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    {{- if .Values.ingress.tls.certMgr.enabled }}
+    cert-manager.io/issuer: {{ .Values.ingress.tls.certMgr.issuer }}
+    {{- end }}
+spec:
+  {{- if .Values.ingress.tls.enabled }}
+  tls:
+    - hosts:
+        - {{ .Values.ingress.host }}
+      secretName: "{{ include "omejdn-server.fullname" . }}-tls"
+  {{- end }}
+  rules:
+  - host: {{ .Values.ingress.host }}
+    http:
+      paths:
+      - path: {{ default "/" .Values.ingress.pathPrefix | quote }}
+        backend:
+          {{- if semverCompare ">=1.20-0" .Capabilities.KubeVersion.GitVersion }}
+          service:            
+            name: {{ $svcName }}
+            port:
+              number: {{ $svcPort }}
+          {{- else }}
+          {{- if $.Values.service.servicename }}
+            serviceName: {{ $.Values.service.servicename }}
+          {{- else }}
+            serviceName: {{ default $svcName .service }}
+          {{- end }}
+            servicePort: {{ default $svcPort .port }}
+          {{- end }}
+        
+---
+{{- if semverCompare ">=1.20-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1
+{{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
+apiVersion: extensions/v1beta1
+{{- end }}
+kind: Ingress
+metadata:
+  name: {{ $fullName }}-jwks
+  labels:
+    {{- include "omejdn-server.labels" . | nindent 4 }}
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /.well-known/jwks.json
+    {{- if .Values.ingress.tls.certMgr.enabled }}
+    cert-manager.io/issuer: {{ .Values.ingress.tls.certMgr.issuer }}
+    {{- end }}
+spec:  
+  rules:
+    - host: {{ .Values.ingress.host }}
+      http:
+        paths:
+          - path: /.well-known/jwks.json
+            pathType: Prefix
+            backend:
+              {{- if semverCompare ">=1.20-0" .Capabilities.KubeVersion.GitVersion }}
+              service:
+                name: {{ $fullName }}
+                port:
+                  number: {{ $svcPort }}
+              {{- else }}
+              serviceName: {{ $fullName }}
+              servicePort: {{ $svcPort }}
+              {{- end }}
+              
+{{- end }}

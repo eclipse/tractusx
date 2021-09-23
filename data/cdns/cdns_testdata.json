@@ -1,0 +1,14 @@
+[
+    {
+        "oneID":"Partner_00001_BOSCH",
+        "idsConnectorID":"956e8672-f217-4c27-84c2-478336dafcba",
+        "connectorType":"IDS Connector",
+        "dnsEntry":"https://localhost:8080/api/ids/data"
+    },
+    {
+        "oneID":"Partner_00002_BILSTEIN",
+        "idsConnectorID":"956e8673-f217-4c27-84c2-478336dafcba",
+        "connectorType":"IDS Connector",
+        "dnsEntry":"https://localhost:8081/api/ids/data"
+    }
+]

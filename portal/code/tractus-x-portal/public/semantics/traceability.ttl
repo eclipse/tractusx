@@ -1,0 +1,221 @@
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix bamm: <urn:bamm:io.openmanufacturing:meta-model:1.0.0#> .
+@prefix unit: <urn:bamm:io.openmanufacturing:unit:1.0.0#> .
+@prefix bamm-c: <urn:bamm:io.openmanufacturing:characteristic:1.0.0#> .
+@prefix bamm-e: <urn:bamm:io.openmanufacturing:entity:1.0.0#> .
+@prefix : <urn:bamm:com.catenaX:0.0.1#> .
+
+:TRACTUSXPoC a bamm:Aspect ;
+   bamm:name "TRACTUSXPoC" ;
+   bamm:preferredName "TRACTUS-X PoC"@en ;
+   bamm:description "This is the BAMM Aspect Model for the data as used in the TRACTUS-X PoC."@en ;
+   bamm:properties ( :individualData :partTree :qualityAlertData :staticData :uniqueData ) ;
+   bamm:operations () .
+
+:individualData a bamm:Property ;
+   bamm:name "individualData" ;
+   bamm:preferredName "Individual Data"@en ;
+   bamm:characteristic :IndividualDataCharacteristic .
+
+:IndividualDataCharacteristic a bamm-c:SingleEntity ;
+   bamm:name "IndividualDataCharacteristic" ;
+   bamm:dataType :IndividualDataEntity .
+
+:IndividualDataEntity a bamm:Entity ;
+   bamm:name "IndividualDataEntity" ;
+   bamm:preferredName "Individual Data"@en ;
+   bamm:properties ( :productionCountryCode :productionDateGMT ) .
+
+:productionCountryCode a bamm:Property ;
+   bamm:name "productionCountryCode" ;
+   bamm:preferredName "Country code of production"@en ;
+   bamm:description "Country code of production"@en ;
+   bamm:characteristic :CountryCodeCharacteristic ;
+   bamm:exampleValue "HUR" .
+
+:CountryCodeCharacteristic a bamm-c:Code ;
+   bamm:name "CountryCodeCharacteristic" ;
+   bamm:dataType xsd:string .
+
+:productionDateGMT a bamm:Property ;
+   bamm:name "productionDateGMT" ;
+   bamm:preferredName "Production Date (GMT)"@en ;
+   bamm:description "Production date without timestamp"@en ;
+   bamm:characteristic :DateWithoutTimestamp ;
+   bamm:exampleValue "2021-05-30"^^xsd:date .
+
+:DateWithoutTimestamp a bamm:Characteristic ;
+   bamm:name "DateWithoutTimestamp" ;
+   bamm:preferredName "Date (without timestamp)"@en ;
+   bamm:description "Date without timestamp conformant to ISO 8601"@en ;
+   bamm:dataType xsd:date .
+
+:partTree a bamm:Property ;
+   bamm:name "partTree" ;
+   bamm:preferredName "Part Tree"@en ;
+   bamm:characteristic :PartTreeCharacteristic .
+
+:PartTreeCharacteristic a bamm:Characteristic ;
+   bamm:name "PartTreeCharacteristic" ;
+   bamm:dataType :PartTreeEntity .
+
+:PartTreeEntity a bamm:Entity ;
+   bamm:name "PartTreeEntity" ;
+   bamm:properties ( :isParentOf ) .
+
+:isParentOf a bamm:Property ;
+   bamm:name "isParentOf" ;
+   bamm:preferredName "is Parent of"@en ;
+   bamm:description "Set of Parts, identified by ID"@en ;
+   bamm:characteristic :IsParentOfCharacteristic .
+
+:IsParentOfCharacteristic a bamm-c:Set ;
+   bamm:name "IsParentOfCharacteristic" ;
+   bamm:dataType xsd:string .
+
+:qualityAlertData a bamm:Property ;
+   bamm:name "qualityAlertData" ;
+   bamm:preferredName "Quality Alert Data"@en ;
+   bamm:characteristic :QualityAlertDataCharacteristic .
+
+:QualityAlertDataCharacteristic a bamm-c:SingleEntity ;
+   bamm:name "QualityAlertDataCharacteristic" ;
+   bamm:dataType :QualityAlertDataEntity .
+
+:QualityAlertDataEntity a bamm:Entity ;
+   bamm:name "QualityAlertData" ;
+   bamm:properties ( :qualityAlert :qualityType ) ;
+   bamm:preferredName "Quality Alert Data"@en .
+
+:qualityAlert a bamm:Property ;
+   bamm:name "qualityAlert" ;
+   bamm:preferredName "Quality Alert"@en ;
+   bamm:characteristic bamm-c:Boolean ;
+   bamm:exampleValue "true"^^xsd:boolean .
+
+:qualityType a bamm:Property ;
+   bamm:name "qualityType" ;
+   bamm:preferredName "Quality Type"@en ;
+   bamm:characteristic :QualityTypeEnum ;
+   bamm:exampleValue "major"^^xsd:string .
+
+:QualityTypeEnum a bamm-c:Enumeration ;
+   bamm:name "QualityTypeEnum" ;
+   bamm:dataType xsd:string ;
+   bamm-c:values ( "major" "minor" "critical" ) .
+
+:staticData a bamm:Property ;
+   bamm:name "staticData" ;
+   bamm:preferredName "Static Data"@en ;
+   bamm:characteristic :StaticDataCharacteristic .
+
+:StaticDataCharacteristic a bamm-c:SingleEntity ;
+   bamm:name "StaticDataCharacteristic" ;
+   bamm:dataType :StaticDataEntity .
+
+:StaticDataEntity a bamm:Entity ;
+   bamm:name "StaticDataEntity" ;
+   bamm:properties ( :customerContractOneID :customerOneID :manufactureContractOneID :manufacturerOneID :partNameCustomer :partNameManufacturer :partNumberCustomer :partNumberManufacturer ) ;
+   bamm:preferredName "Static Data"@en .
+
+:customerContractOneID a bamm:Property ;
+   bamm:name "customerContractOneID" ;
+   bamm:preferredName "Customer Contract OneID"@en ;
+   bamm:description "OneID of customer contract partner"@en ;
+   bamm:characteristic :OneIDBusinessPartner .
+
+:customerOneID a bamm:Property ;
+   bamm:name "customerOneID" ;
+   bamm:preferredName "Customer OneID"@en ;
+   bamm:description "OneID of customer plant"@en ;
+   bamm:characteristic :OneIDBusinessPartner ;
+   bamm:exampleValue "CUSTOMER_ID" .
+
+:manufactureContractOneID a bamm:Property ;
+   bamm:name "manufactureContractOneID" ;
+   bamm:preferredName "Manufacture Contract OneID"@en ;
+   bamm:description "OneID of manufacturer contract partner"@en ;
+   bamm:characteristic :OneIDBusinessPartner .
+
+:manufacturerOneID a bamm:Property ;
+   bamm:name "manufacturerOneID" ;
+   bamm:preferredName "Manufacturer OneID"@en ;
+   bamm:description "OneID of manufacturer partner"@en ;
+   bamm:characteristic :OneIDBusinessPartner ;
+   bamm:exampleValue "ERROR_CP" .
+
+:partNameCustomer a bamm:Property ;
+   bamm:name "partNameCustomer" ;
+   bamm:preferredName "Name of the product (customer)"@en ;
+   bamm:description "Name of the part family of customer"@en ;
+   bamm:characteristic bamm-c:Text ;
+   bamm:exampleValue "MIRROR_1" .
+
+:partNameManufacturer a bamm:Property ;
+   bamm:name "partNameManufacturer" ;
+   bamm:preferredName "Name of the product (manufacturer)"@en ;
+   bamm:description "Name of the part family of manufacture"@en ;
+   bamm:characteristic bamm-c:Text ;
+   bamm:exampleValue "KLEBER1" .
+
+:partNumberCustomer a bamm:Property ;
+   bamm:name "partNumberCustomer" ;
+   bamm:preferredName "Part number (customer)"@en ;
+   bamm:description "Type/Part No. of customer product"@en ;
+   bamm:characteristic :PartNumberCharacteristic ;
+   bamm:exampleValue "1122334455" .
+
+:partNumberManufacturer a bamm:Property ;
+   bamm:name "partNumberManufacturer" ;
+   bamm:preferredName "Part number (manufacturer)"@en ;
+   bamm:description "Number of part family of manufacture"@en ;
+   bamm:characteristic :PartNumberCharacteristic .
+
+:OneIDBusinessPartner a bamm-c:Code ;
+   bamm:name "OneIDBusinessPartner" ;
+   bamm:preferredName "OneID BusinessPartner"@en ;
+   bamm:dataType xsd:string .
+
+:PartNumberCharacteristic a bamm:Characteristic ;
+   bamm:name "PartNumberCharacteristic" ;
+   bamm:preferredName "part number"@en ;
+   bamm:dataType xsd:string .
+
+:uniqueData a bamm:Property ;
+   bamm:name "uniqueData" ;
+   bamm:preferredName "Unique Data"@en ;
+   bamm:characteristic :UniqueDataCharacteristic .
+
+:UniqueDataCharacteristic a bamm-c:SingleEntity ;
+   bamm:name "UniqueDataCharacteristic" ;
+   bamm:dataType :UniqueDataEntity .
+
+:UniqueDataEntity a bamm:Entity ;
+   bamm:name "UniqueDataEntity" ;
+   bamm:properties ( :customerUniqueID :manufacturerUniqueID :uniqueID ) ;
+   bamm:preferredName "Unique Data Entity"@en .
+
+:customerUniqueID a bamm:Property ;
+   bamm:name "customerUniqueID" ;
+   bamm:preferredName "Customer Unique ID"@en ;
+   bamm:description "SerialNo. Of customer"@en ;
+   bamm:characteristic :IdCharacteristic ;
+   bamm:exampleValue "333" .
+
+:manufacturerUniqueID a bamm:Property ;
+   bamm:name "manufacturerUniqueID" ;
+   bamm:preferredName "Manufacturer Unique ID"@en ;
+   bamm:description "SerialNo. of manufacturer"@en ;
+   bamm:characteristic :IdCharacteristic ;
+   bamm:exampleValue "Xxx" .
+
+:uniqueID a bamm:Property ;
+   bamm:name "uniqueID" ;
+   bamm:preferredName "unique ID"@en ;
+   bamm:description "this is a local unique ID to identiy the part"@en ;
+   bamm:characteristic :IdCharacteristic ;
+   bamm:exampleValue "1AB" .
+
+:IdCharacteristic a bamm:Characteristic ;
+   bamm:name "IdCharacteristic" ;
+   bamm:dataType xsd:string .

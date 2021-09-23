@@ -1,0 +1,10 @@
+<FindBugsFilter>
+    <Match>
+        <!-- Do not fail on Spring REST endpoints. -->
+        <Bug pattern="SPRING_ENDPOINT"/>
+    </Match>
+    <Match>
+        <!-- Classes should generally use generated SerialVersionUID unless there is a reason to implement compatibility. -->
+        <Bug pattern="SE_NO_SERIALVERSIONID"/>
+    </Match>
+</FindBugsFilter>

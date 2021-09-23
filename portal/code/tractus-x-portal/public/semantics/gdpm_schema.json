@@ -1,0 +1,83 @@
+{
+  "$schema" : "http://json-schema.org/draft-04/schema",
+  "type" : "object",
+  "components" : {
+    "schemas" : {
+      "urn_bamm_com.catenaX_0.0.1_OneIDBusinessPartner" : {
+        "type" : "string"
+      },
+      "urn_bamm_com.catenaX_0.0.1_BusinessPartnerTypeCharacteristic" : {
+        "type" : "string"
+      },
+      "urn_bamm_io.openmanufacturing_characteristic_1.0.0_Text" : {
+        "type" : "string"
+      },
+      "urn_bamm_com.catenaX_0.0.1_BusinessPartnerNameTypeEnum" : {
+        "type" : "string",
+        "enum" : [ "registered_name", "local_name", "international_name", "transliterated_name", "DBA_name", "VAT_registered_name" ]
+      },
+      "urn_bamm_com.catenaX_0.0.1_SetOfBusinessPartnerName" : {
+        "type" : "array",
+        "items" : {
+          "type" : "object",
+          "properties" : {
+            "name" : {
+              "$ref" : "#/components/schemas/urn_bamm_io.openmanufacturing_characteristic_1.0.0_Text"
+            },
+            "type" : {
+              "$ref" : "#/components/schemas/urn_bamm_com.catenaX_0.0.1_BusinessPartnerNameTypeEnum"
+            },
+            "legalForm" : {
+              "$ref" : "#/components/schemas/urn_bamm_io.openmanufacturing_characteristic_1.0.0_Text"
+            }
+          },
+          "required" : [ "name", "type", "legalForm" ]
+        },
+        "uniqueItems" : true
+      },
+      "urn_bamm_com.catenaX_0.0.1_BusinessPartnerDataCharacteristic" : {
+        "type" : "object",
+        "properties" : {
+          "oneId" : {
+            "$ref" : "#/components/schemas/urn_bamm_com.catenaX_0.0.1_OneIDBusinessPartner"
+          },
+          "businessPartnerType" : {
+            "$ref" : "#/components/schemas/urn_bamm_com.catenaX_0.0.1_BusinessPartnerTypeCharacteristic"
+          },
+          "businessPartnerNames" : {
+            "$ref" : "#/components/schemas/urn_bamm_com.catenaX_0.0.1_SetOfBusinessPartnerName"
+          }
+        },
+        "required" : [ "businessPartnerType", "businessPartnerNames" ]
+      },
+      "urn_bamm_com.catenaX_0.0.1_EMailAddressTrait" : {
+        "type" : "string",
+        "pattern" : "tbd"
+      },
+      "urn_bamm_io.openmanufacturing_characteristic_1.0.0_ResourcePath" : {
+        "type" : "string",
+        "format" : "uri"
+      },
+      "urn_bamm_com.catenaX_0.0.1_ContactDataCharacteristic" : {
+        "type" : "object",
+        "properties" : {
+          "eMailAddress" : {
+            "$ref" : "#/components/schemas/urn_bamm_com.catenaX_0.0.1_EMailAddressTrait"
+          },
+          "url" : {
+            "$ref" : "#/components/schemas/urn_bamm_io.openmanufacturing_characteristic_1.0.0_ResourcePath"
+          }
+        }
+      }
+    }
+  },
+  "properties" : {
+    "businessPartnerData" : {
+      "$ref" : "#/components/schemas/urn_bamm_com.catenaX_0.0.1_BusinessPartnerDataCharacteristic"
+    },
+    "contactData" : {
+      "$ref" : "#/components/schemas/urn_bamm_com.catenaX_0.0.1_ContactDataCharacteristic"
+    }
+  },
+  "required" : [ "contactData" ]
+}

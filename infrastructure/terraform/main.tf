@@ -76,8 +76,8 @@ module "aks_services" {
   location                         = azurerm_resource_group.default_rg.location
   # client_id                        = "your-service-principal-client-appid"
   # client_secret                    = "your-service-principal-client-password"
-  kubernetes_version               = "1.19.9"
-  orchestrator_version             = "1.19.9"
+  kubernetes_version               = "1.19.11"
+  orchestrator_version             = "1.19.11"
   prefix                           = "${var.prefix}-${var.environment}-aks-services"
   cluster_name                     = "${var.prefix}-${var.environment}-aks-services"
   dns_prefix                       = "${var.prefix}${var.environment}akssrv"

@@ -20,7 +20,6 @@ import { Redirect, Route, RouteComponentProps, Switch, withRouter } from 'react-
 import Dashboard from './dashboard';
 import AppStore from './appstore';
 import DataCatalog from './datacatalog';
-import Vocabulary from './vocabulary';
 import DeveloperHub from './developerhub';
 import { ThemeProvider } from '@fluentui/react';
 import NotImp from './notimplemented';
@@ -32,6 +31,10 @@ import MyData from './mydata';
 import { observable } from 'mobx';
 import NotificationCenter from './notificationcenter';
 import YellowPages from './yellowpages';
+import { NewSemanticModel } from './newsemanticmodel';
+import SemanticHub from './semantichub';
+import SemanticModelDetail from './semanticmodeldetail';
+import DigitalTwins from './digitaltwins';
 
 const navStyles: Partial<INavStyles> = {
   root: {
@@ -150,7 +153,30 @@ const navLinkGroupsData: INavLinkGroup[] = [
   }
 ];
 
-const noNav = ['vocabulary', 'developerhub', 'appstore', 'notification', 'organization', 'partners', 'usermanagement'];
+const navLinkGroupsSemantics: INavLinkGroup[] = [
+  {
+    links: [
+      {
+        name: 'Browse & Search',
+        url: '/home/semantichub',
+        key: 'key1',
+        expandAriaLabel: 'Expand section',
+        collapseAriaLabel: 'Collapse section',
+        title: ''
+      },
+      {
+        name: 'New model',
+        url: '/home/newsemanticmodel',
+        key: 'key2',
+        expandAriaLabel: 'Expand section',
+        collapseAriaLabel: 'Collapse section',
+        title: ''
+      }
+    ]
+  }
+];
+
+const noNav = ['digitaltwins', 'semanticmodel', 'developerhub', 'appstore', 'notification', 'organization', 'partners', 'usermanagement'];
 
 @observer
 class Home extends React.Component<RouteComponentProps> {
@@ -169,21 +195,22 @@ class Home extends React.Component<RouteComponentProps> {
     this.props.history.push(item.url);
   }
 
-  public render() {
-    let groups = (window.location.href.indexOf('/datacatalog') >= 0) ? navLinkGroupsData : navLinkGroups;
-    for (const nav of noNav) {
-      if (window.location.href.indexOf(nav) >= 0) {
-        groups = null;
-      }
-    }
+  hasLeftTopNavi(): boolean{
+    return noNav.filter(nav => window.location.href.includes(nav)).length === 0;
+  }
 
+  public render() {
+    let groups = navLinkGroups;
+    if (window.location.href.includes('/datacatalog')) groups=navLinkGroupsData;
+    if (window.location.href.includes('/semantichub') || window.location.href.includes('/newsemanticmodel')) groups=navLinkGroupsSemantics;
+  
     return (
       <div className='w100pc h100pc df fdc bgf5'>
         <Header href={window.location.href} />
         <div className='df w100pc flex1'>
           <ThemeProvider theme={{ palette: { themePrimary: '#E6AA1E' } }}>
             <div className='df fdc w250 h100pc'>
-              {groups && <Nav className='bgwhite' selectedKey={Home.selectedKey1} ariaLabel='Navigation panel' styles={navStyles} groups={groups}
+              {this.hasLeftTopNavi() && <Nav className='bgwhite' selectedKey={Home.selectedKey1} ariaLabel='Navigation panel' styles={navStyles} groups={groups}
                 onLinkClick={(ev, item) => this.linkClick(ev, item)} />}
               <div className='flex1 bgwhite' />
               <Nav className='bgwhite' selectedKey={Home.selectedKey2} ariaLabel='Navigation panel' styles={navStyles} groups={navLinkGroups2}
@@ -196,7 +223,10 @@ class Home extends React.Component<RouteComponentProps> {
               <Route path='/home/dashboard' component={(props) => <Dashboard {...props} />} />
               <Route path='/home/appstore' component={(props) => <AppStore {...props} />} />
               <Route path='/home/datacatalog' component={(props) => <DataCatalog {...props} />} />
-              <Route path='/home/vocabulary' component={(props) => <Vocabulary {...props} />} />
+              <Route path='/home/semantichub' component={(props) => <SemanticHub {...props} />} />
+              <Route path='/home/newsemanticmodel' component={(props) => <NewSemanticModel {...props} />} />
+              <Route path='/home/semanticmodel/:id' component={(props) => <SemanticModelDetail {...props} />} />
+              <Route path='/home/digitaltwins' component={(props) => <DigitalTwins {...props} />} />
               <Route path='/home/developerhub' component={(props) => <DeveloperHub {...props} />} />
               <Route path='/home/appdetail/:id' component={(props) => <AppDetail {...props} />} />
               <Route path='/home/mydata' component={(props) => <MyData {...props} />} />

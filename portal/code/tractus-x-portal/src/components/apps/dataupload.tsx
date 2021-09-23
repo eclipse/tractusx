@@ -21,18 +21,11 @@ import { Dialog, DialogType, DialogFooter } from '@fluentui/react';
 import { AppState } from '../../stores/appstate';
 import AppCard from '../appcard';
 import { observable } from 'mobx';
+import BackLink from '../navigation/backlink';
 
 @observer
 class DataUpload extends React.Component<RouteComponentProps> {
   @observable hideDialog = true;
-
-  private backClick(): void {
-    if (this.props.history.length > 1) {
-      this.props.history.goBack();
-    } else {
-      this.props.history.push('/home/dashboard');
-    }
-  }
 
   private newconnClick() {
     this.hideDialog = false;
@@ -85,10 +78,7 @@ class DataUpload extends React.Component<RouteComponentProps> {
         <SearchBox className='ml250 bcwhite' placeholder='Search' underlined={true} />
         <div className='bgf5 df fdc flex1'>
           <div className='ml250 mt20 mr50 mb30 w100-200 df fdc'>
-            <div className='fgblack fs15 fw600 tdn ml5 df mt10 mb20 aic cpointer' onClick={() => this.backClick()}>
-              <Icon className='fgblack fs20 mt2 mr7' iconName='SkypeArrow' />
-              BACK
-            </div>
+            <BackLink history={this.props.history}/>
             <div className='df aic w100-100'>
               <span className='bold fs14 ml10'>My connected apps</span>
               <div className='flex1' />

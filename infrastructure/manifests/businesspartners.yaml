@@ -15,14 +15,15 @@ spec:
     spec:
       containers:
       - name: businesspartners
-        image: catenaxdevacr.azurecr.io/businesspartners:98
+        image: $CONTAINER_REGISTRY/businesspartners:$VERSION
+        imagePullPolicy: $IMAGE_PULL_POLICY
         env:
           - name: TABLENAME
             value: "BusinessPartners"
           - name: STORAGE_CONNECTIONSTRING
             valueFrom:
               secretKeyRef:
-                key: sotrage_connectionstring
+                key: storage_connectionstring
                 name: businesspartners-secret
           - name: HTTPUSERNAME
             value: "TractusX"

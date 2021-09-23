@@ -1,0 +1,1401 @@
+openapi: 3.0.0
+info:
+  title: "Catena-X Speedboat TDM MockData"
+  description: Catena-X Speedboat TDM MockData Services
+  version: 0.0.1 Speedboat
+  termsOfService: https://projects.eclipse.org/proposals/eclipse-tractus-x
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  contact:
+    name: Christian Kabelin
+    email: christian.kabelin@partner.bmw.de
+    
+servers:
+  - url: http://localhost:8080
+    
+paths:
+  /catena-x/tdm/1.0/admin/purge:
+    get:
+      summary: Purge all current test data
+      operationId: purgeTestData
+      tags:
+        - "TDM Admin"
+      parameters:
+        - name: API_KEY
+          in: query
+          description: API KEY
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: purged
+          content:
+            application/json:
+              schema:
+                type: string
+
+  /catena-x/tdm/1.0/businesspartner/bpn:
+    get:
+      summary: Create Business Partner BPN
+      description: Create Business Partner BPN
+      operationId: createBusinessPartnerNumber
+      tags:
+        - "Business Partner Service"
+      responses:
+        '200':
+          description: Business Partner BPN
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BPN'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
+  /catena-x/tdm/1.0/businesspartner:
+    get:
+      summary: Get Business Partner 
+      description: Get Business Partner 
+      operationId: getBusinessPartner
+      tags:
+        - "Business Partner Service"
+      parameters:
+        - name: BusinessPartnerNumber
+          in: query
+          description: ID of Business Partner
+          required: false
+          schema:
+            $ref: "#/components/schemas/BPN"
+      responses:
+        '200':
+          description: Business Partner BPN
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BusinessPartner'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
+  /catena-x/tdm/1.0/member/company:
+    get:
+      summary: Retrieve Member Company
+      description: Retrieve Member Company
+      operationId: getMemberCompany
+      tags:
+        - "Member Company Service"
+      parameters:
+        - name: BusinessPartnerNumber
+          in: query
+          description: ID of Business Partner
+          required: false
+          schema:
+            $ref: "#/components/schemas/BPN"
+      responses:
+        '200':
+          description: Business Partner
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MemberCompany'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /catena-x/tdm/1.0/member/company/role/all:
+    get:
+      summary: Retrieve all possible Roles for a Business Partner
+      description: Retrieve all possible Roles for a Business Partner
+      operationId: getMemberCompanyRolesAll
+      tags:
+        - "Member Company Service"
+      responses:
+        '200':
+          description: TBD
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MemberCompanyRole'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
+  /catena-x/tdm/1.0/traceability/{oneid}:
+    get:
+      tags:
+      - Traceability
+      summary: get all Traceability information for OneID
+      operationId: getTraceability
+      parameters:
+      - name: oneid
+        in: path
+        description: The member company owning the requested Twin.
+        required: true
+        schema:
+          $ref: "#/components/schemas/BPN"
+      responses:
+        "200":
+          $ref: '#/components/responses/Traceability'
+        "401":
+          $ref: '#/components/responses/ClientError'
+        "402":
+          $ref: '#/components/responses/Unauthorized'
+        "403":
+          $ref: '#/components/responses/Forbidden'
+        "404":
+          $ref: '#/components/responses/NotFoundError'  
+
+  /catena-x/tdm/1.0/vehicle/create/{oneid}:
+    get:
+      tags:
+        - Parts Relationship Service
+      summary: Create new vehicle BOM
+      operationId: createVehicle
+      parameters:
+        - name: oneid
+          in: path
+          description: OneID of manufacturer
+          required: true
+          schema:
+            $ref: "#/components/schemas/BPN"
+        - name: count
+          description: number of vehicles to create
+          in: query
+          example: 1
+          schema:
+            type: integer
+        - name: vehicleType
+          description: "Vehicle Type"
+          example: "G01"
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Created BOM
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PartRelationshipWithInfos'
+        '404':
+          description: BOM not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                
+  /catena-x/tdm/1.0/prs/bom/{oneIDManufacturer}/{objectIDManufacturer}:
+    get:
+      tags:
+        - Parts Relationship Service
+      summary: Get a BOM by its id
+      operationId: getBOM
+      parameters:
+        - name: oneIDManufacturer
+          in: path
+          description: Readable ID of manufacturer including plant
+          required: true
+          schema:
+            type: string
+          example: BMW MUC
+        - name: objectIDManufacturer
+          in: path
+          description: 'Unique identifier of a single, unique physical (sub)component/part/batch, given by its manufacturer'
+          required: true
+          schema:
+            type: string
+          example: YS3DD78N4X7055320
+        - name: aspect
+          in: query
+          description: Aspect information to add to the returned bom
+          required: false
+          schema:
+            type: string
+          example: CE
+        - name: depth
+          in: query
+          description: 'Max depth of the returned bom, if empty max depth is returned'
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Found the BOM
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PartRelationshipWithInfos'
+        '404':
+          description: BOM not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                
+
+
+
+                
+  /catena-x/tdm/1.0/prs/broker/PartTypeNameUpdate:
+    get:
+      tags:
+        - Parts Relationship Service - Broker HTTP Proxy API
+      summary: Get a PartTypeNameUpdate. Describes an update of a part type name.
+      operationId: getPartTypeNameUpdate
+      parameters:
+        - name: bpn
+          in: query
+          schema:
+            $ref: '#/components/schemas/BPN'
+        - name: effectiveDateTimeStart
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: effectiveDateTimeEnd
+          in: query
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Found the BOM
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PartTypeNameUpdate'
+  
+  /catena-x/tdm/1.0/prs/broker/PartRelationshipUpdateList:
+    get:
+      tags:
+        - Parts Relationship Service - Broker HTTP Proxy API
+      summary: Get a PartAspectUpdate. Describes an update of a PartAspectUpdate.
+      operationId: getPartRelationshipUpdateList
+      parameters:
+        - name: bpn
+          in: query
+          schema:
+            $ref: '#/components/schemas/BPN'
+        - name: effectiveDateTimeStart
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: effectiveDateTimeEnd
+          in: query
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Found the BOM
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PartRelationshipUpdateList'
+
+  /catena-x/tdm/1.0/prs/broker/PartAspectUpdate:
+    get:
+      tags:
+        - Parts Relationship Service - Broker HTTP Proxy API
+      summary: Get a PartAspectUpdate. Describes an update of a PartAspectUpdate.
+      operationId: getPartAspectUpdate
+      parameters:
+        - name: bpn
+          in: query
+          schema:
+            $ref: '#/components/schemas/BPN'
+        - name: effectiveDateTimeStart
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: effectiveDateTimeEnd
+          in: query
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Found the BOM
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PartAspectUpdate' 
+                
+                
+             
+                
+                
+  /catena-x/tdm/1.0/aspect/{aspect}/{oneID}/{partUniqueID}:
+    get:
+      tags:
+        - "Aspect Model"
+      summary: Retrieve Aspect
+      operationId: getAspect
+      parameters:
+        - name: aspect
+          in: path
+          description: Aspect Name
+          required: true
+          schema:
+            type: string
+        - name: oneID
+          in: path
+          description: Business Partner OneID
+          required: true
+          schema:
+            type: string
+        - name: partUniqueID
+          in: path
+          description: UniqueID of part
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Created BOM
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        '404':
+          description: Aspect not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                
+components:
+  schemas:
+    BPN:
+      description: Business Partner OneID
+      example: BPNL1234567890ZZ
+      type: string
+      minLength: 16
+      maxLength: 16
+      
+    BPNIssuer:
+      description: Issuer for BPN
+      properties:
+        name:
+          type: string
+        prefix:
+          type: string
+
+    BusinessPartner:
+      description: Business Partner
+      properties:
+        bpn:
+          $ref: '#/components/schemas/BPN'
+        parent:
+          $ref: '#/components/schemas/BPN'
+        accountGroup:
+          type: string
+        name1:
+          type: string
+        name2:
+          type: string
+        name3:
+          type: string
+        name4:
+          type: string
+        addressVersion:
+          type: string
+        country:
+          type: string
+        city:
+          type: string
+        postalCode:
+          type: string
+        street1:
+          type: string
+        street2:
+          type: string
+        street3:
+          type: string
+        houseNumber:
+          type: string
+        taxNumber1:
+          type: string
+        taxNumber1Type:
+          type: string
+        taxNumber2:
+          type: string
+        taxNumber2Type:
+          type: string
+        taxNumber3:
+          type: string
+        taxNumber3Type:
+          type: string
+        taxNumber4:
+          type: string
+        taxNumber4Type:
+          type: string
+        taxNumber5:
+          type: string
+        taxNumber5Type:
+          type: string
+        vatNumber:
+          type: string
+        vatNumberType:
+          type: string
+
+    MemberCompany:
+      description: Member Company
+      required:
+        - BPN
+        - name
+      properties:
+        BPN:
+          $ref: '#/components/schemas/BPN'
+        name:
+          type: string
+        parent:
+          $ref: '#/components/schemas/BPN'
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/MemberCompanyRole'
+          
+    MemberCompanyRole:
+      type: string
+      enum:
+        - ACTIVE_PARTICIPANT
+        - APP_PROVIDER
+        - OPERATIONS_INFRASTRUCTURE_PROVIDER
+        - CONSULTING
+        - CLEARING_HOUSE
+
+    ErrorResponse:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          $ref: '#/components/schemas/Error'
+    Error:
+      type: object
+      required:
+      - details
+      properties:
+        message:
+          type: string
+          minLength: 1
+        path:
+          type: string
+          minLength: 1
+        details:
+          type: object
+          minLength: 1
+          additionalProperties:
+            type: object
+        code:
+          type: string
+          nullable: true
+    OneIDBusinessPartner:
+      type: string
+    Text:
+      type: string
+    PartNumberCharacteristic:
+      type: string
+    PartStaticDataCharacteristic:
+      type: object
+      properties:
+        customerContractOneID:
+          $ref: '#/components/schemas/OneIDBusinessPartner'
+        customerOneID:
+          $ref: '#/components/schemas/OneIDBusinessPartner'
+        manufactureContractOneID:
+          $ref: '#/components/schemas/OneIDBusinessPartner'
+        manufacturerOneID:
+          $ref: '#/components/schemas/OneIDBusinessPartner'
+        partNameCustomer:
+          $ref: '#/components/schemas/Text'
+        partNameManufacturer:
+          $ref: '#/components/schemas/Text'
+        partNumberCustomer:
+          $ref: '#/components/schemas/PartNumberCharacteristic'
+        partNumberManufacturer:
+          $ref: '#/components/schemas/PartNumberCharacteristic'
+      required:
+      - customerContractOneID
+      - customerOneID
+      - manufactureContractOneID
+      - manufacturerOneID
+      - partNameCustomer
+      - partNameManufacturer
+      - partNumberCustomer
+      - partNumberManufacturer
+    IdCharacteristic:
+      type: string
+    PartUniqueDataCharacteristic:
+      type: object
+      properties:
+        customerUniqueID:
+          $ref: '#/components/schemas/IdCharacteristic'
+        manufacturerUniqueID:
+          $ref: '#/components/schemas/IdCharacteristic'
+        uniqueID:
+          $ref: '#/components/schemas/IdCharacteristic'
+      required:
+      - customerUniqueID
+      - manufacturerUniqueID
+      - uniqueID
+    CountryCodeCharacteristic:
+      type: string
+    DateWithoutTimestamp:
+      type: string
+      format: date
+    PartIndividualDataCharacteristic:
+      type: object
+      properties:
+        productionCountryCode:
+          $ref: '#/components/schemas/CountryCodeCharacteristic'
+        productionDateGMT:
+          $ref: '#/components/schemas/DateWithoutTimestamp'
+      required:
+      - productionCountryCode
+      - productionDateGMT
+    IsParentOfCharacteristic:
+      type: array
+      items:
+        type: string
+      uniqueItems: true
+    PartTreeParentCharacteristic:
+      type: object
+      properties:
+        isParentOf:
+          $ref: '#/components/schemas/IsParentOfCharacteristic'
+      required:
+      - isParentOf
+    Boolean:
+      type: boolean
+    QualityTypeEnum:
+      type: string
+      enum:
+      - major
+      - minor
+      - critical
+    QualityAlertDataCharacteristic:
+      type: object
+      properties:
+        qualityAlert:
+          $ref: '#/components/schemas/Boolean'
+        qualityType:
+          $ref: '#/components/schemas/QualityTypeEnum'
+      required:
+      - qualityAlert
+      - qualityType
+      
+    Traceability:
+      type: object
+      properties:
+        staticData:
+          $ref: '#/components/schemas/PartStaticDataCharacteristic'
+        uniqueData:
+          $ref: '#/components/schemas/PartUniqueDataCharacteristic'
+        individualData:
+          $ref: '#/components/schemas/PartIndividualDataCharacteristic'
+        supplierTree:
+          $ref: '#/components/schemas/PartTreeParentCharacteristic'
+        partTree:
+          $ref: '#/components/schemas/PartTreeParentCharacteristic'
+        qualityAlertData:
+          $ref: '#/components/schemas/QualityAlertDataCharacteristic'
+      required:
+      - staticData
+      - uniqueData
+      - individualData
+      - supplierTree
+      - partTree
+      - qualityAlertData
+     
+    
+      
+    PartInfo:
+      type: object
+      properties:
+        part:
+          $ref: '#/components/schemas/PartId'
+        partTypeName:
+          type: string
+          description: 'Type of material, (sub)component/part or vehicle'
+          example: gearbox
+        aspects:
+          type: array
+          description: List of aspect locations.
+          items:
+            $ref: '#/components/schemas/Aspect'
+      description: Information about parts
+    PartRelationshipWithInfos:
+      type: object
+      properties:
+        relationships:
+          type: array
+          description: List of the relationships
+          items:
+            $ref: '#/components/schemas/PartRelationship'
+        partInfos:
+          type: array
+          description: List of part infos
+          items:
+            $ref: '#/components/schemas/PartInfo'
+      description: List of the relationships with their infos
+      
+      
+    PartId:
+      required:
+        - oneIDManufacturer
+      type: object
+      properties:
+        oneIDManufacturer:
+          type: string
+          description: Readable ID of manufacturer including plant
+          example: BMW MUC
+        objectIDManufacturer:
+          type: string
+          description: 'Unique identifier of a single, unique physical (sub)component/part/batch, given by its manufacturer. For a vehicle, the Vehicle Identification Number (VIN).'
+          example: '1122334455'
+      description: Unique part identifier
+    PartTypeNameUpdate:
+      required:
+        - effectTime
+      type: object
+      properties:
+        effectTime:
+          type: string
+          description: Instant at which the update was applied
+          format: date-time
+        part:
+          $ref: '#/components/schemas/PartId'
+        partTypeName:
+          type: string
+          description: 'Type of material, (sub)component/part or vehicle'
+          example: gearbox
+      description: Describes an update of a part type name.
+    PartRelationship:
+      required:
+        - child
+        - parent
+      type: object
+      properties:
+        parent:
+          $ref: '#/components/schemas/PartId'
+        child:
+          $ref: '#/components/schemas/PartId'
+      description: Link between two parts.
+    PartRelationshipUpdate:
+      required:
+        - effectTime
+        - relationship
+        - stage
+      type: object
+      properties:
+        effectTime:
+          type: string
+          description: Instant at which the update was applied
+          format: date-time
+        relationship:
+          $ref: '#/components/schemas/PartRelationship'
+        remove:
+          type: boolean
+          description: '<ul>   <li>TRUE if the child is not part of the parent (used to update data, e.g. a relationship was wrongly submitted, or a part is removed from a car during maintenance)</li>   <li>FALSE otherwise (“normal case” - a part is added into a parent part).</li></ul>'
+        stage:
+          type: string
+          description: Stage defining whether changes apply to the AS_BUILT or AS_MAINTAINED BOM views.
+          enum:
+            - BUILD
+            - MAINTENANCE
+      description: Describes an update of a relationship
+    PartRelationshipUpdateList:
+      type: object
+      properties:
+        relationships:
+          type: array
+          description: List of relationships updates
+          items:
+            $ref: '#/components/schemas/PartRelationshipUpdate'
+      description: Describes an update of (part of) a BOM.
+    Aspect:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Aspect name
+          example: CE
+        url:
+          type: string
+          description: URL location of aspect data
+          format: url
+          example: 'http://aspects-url/CE'
+      description: Aspect location data
+    PartAspectUpdate:
+      required:
+        - aspects
+        - effectTime
+      type: object
+      properties:
+        effectTime:
+          type: string
+          description: Instant at which the update was applied
+          format: date-time
+        part:
+          $ref: '#/components/schemas/PartId'
+        aspects:
+          type: array
+          description: Aspect location.
+          items:
+            $ref: '#/components/schemas/Aspect'
+        remove:
+          type: boolean
+          description: <ul>   <li>TRUE if the aspect URLs are to be deleted from the part</li>   <li>FALSE otherwise (“normal case” - an aspect URL is added to a part).</li></ul>
+      description: Describes an update of a part aspect location.
+      
+      
+      
+    ReuseOptionsSelection:
+      type: array
+      items:
+        type: string
+        enum:
+        - sell
+        - spare parts
+      uniqueItems: true
+    RecyclingOptionsSelection:
+      type: array
+      items:
+        type: string
+        enum:
+        - energy
+        - raw material
+      uniqueItems: true
+    SequenceId:
+      type: string
+    StepsSequenceCharacteristics:
+      type: array
+      items:
+        type: object
+        properties:
+          sequenceId:
+            $ref: '#/components/schemas/SequenceId'
+          name:
+            $ref: '#/components/schemas/Text'
+          description:
+            $ref: '#/components/schemas/Text'
+        required:
+        - sequenceId
+        - name
+      uniqueItems: true
+    EoLOptions:
+      type: object
+      properties:
+        reuseOptions:
+          $ref: '#/components/schemas/ReuseOptionsSelection'
+        recyclingOptions:
+          $ref: '#/components/schemas/RecyclingOptionsSelection'
+        disassemblySteps:
+          $ref: '#/components/schemas/StepsSequenceCharacteristics'
+        recyclingSteps:
+          $ref: '#/components/schemas/StepsSequenceCharacteristics'
+      required:
+      - reuseOptions
+      - recyclingOptions
+    
+    
+    
+    DisassemblyStatus:
+      type: string
+      enum:
+      - assembled
+      - disassembled
+    VehicleHealthStatus:
+      type: string
+      enum:
+      - in running condition
+      - repair required
+      - broken
+    RecyclingStatusCharacteristic:
+      type: string
+      enum:
+      - recycled
+      - not recycled
+    RecyclingProcessCharacteristic:
+      type: string
+      enum:
+      - process1
+      - process2
+      - process3
+
+    BuildPositionEnumeration:
+      type: string
+      enum:
+      - left
+      - right
+      - front
+      - back
+    Weight:
+      type: number
+    EoLStory:
+      type: object
+      properties:
+        disassemblyStatus:
+          $ref: '#/components/schemas/DisassemblyStatus'
+        vehicleHealthStatus:
+          $ref: '#/components/schemas/VehicleHealthStatus'
+        recyclingStatus:
+          $ref: '#/components/schemas/RecyclingStatusCharacteristic'
+        recyclingProcess:
+          $ref: '#/components/schemas/RecyclingProcessCharacteristic'
+        crashHistory:
+          $ref: '#/components/schemas/Boolean'
+        buildPosition:
+          $ref: '#/components/schemas/BuildPositionEnumeration'
+        weightScrap:
+          $ref: '#/components/schemas/Weight'
+      required:
+      - disassemblyStatus
+      - vehicleHealthStatus
+      - recyclingStatus
+      - recyclingProcess
+      - crashHistory
+      - buildPosition
+      - weightScrap
+      
+
+    PropertyBoolean:
+      type: boolean
+    DocumentIdCharacteristic:
+      type: array
+      items:
+        type: object
+        properties:
+          documentDomainId:
+            $ref: '#/components/schemas/Text'
+          valueId:
+            $ref: '#/components/schemas/Text'
+          isPrimary:
+            $ref: '#/components/schemas/PropertyBoolean'
+        required:
+        - documentDomainId
+        - valueId
+      uniqueItems: true
+    MultiLanguageProperty:
+      type: array
+      items:
+        type: object
+      uniqueItems: true
+    PropertyString:
+      type: string
+    DocumentClassificationCharacteristic:
+      type: array
+      items:
+        type: object
+        properties:
+          classId:
+            $ref: '#/components/schemas/Text'
+          className:
+            $ref: '#/components/schemas/MultiLanguageProperty'
+          documentClassificationSystem:
+            $ref: '#/components/schemas/PropertyString'
+        required:
+        - classId
+        - className
+      uniqueItems: true
+    ReferenceElementSet:
+      type: array
+      items:
+        type: string
+      uniqueItems: true
+    Language:
+      type: string
+    LanguageSet:
+      type: array
+      items:
+        type: object
+        properties:
+          language:
+            $ref: '#/components/schemas/Language'
+        required:
+        - language
+      uniqueItems: true
+    DocumentVersionId:
+      type: string
+    Timestamp:
+      type: string
+      pattern: "-?([1-9][0-9]{3,}|0[0-9]{3})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T(([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\\
+        .[0-9]+)?|(24:00:00(\\.0+)?))(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?"
+    InReview:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - InReview
+      required:
+      - status
+    Released:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - Released
+      required:
+      - status
+    StatusValueCharacteristic:
+      type: object
+      oneOf:
+      - $ref: '#/components/schemas/InReview'
+      - $ref: '#/components/schemas/Released'
+    Role:
+      type: string
+      enum:
+      - Author
+      - Customer
+      - Supplier
+      - Manufacturer
+      - Responsible
+    OrganizationName:
+      type: string
+    ResourcePath:
+      type: string
+      format: uri
+    MimeType:
+      type: string
+    DigitalFiles:
+      type: array
+      items:
+        type: object
+        properties:
+          value:
+            $ref: '#/components/schemas/ResourcePath'
+          mimeType:
+            $ref: '#/components/schemas/MimeType'
+        required:
+        - value
+        - mimeType
+      uniqueItems: true
+    DocumentVersions:
+      type: array
+      items:
+        type: object
+        properties:
+          languages:
+            $ref: '#/components/schemas/LanguageSet'
+          documentVersionId:
+            $ref: '#/components/schemas/DocumentVersionId'
+          title:
+            $ref: '#/components/schemas/MultiLanguageProperty'
+          summary:
+            $ref: '#/components/schemas/MultiLanguageProperty'
+          keyWords:
+            $ref: '#/components/schemas/MultiLanguageProperty'
+          setDate:
+            $ref: '#/components/schemas/Timestamp'
+          statusValue:
+            $ref: '#/components/schemas/StatusValueCharacteristic'
+          role:
+            $ref: '#/components/schemas/Role'
+          organizationOfficialName:
+            $ref: '#/components/schemas/OrganizationName'
+          organizationName:
+            $ref: '#/components/schemas/OrganizationName'
+          digitalFiles:
+            $ref: '#/components/schemas/DigitalFiles'
+        required:
+        - languages
+        - documentVersionId
+        - title
+        - summary
+        - setDate
+        - statusValue
+        - role
+        - organizationOfficialName
+        - organizationName
+        - digitalFiles
+      uniqueItems: true
+    Documents:
+      type: array
+      items:
+        type: object
+        properties:
+          documentId:
+            $ref: '#/components/schemas/DocumentIdCharacteristic'
+          documentClassifications:
+            $ref: '#/components/schemas/DocumentClassificationCharacteristic'
+          documentEntities:
+            $ref: '#/components/schemas/ReferenceElementSet'
+          documentVersions:
+            $ref: '#/components/schemas/DocumentVersions'
+        required:
+        - documentId
+        - documentClassifications
+      uniqueItems: true
+    ManufacturerDocumentation:
+      type: object
+      properties:
+        documents:
+          $ref: '#/components/schemas/Documents'
+      required:
+      - documents
+ 
+      
+      
+      
+    MaterialNamesEnumeration:
+      type: string
+      enum:
+      - aluminium
+      - polyamide
+      - others
+    MaterialTypesEnumeration:
+      type: string
+      enum:
+      - metal
+      - plastic
+      - other
+    AggregateStatesEnumeration:
+      type: string
+      enum:
+      - gas
+      - liquid
+      - solid
+
+    Fraction:
+      type: number
+    materialCollection:
+      type: array
+      items:
+        type: object
+        properties:
+          materialName:
+            $ref: '#/components/schemas/MaterialNamesEnumeration'
+          materialType:
+            $ref: '#/components/schemas/MaterialTypesEnumeration'
+          aggregateState:
+            $ref: '#/components/schemas/AggregateStatesEnumeration'
+          chemicalComposition:
+            $ref: '#/components/schemas/materialCollection'
+          weight:
+            $ref: '#/components/schemas/Weight'
+          chemicalCompositionFraction:
+            $ref: '#/components/schemas/Fraction'
+        required:
+        - materialName
+        - materialType
+        - aggregateState
+        - weight
+    MaterialCharacteristic:
+      type: object
+      properties:
+        materialName:
+          $ref: '#/components/schemas/MaterialNamesEnumeration'
+        materialType:
+          $ref: '#/components/schemas/MaterialTypesEnumeration'
+        aggregateState:
+          $ref: '#/components/schemas/AggregateStatesEnumeration'
+        chemicalComposition:
+          $ref: '#/components/schemas/materialCollection'
+        weight:
+          $ref: '#/components/schemas/Weight'
+        chemicalCompositionFraction:
+          $ref: '#/components/schemas/Fraction'
+      required:
+      - materialName
+      - materialType
+      - aggregateState
+      - weight
+    Material:
+      type: object
+      properties:
+        materialDetails:
+          $ref: '#/components/schemas/MaterialCharacteristic'
+      required:
+      - materialDetails
+
+    Capacity:
+      type: number
+    PerformanceIndicatorCharacteristic:
+      type: object
+      properties:
+        electricCapacityMin:
+          $ref: '#/components/schemas/Capacity'
+        electricCapacityMax:
+          $ref: '#/components/schemas/Capacity'
+      required:
+      - electricCapacityMin
+      - electricCapacityMax
+    Length:
+      type: number
+    ProductDimension3D:
+      type: object
+      properties:
+        dimensionX:
+          $ref: '#/components/schemas/Length'
+        dimensionY:
+          $ref: '#/components/schemas/Length'
+        dimensionZ:
+          $ref: '#/components/schemas/Length'
+      required:
+      - dimensionX
+      - dimensionY
+      - dimensionZ
+    SetOfDocumentTypes:
+      type: array
+      items:
+        type: string
+      uniqueItems: true
+    ProductDescription:
+      type: object
+      properties:
+        productID:
+          $ref: '#/components/schemas/Text'
+        productName:
+          $ref: '#/components/schemas/Text'
+        productDescription:
+          $ref: '#/components/schemas/Text'
+        productionDateGMT:
+          $ref: '#/components/schemas/Timestamp'
+        buildPosition:
+          $ref: '#/components/schemas/Text'
+        liquidBearing:
+          $ref: '#/components/schemas/Boolean'
+        productWeight:
+          $ref: '#/components/schemas/Weight'
+        performanceIndicator:
+          $ref: '#/components/schemas/PerformanceIndicatorCharacteristic'
+        productDimension:
+          $ref: '#/components/schemas/ProductDimension3D'
+        productType:
+          $ref: '#/components/schemas/SetOfDocumentTypes'
+      required:
+      - productID
+      - productName
+      - productDescription
+      - productionDateGMT
+      
+      
+    LifeSpan:
+      type: number
+    PercentOfSomething:
+      type: number
+    Mileage:
+      type: number
+    NumberOfCycles:
+      type: number
+      maximum: 9223372036854775807
+      minimum: -9223372036854775808
+    Voltage:
+      type: number
+    Current:
+      type: number
+    ProductUsage:
+      type: object
+      properties:
+        lifeSpan:
+          $ref: '#/components/schemas/LifeSpan'
+        stateOfHealth:
+          $ref: '#/components/schemas/PercentOfSomething'
+        stateOfCharge:
+          $ref: '#/components/schemas/PercentOfSomething'
+        mileage:
+          $ref: '#/components/schemas/Mileage'
+        numberOfChargingCycles:
+          $ref: '#/components/schemas/NumberOfCycles'
+        voltage:
+          $ref: '#/components/schemas/Voltage'
+        residualCurrentHazard:
+          $ref: '#/components/schemas/Current'
+        lifeSpanAsPlanned:
+          $ref: '#/components/schemas/LifeSpan'
+        numberOfChargingCyclesAsPlanned:
+          $ref: '#/components/schemas/NumberOfCycles'
+      required:
+      - lifeSpan
+      - stateOfHealth
+      - stateOfCharge
+      - mileage
+      - numberOfChargingCycles
+      - voltage
+      - residualCurrentHazard
+      - lifeSpanAsPlanned
+      - numberOfChargingCyclesAsPlanned
+
+
+    ReturnRequest:
+      type: object
+      properties:
+        return:
+          $ref: '#/components/schemas/Boolean'
+      required:
+      - return
+
+
+    Logo:
+      type: object
+      properties:
+        mimeType:
+          $ref: '#/components/schemas/MimeType'
+        value:
+          $ref: '#/components/schemas/ResourcePath'
+      required:
+      - mimeType
+      - value
+
+    ProductImages:
+      type: array
+      items:
+        type: object
+        properties:
+          mimeType:
+            $ref: '#/components/schemas/MimeType'
+          value:
+            $ref: '#/components/schemas/ResourcePath'
+        required:
+        - mimeType
+        - value
+      uniqueItems: true
+    GeneralInformation:
+      type: object
+      properties:
+        manufacturerName:
+          $ref: '#/components/schemas/Text'
+        manufacturerLogo:
+          $ref: '#/components/schemas/Logo'
+        manufacturerProductDesignation:
+          $ref: '#/components/schemas/MultiLanguageProperty'
+        manufacturerPartNumber:
+          $ref: '#/components/schemas/Text'
+        manufacturerOrderCode:
+          $ref: '#/components/schemas/Text'
+        productImages:
+          $ref: '#/components/schemas/ProductImages'
+      required:
+      - manufacturerName
+      - manufacturerProductDesignation
+      - manufacturerPartNumber
+      - manufacturerOrderCode
+      - productImages
+    ProductClassifications:
+      type: array
+      items:
+        type: object
+        properties:
+          productClassificationSystem:
+            $ref: '#/components/schemas/Text'
+          classificationSystemVersion:
+            $ref: '#/components/schemas/Text'
+          productClassId:
+            $ref: '#/components/schemas/Text'
+        required:
+        - productClassificationSystem
+        - productClassId
+
+
+    TechnicalProperties:
+      type: object
+      properties:
+        weight:
+          $ref: '#/components/schemas/Weight'
+      required:
+      - weight
+    TextStatementSet:
+      type: array
+      items:
+        type: array
+        items:
+          type: object
+        uniqueItems: true
+      uniqueItems: true
+
+    FurtherInformation:
+      type: object
+      properties:
+        textStatements:
+          $ref: '#/components/schemas/TextStatementSet'
+        validDate:
+          $ref: '#/components/schemas/Timestamp'
+      required:
+      - validDate
+    TechnicalData:
+      type: object
+      properties:
+        generalInformation:
+          $ref: '#/components/schemas/GeneralInformation'
+        productClassifications:
+          $ref: '#/components/schemas/ProductClassifications'
+        technicalProperties:
+          $ref: '#/components/schemas/TechnicalProperties'
+        furtherInformation:
+          $ref: '#/components/schemas/FurtherInformation'
+      required:
+      - generalInformation
+      - technicalProperties
+
+      
+  responses:
+    Unauthorized:
+      description: The requesting user or client is not authenticated.
+    Forbidden:
+      description: The requesting user or client is not authorized to access resources
+        for the given tenant.
+    NotFoundError:
+      description: The requested Twin has not been found.
+    ClientError:
+      description: Payload or user input is invalid. See error details in the payload
+        for more.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Traceability:
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Traceability'
+      description: The request was successful.
+  requestBodies:
+    Traceability:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Traceability'
+          
+          
+    

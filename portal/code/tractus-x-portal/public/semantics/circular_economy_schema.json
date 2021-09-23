@@ -1,0 +1,100 @@
+{
+  "$schema" : "http://json-schema.org/draft-04/schema",
+  "type" : "object",
+  "components" : {
+    "schemas" : {
+      "urn_bamm_com.catenaX_0.0.1_BatchNumberTrait" : {
+        "type" : "string",
+        "maxLength" : 10
+      },
+      "urn_bamm_io.openmanufacturing_characteristic_1.0.0_MimeType" : {
+        "type" : "string"
+      },
+      "urn_bamm_io.openmanufacturing_characteristic_1.0.0_ResourcePath" : {
+        "type" : "string",
+        "format" : "uri"
+      },
+      "urn_bamm_com.catenaX_0.0.1_DocumentsCharacteristic" : {
+        "type" : "array",
+        "items" : {
+          "type" : "object",
+          "properties" : {
+            "mimetype" : {
+              "$ref" : "#/components/schemas/urn_bamm_io.openmanufacturing_characteristic_1.0.0_MimeType"
+            },
+            "filePath" : {
+              "$ref" : "#/components/schemas/urn_bamm_io.openmanufacturing_characteristic_1.0.0_ResourcePath"
+            }
+          },
+          "required" : [ "mimetype", "filePath" ]
+        },
+        "uniqueItems" : true
+      },
+      "urn_bamm_com.catenaX_0.0.1_ManufacturerProductNumberTrait" : {
+        "type" : "string",
+        "maxLength" : 18
+      },
+      "urn_bamm_com.catenaX_0.0.1_MaterialCharacteristic" : {
+        "type" : "string"
+      },
+      "urn_bamm_com.catenaX_0.0.1_WeightMeasurement" : {
+        "type" : "number"
+      },
+      "urn_bamm_com.catenaX_0.0.1_ListOfMaterialsCharacteristic" : {
+        "type" : "array",
+        "items" : {
+          "type" : "object",
+          "properties" : {
+            "material" : {
+              "$ref" : "#/components/schemas/urn_bamm_com.catenaX_0.0.1_MaterialCharacteristic"
+            },
+            "weight" : {
+              "$ref" : "#/components/schemas/urn_bamm_com.catenaX_0.0.1_WeightMeasurement"
+            }
+          },
+          "required" : [ "material", "weight" ]
+        }
+      },
+      "urn_bamm_io.openmanufacturing_characteristic_1.0.0_Text" : {
+        "type" : "string"
+      },
+      "urn_bamm_com.catenaX_0.0.1_ProductionDateTrait" : {
+        "type" : "string",
+        "pattern" : "YYYY-MM-DD"
+      },
+      "urn_bamm_com.catenaX_0.0.1_AlphanumericCharacteristic" : {
+        "type" : "string"
+      }
+    }
+  },
+  "properties" : {
+    "batchNumber" : {
+      "$ref" : "#/components/schemas/urn_bamm_com.catenaX_0.0.1_BatchNumberTrait"
+    },
+    "disassemblyInstructions" : {
+      "$ref" : "#/components/schemas/urn_bamm_com.catenaX_0.0.1_DocumentsCharacteristic"
+    },
+    "manufacturerProductNumber" : {
+      "$ref" : "#/components/schemas/urn_bamm_com.catenaX_0.0.1_ManufacturerProductNumberTrait"
+    },
+    "materialComposition" : {
+      "$ref" : "#/components/schemas/urn_bamm_com.catenaX_0.0.1_ListOfMaterialsCharacteristic"
+    },
+    "producerName" : {
+      "$ref" : "#/components/schemas/urn_bamm_io.openmanufacturing_characteristic_1.0.0_Text"
+    },
+    "productionDate" : {
+      "$ref" : "#/components/schemas/urn_bamm_com.catenaX_0.0.1_ProductionDateTrait"
+    },
+    "uniqueID" : {
+      "$ref" : "#/components/schemas/urn_bamm_com.catenaX_0.0.1_AlphanumericCharacteristic"
+    },
+    "hazardousMaterials" : {
+      "$ref" : "#/components/schemas/urn_bamm_io.openmanufacturing_characteristic_1.0.0_Text"
+    },
+    "safetyInstructions" : {
+      "$ref" : "#/components/schemas/urn_bamm_com.catenaX_0.0.1_DocumentsCharacteristic"
+    }
+  },
+  "required" : [ "batchNumber", "disassemblyInstructions", "manufacturerProductNumber", "materialComposition", "producerName", "productionDate", "uniqueID", "hazardousMaterials", "safetyInstructions" ]
+}

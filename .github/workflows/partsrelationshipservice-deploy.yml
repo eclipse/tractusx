@@ -1,0 +1,49 @@
+name: Deploy PRS
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - coreservices/partsrelationshipservice/**
+      - .github/workflows/partsrelationshipservice-deploy.yml
+
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: coreservices/partsrelationshipservice
+    env:
+      TF_VAR_image_registry: catenaxdev001acr.azurecr.io
+      # Ingress host to reach the PRS service.
+      TF_VAR_ingress_host: catenaxdev001akssrv.germanywestcentral.cloudapp.azure.com
+      TF_VAR_aks_cluster_name: catenax-dev001-aks-services
+      TF_VAR_resource_group_name: catenax-dev001-rg
+      TF_VAR_release_name: prs
+      TF_VAR_image_tag: ${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: "Build and push prs images to ACR"
+        run: cd/build_and_push_docker.sh "$TF_VAR_image_registry" "$TF_VAR_image_tag"
+      - name: "Deploy to AKS"
+        run: |
+          # Read terraform outputs (TF_OUT_ variables)
+          export ARM_CLIENT_ID=$(echo $AZURE_CREDENTIALS | jq -r .clientId)
+          export ARM_CLIENT_SECRET=$(echo $AZURE_CREDENTIALS | jq -r .clientSecret)
+          export ARM_TENANT_ID=$(echo $AZURE_CREDENTIALS | jq -r .tenantId)
+          export ARM_SUBSCRIPTION_ID=$(az account show --query "id" --output tsv)
+
+          cd terraform
+          terraform init
+          terraform plan
+          terraform apply -auto-approve
+
+        env:
+          AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+

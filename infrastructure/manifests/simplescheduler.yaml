@@ -8,7 +8,7 @@ data:
     scheduler:
       # resources map contains pairs of: (consumer resourceId) -> (producer URL)
       resources:
-        195bf4c7-53e8-4438-8239-29df95365c2b: https://catenaxdevakssrv.germanywestcentral.cloudapp.azure.com/partsmasterconnector
+        195bf4c7-53e8-4438-8239-29df95365c2b: https://$CATENA_SERVICE_URL/partsmasterconnector
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
         - name: simplescheduler
-          image: catenaxdevacr.azurecr.io/simplescheduler
+          image: $CONTAINER_REGISTRY/simplescheduler:$VERSION
           env:
             - name: _JAVA_OPTIONS
               value: -Dspring.config.location=classpath:/,config/
@@ -36,7 +36,7 @@ spec:
             - name: SCHEDULER_CRON
               value: "@hourly"
             - name: CONNECTOR_URL
-              value: "https://catenaxdevakssrv.germanywestcentral.cloudapp.azure.com/kmuconnector"
+              value: "https://$CATENA_SERVICE_URL/kmuconnector"
             - name: CONNECTOR_LOGIN
               valueFrom:
                 secretKeyRef:
