@@ -1,32 +1,44 @@
+#
+# Copyright (c) 2021 T-Systems International GmbH (Catena-X Consortium)
+#
+# See the AUTHORS file(s) distributed with this work for additional
+# information regarding authorship.
+#
+# See the LICENSE file(s) distributed with this work for
+# additional information regarding license terms.
+#
+
+# K8 Manifest to expose a connector service in a particular role/configuration (the $ROLE environment variable)
+# being configured using the secrets/configs/certificate stores in "connector-config" (protected  by ${KEYSTORE_PASSWORD})
+# and being tied to an owned backend postgres database/service ($POSTGRES_RESOURCE_NAME, ${HTTPUSER}, ${POSTGREPARTSMASTERPASSWORD})
+# Use envsubst before applying the descriptor
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: dataspace-connector
-  name: dataspace-connector
+    app: dataspace-connector${ROLE}
+  name: dataspace-connector${ROLE}
+  namespace: dataspace-connector
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: dataspace-connector
+      app: dataspace-connector${ROLE}
   template:
     metadata:
       labels:
-        app: dataspace-connector
+        app: dataspace-connector${ROLE}
     spec:
       containers:
-        - image: localhost:5000/dataspace-connector:latest
-          imagePullPolicy: IfNotPresent
+        - image: tsicatenaxdevacr.azurecr.io/dataspace-connector:${VERSION}
+          imagePullPolicy: ${IMAGE_PULL_POLICY}
           name: dataspace-connector
           ports:
             - containerPort: 8080
           env:
             - name: SPRING_DATASOURCE_URL
-              value: "jdbc:postgresql://postgres:5432/test"
-            - name: SPRING_DATASOURCE_USERNAME
-              value: "admin"
-            - name: SPRING_DATASOURCE_PASSWORD
-              value: "password"
+              value: "jdbc:postgresql://${POSTGRES_RESOURCE_NAME}.postgres.database.azure.com:5432/connector${ROLE}?user=${HTTPUSER}@${POSTGRES_RESOURCE_NAME}&password=${POSTGREPARTSMASTERPASSWORD}&sslmode=require"
             - name: SPRING_DATASOURCE_PLATFORM
               value: "postgres"
             - name: SPRING_DATASOURCE_DRIVER-CLASS-NAME
@@ -34,10 +46,14 @@ spec:
             - name: SPRING_JPA_DATABASE-PLATFORM
               value: "org.hibernate.dialect.PostgreSQLDialect"
             - name: CONFIGURATION_PATH
-              value: "file:///connector-certs/config.json"  
+              value: "file:///connector-config/config${ROLE}.json"  
+            - name: CONFIGURATION_KEYSTOREPASSWORD
+              value: "${KEYSTORE_PASSWORD}"
+            - name: CONFIGURATION_TRUSTSTOREPASSWORD
+              value: "${KEYSTORE_PASSWORD}"
           volumeMounts:
             - name: certs-volume
-              mountPath: /connector-certs
+              mountPath: /connector-config
           resources:
             requests:
               memory: 512Mi
@@ -48,4 +64,18 @@ spec:
       volumes:
         - name: certs-volume
           secret:
-            secretName: dataspace-connector-certs
+            secretName: connector-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dataspace-connector${ROLE}
+  namespace: dataspace-connector
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    app: dataspace-connector${ROLE}
+    

@@ -1,0 +1,132 @@
+#
+# Copyright 2020 Fraunhofer Institute for Software and Systems Engineering
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+# -- Connector replicas count
+replicaCount: 1
+
+image:
+  # -- Dataspace connector Docker image
+  repository: ghcr.io/international-data-spaces-association/dataspace-connector
+  # -- Dataspcace connector Docker image tag. If not set, Chart AppVersion will be used
+  tag: ""
+  # -- Pod pull policy
+  pullPolicy: Always
+
+certificate:
+  # -- DNS name for which certificate is issued. Used to configure ingress and connector
+  dnsName: idsa.westeurope.cloudapp.azure.com
+  # -- Configures usage of cert-manager. If set to `true` certificate will be issued with cert-manager and used in connector. If set to `false`, then existing certificate will be used. Check "truststore.p12" and "keystore.p12" sections description for configuring existing certificates
+  create: false  
+  certManagerCert:
+    issuer:
+      # -- Cert-manager issuer type
+      kind: ClusterIssuer
+      # -- Cert-manager issuer name
+      name: letsencrypt-staging
+
+env:
+  config:
+    # -- Path to `config.json` file
+    CONFIGURATION_PATH: "/etc/dataspace-connector/config.json"
+    # -- Path to directory where all configuration files are stored
+    CONFIGURATION_DIR: "/etc/dataspace-connector/"
+    # -- Enables SSL if `true`. Disables SSL if `false`.
+    SERVER_SSL_ENABLED: true
+    # -- Path to directory with certificates
+    CERTIFICATE_PATH: "/var/run/certs/"
+    KEYSTORE_FILENAME: "keystore.p12"
+    TRUSTSTORE_FILENAME: "truststore.p12"
+    # -- Path to `log4j2.xml` to configure logging. File will be mounted to `CONFIGURATION_DIR` folder.
+    LOGGING_CONFIG: "file:///etc/dataspace-connector/log4j2.xml"
+    # -- Path to `application.properties` file. File will be mounted to `CONFIGURATION_DIR` folder.
+    SPRING_CONFIG_LOCATION: "file:///etc/dataspace-connector/application.properties"
+    # -- URI to DAPS server
+    DAPS_URL: "http://51.137.19.207/daps/v2/"
+    # -- URI to DAPS server token endpoint
+    DAPS_TOKEN_URL: "http://51.137.19.207/daps/v2/token"
+    # -- URI to DAPS server jwks keys endpoint
+    DAPS_KEY_URL: "http://51.137.19.207/daps/v2/.well-known/jwks.json"
+    # -- URI to DAPS server jwkd keys endpoin
+    DAPS_KEY_URL_KID: "{'http://51.137.19.207/daps/v2/.well-known/jwks.json':'default'}"
+    # -- Connectore deploy mode. Can be `idsc:PRODUCTIVE_DEPLOYMENT` or `idsc:TEST_DEPLOYMENT`
+    DEPLOY_MODE: "idsc:PRODUCTIVE_DEPLOYMENT"
+  secrets:
+    # -- Username to access connector api
+    SPRING_SECURITY_USER_PASSWORD: "password1"
+    # -- Password to access connector api
+    SPRING_SECURITY_APP_PASSWORD: "password1"
+    # -- Password to use with provided `keystore.p12` file. Password for default keystore is `password`
+    KEYSTORE_PASSWORD: "password"
+    # -- Password to use with provided `truststore.p12` file. Password for default truststore is `password`
+    TRUSTSTORE_PASSWORD: "password"
+
+postgresql:
+  # -- PostgreSQL instance username
+  postgresqlUsername: "password"
+  # -- PostgreSQL instance password
+  postgresqlPassword: "username"
+  # -- PostgreSQL instance DB name
+  postgresqlDatabase: "test"
+  service:
+    # -- PostgreSQL instance service port
+    port: "5432"
+
+ingress:
+  # -- If set to `false`, ingress will not be configured. If set to `true`, service will be exposed with `certificate.dnsName` name
+  enabled: false
+  # -- Ingress additional annotations
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  
+  # -- Path prefix for ingress configuration. If empty then `/` path will be used
+  rootPath: ""
+
+# -- Keystore file can be provided with `--set-file 'keystore\.p12'=<path_to_your_keystore_file>`
+"keystore.p12": ""
+
+# -- Truststore file can be provided with `--set-file 'truststore\.p12'=<path_to_your_truststore_file>`
+"truststore.p12": ""
+
+# -- Secret with dockerconfig.json file to pull image from private container registry
+imagePullSecrets: []
+
+# -- Additional pod annotations
+podAnnotations: {}
+
+# -- Pod security context configuration
+podSecurityContext: {}
+
+# -- Security context configuration
+securityContext: {}
+
+service:
+  # -- Service type
+  type: ClusterIP
+  # -- Service port
+  port: 8080
+
+# -- Resources usege and limits configuration
+resources: {}
+
+# -- Node selector labels
+nodeSelector: {}
+
+# -- Pod toleration configuration
+tolerations: []
+
+# -- Affinity configuration
+affinity: {}

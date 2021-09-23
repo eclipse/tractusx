@@ -1,0 +1,66 @@
+{{- if .Values.certificate.create }}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ include "dataspace-connector.fullname" . }}-tls
+  labels:
+    {{- include "dataspace-connector.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": "pre-install"
+    "helm.sh/hook-delete-policy": "before-hook-creation"
+spec:
+  secretName: {{ include "dataspace-connector.fullname" . }}-tls
+  issuerRef:
+    name: {{ .Values.certificate.certManagerCert.issuer.name }}
+    kind: {{ .Values.certificate.certManagerCert.issuer.kind }}
+  dnsNames:
+  - {{ .Values.certificate.dnsName }}
+  keystores:
+    pkcs12:
+      create: true
+      passwordSecretRef:
+        name: {{ include "dataspace-connector.fullname" . }}
+        key: KEYSTORE_PASSWORD
+{{- else }}
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: {{ include "dataspace-connector.fullname" . }}-tls
+  labels:
+    {{- include "dataspace-connector.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": "pre-install"
+    "helm.sh/hook-delete-policy": "before-hook-creation"
+data:
+  {{- if index .Values "keystore.p12" }}
+  keystore.p12: {{ index .Values "keystore.p12" | b64enc }}
+  {{- else }}
+  {{- $files := .Files }}
+  {{- range tuple "keystore.p12"}}
+  {{ . }}: |-
+        {{ $files.Get . | b64enc}}
+  {{- end }}
+  {{- end }}
+---
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: {{ include "dataspace-connector.fullname" . }}-truststore
+  labels:
+    {{- include "dataspace-connector.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": "pre-install"
+    "helm.sh/hook-delete-policy": "before-hook-creation"
+data:
+  {{- if index .Values "truststore.p12" }}
+  truststore.p12: {{ index .Values "truststore.p12" | b64enc }}
+  {{- else }}
+  {{- $files := .Files }}
+  {{- range tuple "truststore.p12" }}
+  {{ . }}: |-
+        {{ $files.Get . | b64enc}}
+  {{- end }}
+  {{- end }}
+{{- end}}

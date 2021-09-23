@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: semantics
+  namespace: semantics
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: semantics
+  template:
+    metadata:
+      labels:
+        app: semantics
+    spec:
+      containers:
+      - name: semantics
+        image: $CONTAINER_REGISTRY/semantics:$VERSION
+        imagePullPolicy: $IMAGE_PULL_POLICY
+        ports:
+        env:
+          - name: HTTPUSERNAME
+            value: "TractusX"
+          - name: HTTPPASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: http_basic_auth_password
+                name: semantics-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: semantics
+  namespace: semantics
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8080
+    targetPort: 4242
+  selector:
+    app: semantics

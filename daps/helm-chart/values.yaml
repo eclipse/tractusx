@@ -1,0 +1,128 @@
+# Default values for omejdn-server.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# -- DAPS instances count
+replicaCount: 1
+
+image:
+  # -- DAPS docker image
+  repository: nginx
+  # -- Image pull policy
+  pullPolicy: IfNotPresent
+  # -- Image tag. Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+# -- Secret which contains dockerconfig.json from private container registry with daps image
+imagePullSecrets: []
+
+nameOverride: ""
+fullnameOverride: ""
+
+omejdn:
+  # -- Path to directory with private server key
+  serverKeyFolderPath: /opt/
+  # -- Server key content. DAPS will generate key if it's not provided at startup
+  serverKey: ""
+  # -- Default user and client will be created if set to `true`. User credentials set in `omejdn.defaultAdminUser` section
+  createDefaultAdmin: false
+  # -- Default user credentials in format `user:password`
+  defaultAdminUser: "admin:admin"
+
+
+serviceAccount:
+  # -- Specifies whether a service account should be created
+  create: true
+  # --  Annotations to add to the service account
+  annotations: {}
+  # -- The name of the service account to use.
+  # -- If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+  # --  Additional pods annotations
+podAnnotations: {}
+
+# -- Pod security context configuration
+podSecurityContext: {}
+  # fsGroup: 2000
+
+# -- Pod security context configuration
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  # -- Service type
+  type: ClusterIP
+  # -- Service port
+  port: 4567
+
+ingress:
+  # -- If set to `true`, DAPS will be exposed with ingress controller at http(s)://(ingress.host)/(ingress.pathPrefix)
+  enabled: false
+  # -- Additional ingress annotations
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  # -- Ingress host name
+  host: chart-example.local
+  # -- Path prefix to be added to DAPS URI. Regex can be used
+  pathPrefix: "/"
+  # -- Root prefix without regex rules that used to configure daps host name in configuration
+  rootPath: "/"
+  tls:
+    # -- If `true` daps will be exposed with https
+    enabled: false
+    certMgr:
+      # -- If `true` cert-manager will be used to issue a certificate with ingress.host CN name
+      enabled: false
+      # -- Cert-manager issuer name
+      issuer: ""
+
+persistence:
+  # -- If `true` persistent volume will be used to store clients and users configuration
+  enabled: true
+  # -- Storage class to claim a volume.
+  storageClass: "azurefile"
+  # -- Volume size
+  storageSize: "1Gi"
+
+env:
+  # -- Additional env variables
+  config: {}
+  # -- Additional env variables that should be stored in encrypted way
+  secret: {}    
+
+# -- Pod resources requests and limits configuration
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+# -- DAPS autoscaling configuration
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+# -- Node selection configuration
+nodeSelector: {}
+
+# -- Pod toleration settings
+tolerations: []
+
+# -- Pod affinity configuration
+affinity: {}

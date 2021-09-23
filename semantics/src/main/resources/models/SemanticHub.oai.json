@@ -1,0 +1,361 @@
+{
+  "openapi" : "3.0.3",
+  "info" : {
+    "title" : "Semantic Hub",
+    "version" : "v1"
+  },
+  "servers" : [ {
+    "url" : "catenax.org/api/v1",
+    "variables" : {
+      "api-version" : {
+        "default" : "v1"
+      }
+    }
+  } ],
+  "paths" : {
+    "/{tenant-id}/semantic-hub" : {
+      "get" : {
+        "tags" : [ "SemanticHub" ],
+        "operationId" : "getSemanticHub",
+        "parameters" : [ {
+          "name" : "tenant-id",
+          "in" : "path",
+          "description" : "The ID of the tenant owning the requested Twin.",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "uuid"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/SemanticHub"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/ClientError"
+          },
+          "402" : {
+            "$ref" : "#/components/responses/Unauthorized"
+          },
+          "403" : {
+            "$ref" : "#/components/responses/Forbidden"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/{tenant-id}/semantic-hub/operations" : {
+      "post" : {
+        "servers" : [ {
+          "url" : "catenax.org/rpc-api/v1",
+          "variables" : {
+            "api-version" : {
+              "default" : "v1"
+            }
+          }
+        } ],
+        "tags" : [ "SemanticHub" ],
+        "operationId" : "postOperationSemanticHub",
+        "parameters" : [ {
+          "name" : "tenant-id",
+          "in" : "path",
+          "description" : "The ID of the tenant owning the requested Twin.",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "uuid"
+          }
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/Operation"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/OperationResponse"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/ClientError"
+          },
+          "402" : {
+            "$ref" : "#/components/responses/Unauthorized"
+          },
+          "403" : {
+            "$ref" : "#/components/responses/Forbidden"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "ErrorResponse" : {
+        "type" : "object",
+        "required" : [ "error" ],
+        "properties" : {
+          "error" : {
+            "$ref" : "#/components/schemas/Error"
+          }
+        }
+      },
+      "Error" : {
+        "type" : "object",
+        "required" : [ "details" ],
+        "properties" : {
+          "message" : {
+            "type" : "string",
+            "minLength" : 1
+          },
+          "path" : {
+            "type" : "string",
+            "minLength" : 1
+          },
+          "details" : {
+            "type" : "object",
+            "minLength" : 1,
+            "additionalProperties" : {
+              "type" : "object"
+            }
+          },
+          "code" : {
+            "type" : "string",
+            "nullable" : true
+          }
+        }
+      },
+      "JsonRpc" : {
+        "type" : "object",
+        "required" : [ "id", "jsonrpc" ],
+        "properties" : {
+          "id" : {
+            "type" : "number",
+            "default" : 1,
+            "description" : "Request ID"
+          },
+          "jsonrpc" : {
+            "type" : "string",
+            "default" : "2.0",
+            "description" : "JSON-RPC Version (2.0)"
+          }
+        }
+      },
+      "SemanticHub" : {
+        "type" : "object",
+        "properties" : { }
+      },
+      "Operation" : {
+        "oneOf" : [ {
+          "$ref" : "#/components/schemas/ListModels"
+        }, {
+          "$ref" : "#/components/schemas/FindModelById"
+        } ]
+      },
+      "ListModels" : {
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/JsonRpc"
+        }, {
+          "properties" : {
+            "method" : {
+              "type" : "string",
+              "description" : "The method name",
+              "example" : "ListModels"
+            }
+          }
+        } ]
+      },
+      "FindModelById" : {
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/JsonRpc"
+        }, {
+          "properties" : {
+            "params" : {
+              "type" : "object",
+              "required" : [ "id" ],
+              "properties" : {
+                "id" : {
+                  "$ref" : "#/components/schemas/urn_bamm_io.openmanufacturing_characteristic_1.0.0_ResourcePath"
+                }
+              }
+            },
+            "method" : {
+              "type" : "string",
+              "description" : "The method name",
+              "example" : "FindModelById"
+            }
+          }
+        } ]
+      },
+      "OperationResponse" : {
+        "oneOf" : [ {
+          "$ref" : "#/components/schemas/ListModelsResponse"
+        }, {
+          "$ref" : "#/components/schemas/FindModelByIdResponse"
+        } ]
+      },
+      "ListModelsResponse" : {
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/JsonRpc"
+        }, {
+          "properties" : {
+            "result" : {
+              "type" : "object",
+              "required" : [ "modelList" ],
+              "properties" : {
+                "modelList" : {
+                  "$ref" : "#/components/schemas/urn_bamm_net.catenax.semantics_1.0.0_ModelList"
+                }
+              }
+            }
+          }
+        } ]
+      },
+      "FindModelByIdResponse" : {
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/JsonRpc"
+        }, {
+          "properties" : {
+            "result" : {
+              "type" : "object",
+              "required" : [ "modelOption" ],
+              "properties" : {
+                "modelOption" : {
+                  "$ref" : "#/components/schemas/urn_bamm_net.catenax.semantics_1.0.0_ModelOption"
+                }
+              }
+            }
+          }
+        } ]
+      },
+      "urn_bamm_io.openmanufacturing_characteristic_1.0.0_ResourcePath" : {
+        "type" : "string",
+        "format" : "uri"
+      },
+      "urn_bamm_io.openmanufacturing_characteristic_1.0.0_Text" : {
+        "type" : "string"
+      },
+      "urn_bamm_net.catenax.semantics_1.0.0_Ontology" : {
+        "type" : "string",
+        "enum" : [ "BAMM/RDF", "OWL2", "RDF" ]
+      },
+      "urn_bamm_io.openmanufacturing_characteristic_1.0.0_Boolean" : {
+        "type" : "boolean"
+      },
+      "urn_bamm_net.catenax.semantics_1.0.0_ModelList" : {
+        "type" : "array",
+        "items" : {
+          "type" : "object",
+          "properties" : {
+            "id" : {
+              "$ref" : "#/components/schemas/urn_bamm_io.openmanufacturing_characteristic_1.0.0_ResourcePath"
+            },
+            "version" : {
+              "$ref" : "#/components/schemas/urn_bamm_io.openmanufacturing_characteristic_1.0.0_Text"
+            },
+            "name" : {
+              "$ref" : "#/components/schemas/urn_bamm_io.openmanufacturing_characteristic_1.0.0_Text"
+            },
+            "ontology" : {
+              "$ref" : "#/components/schemas/urn_bamm_net.catenax.semantics_1.0.0_Ontology"
+            },
+            "publisher" : {
+              "$ref" : "#/components/schemas/urn_bamm_io.openmanufacturing_characteristic_1.0.0_ResourcePath"
+            },
+            "private" : {
+              "$ref" : "#/components/schemas/urn_bamm_io.openmanufacturing_characteristic_1.0.0_Boolean"
+            }
+          },
+          "required" : [ "id", "version", "name", "ontology", "publisher", "private" ]
+        }
+      },
+      "urn_bamm_net.catenax.semantics_1.0.0_ModelOption" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "$ref" : "#/components/schemas/urn_bamm_io.openmanufacturing_characteristic_1.0.0_ResourcePath"
+          },
+          "version" : {
+            "$ref" : "#/components/schemas/urn_bamm_io.openmanufacturing_characteristic_1.0.0_Text"
+          },
+          "name" : {
+            "$ref" : "#/components/schemas/urn_bamm_io.openmanufacturing_characteristic_1.0.0_Text"
+          },
+          "ontology" : {
+            "$ref" : "#/components/schemas/urn_bamm_net.catenax.semantics_1.0.0_Ontology"
+          },
+          "publisher" : {
+            "$ref" : "#/components/schemas/urn_bamm_io.openmanufacturing_characteristic_1.0.0_ResourcePath"
+          },
+          "private" : {
+            "$ref" : "#/components/schemas/urn_bamm_io.openmanufacturing_characteristic_1.0.0_Boolean"
+          }
+        },
+        "required" : [ "id", "version", "name", "ontology", "publisher", "private" ]
+      }
+    },
+    "responses" : {
+      "Unauthorized" : {
+        "description" : "The requesting user or client is not authenticated."
+      },
+      "Forbidden" : {
+        "description" : "The requesting user or client is not authorized to access resources for the given tenant."
+      },
+      "NotFoundError" : {
+        "description" : "The requested Twin has not been found."
+      },
+      "ClientError" : {
+        "description" : "Payload or user input is invalid. See error details in the payload for more.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "SemanticHub" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/SemanticHub"
+            }
+          }
+        },
+        "description" : "The request was successful."
+      },
+      "OperationResponse" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/OperationResponse"
+            }
+          }
+        },
+        "description" : "The request was successful."
+      }
+    },
+    "requestBodies" : {
+      "SemanticHub" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/SemanticHub"
+            }
+          }
+        }
+      },
+      "Operation" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Operation"
+            }
+          }
+        }
+      }
+    }
+  }
+}

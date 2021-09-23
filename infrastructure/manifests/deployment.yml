@@ -14,6 +14,7 @@ spec:
     spec:
       containers:
         - name: businesspartners 
-          image: catenaxdevacr.azurecr.io/businesspartners
+          image: $CONTAINER_REGISTRY/businesspartners:$VERSION
+          imagePullPolicy: $IMAGE_PULL_POLICY
           ports:
           - containerPort: 80

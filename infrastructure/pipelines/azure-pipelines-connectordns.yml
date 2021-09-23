@@ -79,7 +79,7 @@ stages:
               action: createSecret
               secretType: generic
               secretName: cdns-secret
-              secretArguments:  --from-literal=http_basic_auth_password=$(HTTPPASSWORD) --from-literal=sotrage_connectionstring=$(STORAGEACCOUNT_CONNECTIONSTRING)
+              secretArguments:  --from-literal=http_basic_auth_password=$(HTTPPASSWORD) --from-literal=storage_connectionstring=$(STORAGEACCOUNT_CONNECTIONSTRING)
 
           - task: KubernetesManifest@0
             inputs:

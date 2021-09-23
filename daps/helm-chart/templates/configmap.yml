@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "omejdn-server.fullname" . }}
+  labels:
+    {{- include "omejdn-server.labels" . | nindent 4 }}
+data:
+  {{- range $key, $val := .Values.env.config }}
+    {{ $key }}: "{{ $val }}"
+  {{- end}}
+  omejdn.yml: |-
+    ---
+    host: https://{{ .Values.ingress.host }}{{ .Values.ingress.rootPath }}
+    openid: true
+    token:
+      expiration: 3600
+      signing_key: {{ .Values.omejdn.serverKeyFolderPath }}/key.pem
+      algorithm: RS256
+      audience: TestServer
+      issuer: https://{{ .Values.ingress.host }}
+    id_token:
+      expiration: 360000
+      signing_key: {{ .Values.omejdn.serverKeyFolderPath }}/key.pem
+      algorithm: RS256
+      issuer: https://{{ .Values.ingress.host }}
+    user_backend:
+    - yaml
+  
+  {{- if .Values.omejdn.createDefaultAdmin }}
+  clients.yml: |-
+    ---
+    - client_id: admin
+      name: omejdn admin ui
+      allowed_scopes:
+      - omejdn:api
+      redirect_uri: https://oauth.pstmn.io/v1/callback
+      attributes: []
+  {{- end }}

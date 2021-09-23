@@ -13,7 +13,8 @@
 // limitations under the License.
 
 import ReactDOM from 'react-dom';
-import './index.css';
+import './styles/reset.css';
+import './styles/index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { runWithAdal } from 'react-adal';

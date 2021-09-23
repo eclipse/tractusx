@@ -3,6 +3,7 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+secrets.sh
 
 ### STS ###
 .apt_generated
@@ -31,3 +32,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Log files ###
+log/
+
+### Secrets ###
+**/secrets.*

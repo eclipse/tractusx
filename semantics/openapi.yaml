@@ -1,0 +1,327 @@
+openapi: 3.0.3
+info:
+  title: Semantic Hub
+  version: v1
+servers:
+  - url: example.com/api/v1
+    variables:
+      api-version:
+        default: v1
+paths:
+  /models:
+    get:
+      tags:
+        - SemanticHub
+      operationId: getModelList
+      parameters:
+        - in: query
+          name: namespaceFilter
+          schema:
+            type: string
+        - in: query
+          name: nameFilter
+          schema:
+            type: string
+        - in: query
+          name: isPublic
+          schema:
+            type: boolean
+        - in: query
+          name: type
+          schema:
+            type: string
+            enum:
+              - BAMM
+              - OWL
+        - in: query
+          name: pageSize
+          schema:
+            default: 10
+            type: integer
+            enum:
+              - 10
+              - 50
+              - 100
+        - in: query
+          name: page
+          schema:
+            default: 1
+            type: integer
+      responses:
+        '200':
+          $ref: '#/components/responses/ModelList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - SemanticHub
+      operationId: createModelWithId
+      requestBody:
+        description: >-
+          The request body contains all necessary properties to create a new
+          model entry.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewModel'
+      responses:
+        '201':
+          $ref: '#/components/responses/Model'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  '/models/{model-id}':
+    get:
+      tags:
+        - SemanticHub
+      operationId: getModelById
+      parameters:
+        - in: path
+          name: model-id
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/Model'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      tags:
+        - SemanticHub
+      operationId: modifyModel
+      parameters:
+        - in: path
+          name: model-id
+          schema:
+            type: string
+          required: true
+      requestBody:
+        description: >-
+          The request body contains the updated model.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewModel'
+      responses:
+        '200':
+          $ref: '#/components/responses/Model'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - SemanticHub
+      operationId: deleteModel
+      parameters:
+        - in: path
+          name: model-id
+          schema:
+            type: string
+          required: true
+      responses:
+        '204':
+          description: The resource was deleted successfully.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  '/models/{model-id}/file':
+    get:
+      tags:
+        - SemanticHub
+      operationId: getModelFile
+      parameters:
+        - in: path
+          name: model-id
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/ModelFile'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  '/models/{model-id}/diagram':
+    get:
+      tags:
+        - SemanticHub
+      operationId: getModelTree
+      parameters:
+        - in: path
+          name: model-id
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/ModelDiagram'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  '/models/{model-id}/documentation':
+    get:
+      tags:
+        - SemanticHub
+      operationId: getModelDocu
+      parameters:
+        - in: path
+          name: model-id
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/ModelDocumentation'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  schemas:
+    Model:
+      type: object
+      properties:
+        id:
+          description: >-
+            The ID of a model consists of the model namespace and the Aspect
+            name.
+          type: string
+        publisher:
+          description: The publisher name
+          type: string
+        version:
+          description: >-
+            The version of the model. The version can be extracted from the raw
+            model.
+          type: string
+        name:
+          type: string
+        private:
+          type: boolean
+        type:
+          type: string
+          enum:
+            - BAMM
+            - OWL
+    ModelList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Model'
+    NewModel:
+      type: object
+      properties:
+        private:
+          type: boolean
+        type:
+          type: string
+          enum:
+            - BAMM
+            - OWL
+        model:
+          description: >-
+            The actual model definition in the format defined by the type
+            property.
+          type: string
+  responses:
+    ModelDiagram:
+      description: OK
+      content:
+        image/png:
+          schema:
+            type: string
+            format: binary
+    ModelDocumentation:
+      description: OK
+      content:
+        text/html:
+          example: |
+            <!DOCTYPE html>
+            <html>
+            <head>
+            </head>
+            <body>
+              Aspect Description
+            </body>
+            </html>
+    ModelFile:
+      description: The raw RDF based model definition.
+      content:
+        text/turtle:
+          example: >
+            @prefix : <urn:bamm:net.catenax.semantics:1.0.0#> .
+
+            @prefix bamm: <urn:bamm:io.openmanufacturing:meta-model:1.0.0#> .
+
+            @prefix bamm-c:
+            <urn:bamm:io.openmanufacturing:characteristic:1.0.0#> .
+
+            @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+
+            :TestAspect a bamm:Aspect ;
+               bamm:name "Test" ;
+               bamm:preferredName "Test Aspect"@en ;
+               bamm:description "This is a Test Aspect."@en ;
+               bamm:properties (  ) ;
+               bamm:operations (  ) .
+    Model:
+      description: The resulting model entry.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Model'
+    ModelList:
+      description: 'A list of models, matching the provided filter options.'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ModelList'
+    Unauthorized:
+      description: Unauthorized
+    BadRequest:
+      description: Bad Request
+    NotFound:
+      description: Not Found
+    InternalServerError:
+      description: Internal Server Error
+  

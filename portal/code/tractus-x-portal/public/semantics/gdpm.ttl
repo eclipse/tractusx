@@ -1,0 +1,111 @@
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix bamm: <urn:bamm:io.openmanufacturing:meta-model:1.0.0#> .
+@prefix unit: <urn:bamm:io.openmanufacturing:unit:1.0.0#> .
+@prefix bamm-c: <urn:bamm:io.openmanufacturing:characteristic:1.0.0#> .
+@prefix bamm-e: <urn:bamm:io.openmanufacturing:entity:1.0.0#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix : <urn:bamm:com.catenaX:0.0.1#>.
+
+:OneIDBusinessPartner a bamm-c:Code;
+    bamm:name "OneIDBusinessPartner";
+    bamm:preferredName "OneID BusinessPartner"@en;
+    bamm:dataType xsd:string.
+:GPDMAspectPoC a bamm:Aspect;
+    bamm:name "GPDMAspectPoC";
+    bamm:preferredName "GPDM Aspect"@en;
+    bamm:properties ([
+  bamm:property :businessPartnerData;
+  bamm:optional "true"^^xsd:boolean
+] :contactData);
+    bamm:operations ().
+:businessPartnerData a bamm:Property;
+    bamm:name "businessPartnerData";
+    bamm:preferredName "Business Partner Data"@en;
+    bamm:characteristic :BusinessPartnerDataCharacteristic.
+:BusinessPartnerDataEntity a bamm:Entity;
+    bamm:name "BusinessPartnerDataEntity";
+    bamm:properties ([
+  bamm:property :oneId;
+  bamm:optional "true"^^xsd:boolean
+] :businessPartnerType :businessPartnerNames).
+:BusinessPartnerDataCharacteristic a bamm-c:SingleEntity;
+    bamm:name "BusinessPartnerDataCharacteristic";
+    bamm:dataType :BusinessPartnerDataEntity.
+:oneId a bamm:Property;
+    bamm:name "oneId";
+    bamm:preferredName "oneID"@en;
+    bamm:characteristic :OneIDBusinessPartner.
+:businessPartnerType a bamm:Property;
+    bamm:name "businessPartnerType";
+    bamm:preferredName "businessPartnerType"@en;
+    bamm:characteristic :BusinessPartnerTypeCharacteristic.
+:BusinessPartnerTypeCharacteristic a bamm:Characteristic;
+    bamm:name "BusinessPartnerTypeCharacteristic";
+    bamm:dataType xsd:string.
+:SetOfBusinessPartnerName a bamm-c:Set;
+    bamm:name "SetOfBusinessPartnerName";
+    bamm:preferredName "Business Partner Names"@en;
+    bamm:dataType :BusinessPartnerName.
+:BusinessPartnerName a bamm:Entity;
+    bamm:name "BusinessPartnerName";
+    bamm:preferredName "Business Partner Name"@en;
+    bamm:properties (:name :type :legalForm).
+:name a bamm:Property;
+    bamm:name "name";
+    bamm:preferredName "Name"@en;
+    bamm:characteristic bamm-c:Text.
+:type a bamm:Property;
+    bamm:name "type";
+    bamm:preferredName "Type"@en;
+    bamm:characteristic :BusinessPartnerNameTypeEnum;
+    bamm:exampleValue "registered_name".
+:BusinessPartnerNameTypeEnum a bamm-c:Enumeration;
+    bamm:name "BusinessPartnerNameTypeEnum";
+    bamm:preferredName "BusinessPartnerNameTypeEnum"@en;
+    bamm:dataType xsd:string;
+    bamm-c:values ("registered_name" "local_name" "international_name" "transliterated_name" "DBA_name" "VAT_registered_name").
+:legalForm a bamm:Property;
+    bamm:name "legalForm";
+    bamm:preferredName "Legal Form"@en;
+    bamm:characteristic bamm-c:Text.
+:businessPartnerNames a bamm:Property;
+    bamm:name "businessPartnerNames";
+    bamm:preferredName "businessPartnerNames"@en;
+    bamm:characteristic :SetOfBusinessPartnerName.
+:contactData a bamm:Property;
+    bamm:name "contactData";
+    bamm:preferredName "contactData"@en;
+    bamm:characteristic :ContactDataCharacteristic.
+:ContactDataCharacteristic a bamm-c:SingleEntity;
+    bamm:name "ContactDataCharacteristic";
+    bamm:dataType :ContactDataEntity.
+:ContactDataEntity a bamm:Entity;
+    bamm:name "ContactDataEntity";
+    bamm:preferredName "ContactDataEntity"@en;
+    bamm:properties ([
+  bamm:property :eMailAddress;
+  bamm:optional "true"^^xsd:boolean
+] [
+  bamm:property :url;
+  bamm:optional "true"^^xsd:boolean
+]).
+:eMailAddress a bamm:Property;
+    bamm:name "eMailAddress";
+    bamm:preferredName "eMailAddress"@en;
+    bamm:characteristic :EMailAddressTrait.
+:url a bamm:Property;
+    bamm:name "url";
+    bamm:preferredName "URL"@en;
+    bamm:characteristic bamm-c:ResourcePath.
+:EMailCharacteristic a bamm:Characteristic;
+    bamm:name "EMailCharacteristic";
+    bamm:preferredName "EMailCharacteristic"@en;
+    bamm:dataType xsd:string.
+:EMailAddressTrait a bamm-c:Trait;
+    bamm:name "EMailAddressTrait";
+    bamm-c:baseCharacteristic :EMailCharacteristic;
+    bamm-c:constraint :RegularExpressionForEMail.
+:RegularExpressionForEMail a bamm-c:RegularExpressionConstraint;
+    bamm:name "RegularExpressionForEMail";
+    bamm:preferredName "RegularExpressionForEMail"@en;
+    bamm:value "tbd".

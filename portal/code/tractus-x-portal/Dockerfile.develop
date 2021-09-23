@@ -1,0 +1,28 @@
+#
+# Copyright (c) 2021 T-Systems International GmbH (Catena-X Consortium)
+#
+# See the AUTHORS file(s) distributed with this work for additional
+# information regarding authorship.
+#
+# See the LICENSE file(s) distributed with this work for
+# additional information regarding license terms.
+#
+
+# the development docker file is just using a 
+# single-step, dynamic npm-served host
+FROM node:10-alpine as build-step
+
+RUN mkdir /app
+WORKDIR /app
+
+COPY ["package.json", "package-lock.json", "./"]
+
+RUN npm install 
+# should be --production
+
+COPY . .
+
+ENV PORT 80
+EXPOSE 80
+
+CMD ["npm", "start"]

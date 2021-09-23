@@ -1,0 +1,88 @@
+  {
+    "relationships": [
+      {
+        "parent": {
+          "oneIDManufacturer": "OID_CX_0001_BMWGRP",
+          "objectIDManufacturer": "BMWOVCDI21L5DYEUU"
+        },
+        "child": {
+          "oneIDManufacturer": "OID_CX_0001_ZFGRP",
+          "objectIDManufacturer": "ZF3EZLMaP0LN5D8VU"
+        }
+      },
+      {
+        "parent": {
+          "oneIDManufacturer": "OID_CX_0001_ZFGRP",
+          "objectIDManufacturer": "ZF3EZLMaP0LN5D8VU"
+        },
+        "child": {
+          "oneIDManufacturer": "OID_CX_0001_HE",
+          "objectIDManufacturer": "HEVBwW5cXvQ1LYYb2"
+        }
+      },
+      {
+        "parent": {
+          "oneIDManufacturer": "OID_CX_0001_HE",
+          "objectIDManufacturer": "HEVBwW5cXvQ1LYYb2"
+        },
+        "child": {
+          "oneIDManufacturer": "OID_CX_0001_BASF",
+          "objectIDManufacturer": "BAl1HUnfsCxPB41kD"
+        }
+      }
+    ],
+    "partInfos": [
+      {
+        "part": {
+          "oneIDManufacturer": "OID_CX_0001_ZFGRP",
+          "objectIDManufacturer": "ZF3EZLMaP0LN5D8VU"
+        },
+        "partTypeName": "gearbox",
+        "aspects": [
+          {
+            "name": "CE",
+            "url": "http://localhost:8080/catena-x/tdm/aspect/CE/OID_CX_0001_ZFGRP/ZF3EZLMaP0LN5D8VU"
+          }
+        ]
+      },
+      {
+        "part": {
+          "oneIDManufacturer": "OID_CX_0001_HE",
+          "objectIDManufacturer": "HEVBwW5cXvQ1LYYb2"
+        },
+        "partTypeName": "???",
+        "aspects": [
+          {
+            "name": "CE",
+            "url": "http://localhost:8080/catena-x/tdm/aspect/CE/OID_CX_0001_HE/HEVBwW5cXvQ1LYYb2"
+          }
+        ]
+      },
+      {
+        "part": {
+          "oneIDManufacturer": "OID_CX_0001_BASF",
+          "objectIDManufacturer": "BAl1HUnfsCxPB41kD"
+        },
+        "partTypeName": "glue",
+        "aspects": [
+          {
+            "name": "CE",
+            "url": "http://localhost:8080/catena-x/tdm/aspect/CE/OID_CX_0001_BASF/BAl1HUnfsCxPB41kD"
+          }
+        ]
+      },
+      {
+        "part": {
+          "oneIDManufacturer": "OID_CX_0001_BMWGRP",
+          "objectIDManufacturer": "BMWOVCDI21L5DYEUU"
+        },
+        "partTypeName": "vehicle",
+        "aspects": [
+          {
+            "name": "CE",
+            "url": "http://localhost:8080/catena-x/tdm/aspect/CE/OID_CX_0001_BMWGRP/BMWOVCDI21L5DYEUU"
+          }
+        ]
+      }
+    ]
+  }

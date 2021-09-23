@@ -1,0 +1,159 @@
+#
+# Copyright (c) 2021 T-Systems International GmbH (Catena-X Consortium)
+#
+# See the AUTHORS file(s) distributed with this work for additional
+# information regarding authorship.
+#
+# See the LICENSE file(s) distributed with this work for
+# additional information regarding license terms.
+#
+
+@prefix : <urn:bamm:net.catenax.semantics:1.0.0#> .
+@prefix bamm: <urn:bamm:io.openmanufacturing:meta-model:1.0.0#> .
+@prefix bamm-c: <urn:bamm:io.openmanufacturing:characteristic:1.0.0#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:TwinRegistry a bamm:Aspect ;
+   bamm:name "TwinRegistry" ;
+   bamm:preferredName "(Digital) Twin Registry"@en ;
+   bamm:description "The Digitial Twin Registry is a Service Aspect of Catena-X which manages all (business, technical) aspects of digitial twins in Catena-X."@en ;
+   bamm:properties ( ) ;
+   bamm:operations ( :FindTwinsByNames ) .
+
+:FindTwinsByNames a bamm:Operation ;
+   bamm:name "FindTwinsByNames" ;
+   bamm:preferredName "Find (Digital) Twins By Names Operation"@en ;
+   bamm:description "An operation which returns the list of registered digital twins that is visible to the calling principal by their names."@en ;
+   bamm:input ( :nameSpecList ) ;
+   bamm:output :twinList .
+
+:twinList a bamm:Property ;
+   bamm:name "twinList" ;
+   bamm:preferredName "(Digital) Twin List Property"@en ;
+   bamm:description "A property which hosts a list of digital twins."@en ;
+   bamm:characteristic :TwinList .
+
+:TwinList a bamm-c:List ;
+   bamm:name "TwinList" ;
+   bamm:preferredName "(Digital) Twin List"@en ;
+   bamm:description "A list of digital twins."@en ;
+   bamm:dataType :Twin .
+
+:Twin a bamm:Entity ;
+   bamm.name "Twin" ;
+   bamm:preferredName "(Digitial) Twin"@en ;
+   bamm:description "A digital twin holds together all technical artifacts and operations (aspects) in Catena-X which are related to some real-world entity or process."
+   bamm:description "Hereby, aspects may be realised by various applications, services or artifacts."@en ;
+   bamm:description "In each case, aspects need to be self-described by referring to a formal semantic model."@en ;
+   bamm:description "This model should be registered and accessible in the [SemanticHub] aspect."@en ;
+   bamm:properties ( :compoundName :aliases :owner :aspectRealisations)
+
+:compoundName a bamm:Property ;
+   bamm:name "compoundName" ;
+   bamm:preferredName "Compound Name Property"@en ;
+   bamm:description "An compound name property."@en ;
+   bamm:characteristic :CompoundNameReference .
+
+:CompoundNameReference a bamm-c:SingleEntity ;
+   bamm:name "compoundNameReference" ;
+   bamm:preferredName "Single Compound Name"@en ;
+   bamm:description "A single compound name."@en ;
+   bamm:dataType :CompoundName .
+
+:CompoundName a bamm:Entity ;
+   bamm.name "CompoundName" ;
+   bamm:preferredName "Compound Name"@en ;
+   bamm:description "A compound name uniquely identifies a twin by its origin (namespace) and its name (unique address within the namespace). Typically the concatenation of namespace and name should deliver a valid uri."
+   bamm:properties ( :namespace :name )
+
+:namespace a bamm:Property ;
+   bamm:name "namespace" ;
+   bamm:preferredName "Namespace Property"@en ;
+   bamm:description "A Namespace property which describes the origin of the twin."@en ;
+   bamm:characteristic bamm-c:ResourcePath .
+
+:name a bamm:Property ;
+   bamm:name "name" ;
+   bamm:preferredName "Name Property"@en ;
+   bamm:description "A Name property which names a twin."@en ;
+   bamm:characteristic bamm-c:Text .
+
+:aliases a bamm:Property ;
+   bamm:name "aliases" ;
+   bamm:preferredName "Aliases Property"@en ;
+   bamm:description "The Aliases property lists alternative compound names of the twin."@en ;
+   bamm:characteristic :CompoundNameList .
+
+:CompoundNameList a bamm-c:List ;
+   bamm:name "CompoundNameList" ;
+   bamm:preferredName "Compound Name List"@en ;
+   bamm:description "A list of compound names."@en ;
+   bamm:dataType :CompoundName .
+
+:owner a bamm:Property ;
+   bamm:name "owner" ;
+   bamm:preferredName "Owner Property"@en ;
+   bamm:description "An owner property which links to the owning principal/organisation of a twin."@en ;
+   bamm:characteristic bamm-c:ResourcePath .
+
+:aspectRealisations a bamm:Property ;
+   bamm:name "aspectRealisatons" ;
+   bamm:preferredName "Aspect Realisations Property"@en ;
+   bamm:description "The Aspect Realisation property lists all artifacts, operations and behaviours implementing the twin."@en ;
+   bamm:characteristic :AspectRealisationList .
+
+:AspectRealisationList a bamm-c:List ;
+   bamm:name "AspectRealisationList" ;
+   bamm:preferredName "Aspect Realisation List"@en ;
+   bamm:description "A list of aspect realisations."@en ;
+   bamm:dataType :AspectRealisation .
+
+:AspectRealisation a bamm:Entity ;
+   bamm.name "AspectRealisation" ;
+   bamm:preferredName "Aspect Realisation"@en ;
+   bamm:description "An aspect realisation describes a concrete Catena-X resource which realises a (semantically described) portion of the digitial twin."@en
+   bamm:properties ( :modelId :operationName :realisationType :realisationMethod :endpoint )
+
+:modelId a bamm:Property ;
+   bamm:name "modelId" ;
+   bamm:preferredName "Model Id Property"@en ;
+   bamm:description "A Model Id property is a unique identifier for the aspect. It should ahere to the URN syntax [rfc2141] and belong to a [Model] that has been registered in the [SemanticHub]."@en ;
+   bamm:characteristic bamm-c:ResourcePath .
+
+:operationName a bamm:Property ;
+   bamm:name "operationName" ;
+   bamm:preferredName "Operation Name Property"@en ;
+   bamm:description "An operation name property points to a particular operation within the aspect model. Typically, modelId and operationName can be concatenated to deliver the fully qualified identifier of an operation."@en ;
+   bamm:characteristic bamm-c:Text .
+
+:realisationType a bamm:Property ;
+   bamm:name "realisationType" ;
+   bamm:preferredName "Realisation Type Property"@en ;
+   bamm:description "The realisation type relates to the different layers (app,service,connector) on which an operation maybe realised."@en ;
+   bamm:characteristic :RealisationType .
+
+:RealisationType a bamm-c:Enumeration ;
+   bamm:name "RealisationType" ;
+   bamm:preferredName "RealisationType Enumeration"@en ;
+   bamm:description "A realisation type lists the different layers of realisation (app,service,connector) on which an operation mabe realised."@en ;
+   bamm:dataType xsd:string ;
+   bamm-c:values ( "APP" "SERVICE" "CONNECTOR" ) .
+
+:realisationMethod a bamm:Property ;
+   bamm:name "realisationMethod" ;
+   bamm:preferredName "Realisation Method Property"@en ;
+   bamm:description "The realisation method relates to the different methods (verbs) by which an operation maybe realised."@en ;
+   bamm:characteristic :RealisationMethod .
+
+:RealisationMethod a bamm-c:Enumeration ;
+   bamm:name "RealisationMethod" ;
+   bamm:preferredName "RealisationMathod Enumeration"@en ;
+   bamm:description "A realisation method lists the different methods (verbs) by which an operation mabe realised."@en ;
+   bamm:dataType xsd:string ;
+   bamm-c:values ( "GET" "POST" "STREAM" "PUT" "SUBSCRIBE" "PUBLISH" ) .
+
+:endpoint a bamm:Property ;
+   bamm:name "endpoint" ;
+   bamm:preferredName "Endpoint Property"@en ;
+   bamm:description "An endpoint property uniquely determines an implementation resource. It should ahere to the URN syntax."@en ;
+   bamm:characteristic bamm-c:ResourcePath .

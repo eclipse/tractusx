@@ -1,0 +1,28 @@
+version: '3.7'
+
+services:
+  db:
+    image: 'postgres:11.13-alpine'
+    container_name: db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=compose-postgres
+      - POSTGRES_PASSWORD=compose-postgres
+
+  prs:
+    build:
+      context: .
+      target: prs
+    depends_on:
+      - db
+    profiles:
+      - prs
+    container_name: prs
+    ports:
+      - 8080:8080
+      - 4004:4004
+    environment:
+      spring.datasource.url: jdbc:postgresql://db/postgres
+      APPLICATIONINSIGHTS_CONNECTION_STRING: "${APPLICATIONINSIGHTS_CONNECTION_STRING}"
+      APPLICATIONINSIGHTS_ROLE_NAME: PRS

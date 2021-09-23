@@ -1,0 +1,28 @@
+{
+  "qualityAlertData" : {
+    "qualityAlert" : true,
+    "qualityType" : "major"
+  },
+  "uniqueData" : {
+    "customerUniqueID" : "333",
+    "manufacturerUniqueID" : "Xxx",
+    "uniqueID" : "1AB"
+  },
+  "individualData" : {
+    "productionCountryCode" : "HUR",
+    "productionDateGMT" : "2021-05-30"
+  },
+  "partTree" : {
+    "isParentOf" : [ "eOMtThyhVNLWUZNRcBaQKxI" ]
+  },
+  "staticData" : {
+    "manufacturerOneID" : "ERROR_CP",
+    "partNumberManufacturer" : "RYtGKbgicZaHCBRQDSx",
+    "customerOneID" : "CUSTOMER_ID",
+    "partNameManufacturer" : "KLEBER1",
+    "customerContractOneID" : "yedUsFwdkelQbxeTeQOvaScfqIOOmaa",
+    "partNameCustomer" : "MIRROR_1",
+    "manufactureContractOneID" : "JxkyvRnL",
+    "partNumberCustomer" : "1122334455"
+  }
+}

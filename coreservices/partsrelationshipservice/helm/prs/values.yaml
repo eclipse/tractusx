@@ -1,0 +1,23 @@
+replicaCount: 1
+
+ingress:
+  host: prs.local
+
+prs:
+  image:
+    repository: prs
+    tag: "latest"
+
+#postgresql:
+#  url: "jdbc:postgresql://postgresql:5432/postgres"
+#  postgresqlUsername: prs-user
+#  postgresqlPassword: <postgres-password>
+
+#eventHubs:
+#  namespace: NAMESPACENAME
+#  name: HUBNAME
+#  sendConnectionString: XXXX
+#  listenConnectionString: XXXX
+
+#applicationInsights:
+  #connectionString: <app-insights-connection-string>

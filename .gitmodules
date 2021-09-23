@@ -1,0 +1,6 @@
+[submodule "daps/src"]
+	path = daps/src
+	url = https://github.com/Fraunhofer-AISEC/omejdn-server.git
+[submodule "meta-broker/src"]
+	path = meta-broker/src
+	url = https://github.com/International-Data-Spaces-Association/metadata-broker-open-core.git

@@ -1,0 +1,59 @@
+version: '3.7'
+
+services:
+  tdmapp:
+    image: 'springbootapp:latest'
+    build:
+      context: .
+    container_name: tdmapp
+    environment:
+      - TDM_API_KEY=${API_KEY}
+      - TDM_HOST_SECURE=${HOST_SECURE}
+      - TDM_HOST_NAME=${HOST_NAME}
+      - TDM_HOST_PORT=${HOST_PORT}
+    expose:
+      - 8080
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    depends_on:
+      - tdmdb
+    links:
+      - tdmdb
+          
+  tdmdb:
+    image: 'postgres:13.1-alpine'
+    container_name: tdmdb
+    volumes:
+      - tdm-data:/var/lib/postgresql/data
+    environment:      
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=tdmdb
+      
+  tdmdbadm:
+    image: 'dpage/pgadmin4'
+    container_name: tdmdbadm
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@catena-x.net
+      - PGADMIN_DEFAULT_PASSWORD=secret
+      - PGADMIN_LISTEN_PORT=80
+    expose:
+      - 8081
+    ports:
+      - "8081:80"
+    restart: always
+    links:
+      - tdmdb
+    depends_on:
+      - tdmdb
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+ 
+volumes:
+  tdm-data:
+  pgadmin-data:
+  
+networks:
+  default:
+  

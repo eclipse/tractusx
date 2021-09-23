@@ -1,3 +1,19 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  # different name
+  name: uploadapp-certificate${CLUSTER_ISSUER}
+  namespace: partsmasterdata
+spec:
+  # dedicate secret for the TLS cert
+  secretName: uploadapp-certificate${CLUSTER_ISSUER}-secret
+  issuerRef:
+    # referencing the production issuer
+    name: letsencrypt${CLUSTER_ISSUER}
+    kind: ClusterIssuer
+  dnsNames:
+  - ${CATENA_SERVICE_URL}
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -5,7 +21,7 @@ metadata:
   namespace: partsmasterdata
   annotations:
     kubernetes.io/ingress.class: nginx
-    cert-manager.io/cluster-issuer: letsencrypt-prod
+    cert-manager.io/cluster-issuer: letsencrypt$CLIENT_ISSUER
     nginx.ingress.kubernetes.io/rewrite-target: /$2
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/enable-cors: "true"
@@ -15,10 +31,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - catenaxdevakssrv.germanywestcentral.cloudapp.azure.com
-    secretName: tls-certificate
+    - $CATENA_SERVICE_URL
+    secretName: uploadapp-certificate${CLUSTER_ISSUER}-secret
   rules:
-  - host: catenaxdevakssrv.germanywestcentral.cloudapp.azure.com
+  - host: $CATENA_SERVICE_URL
     http:
       paths:
       - path: /uploadappadapter(/|$)(.*)

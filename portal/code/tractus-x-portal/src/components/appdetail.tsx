@@ -21,6 +21,7 @@ import Ratings from './ratings';
 import { RouteComponentProps } from 'react-router';
 import AppCard from './appcard';
 import { format } from '../helpers/utils';
+import BackLink from './navigation/backlink';
 
 @observer
 export default class AppDetail extends React.Component<RouteComponentProps> {
@@ -49,14 +50,6 @@ export default class AppDetail extends React.Component<RouteComponentProps> {
     </div>
   }
 
-  private backClick(): void {
-    if (this.props.history.length > 1) {
-      this.props.history.goBack();
-    } else {
-      this.props.history.push('/home/dashboard');
-    }
-  }
-
   private openClick(): void {
     const app = this.getApp();
     if (app.url) {
@@ -77,10 +70,7 @@ export default class AppDetail extends React.Component<RouteComponentProps> {
     
     return (
       <div className='w100pc h100pc df fdc'>
-        <div className='fgblack fs15 fw600 tdn ml5 df ml70 mt20 aic cpointer' onClick={() => this.backClick()}>
-          <Icon className='fgblack fs20 mt2 mr7' iconName='SkypeArrow' />
-          BACK
-        </div>
+        <BackLink history={this.props.history}/>
         <div className='df h100pc'>
           <div className='ml50 mr20 mt20 w100-20 bgwhite df fdc oa'>
             <div className='df mr50 ml50 mt50'>

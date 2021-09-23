@@ -15,7 +15,8 @@ spec:
     spec:
       containers:
       - name: cdns
-        image: catenaxdevacr.azurecr.io/cdns
+        image: $CONTAINER_REGISTRY/cdns:$VERSION
+        imagePullPolicy: $IMAGE_PULL_POLICY
         ports:
         env:
           - name: MAPPINGTABLENAME
@@ -23,7 +24,7 @@ spec:
           - name: STORAGE_CONNECTIONSTRING
             valueFrom:
               secretKeyRef:
-                key: sotrage_connectionstring
+                key: storage_connectionstring
                 name: cdns-secret
           - name: HTTPUSERNAME
             value: "TractusX"

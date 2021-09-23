@@ -32,8 +32,8 @@ export function readTextFile(file: File): Promise<string> {
 }
 
 export function getOneIDDetails(oneId: String): Promise<OrganizationalDetails> {
-  const auth = 'VHJhY3R1c1g6NFpxQTo9N003Z3lySFR6Tg==';
-  const url = 'https://catenaxdevakssrv.germanywestcentral.cloudapp.azure.com/businesspartners/businesspartner';
+  const auth = process.env.REACT_APP_BASIC_SERVICES_AUTHENTICATION;
+  const url = process.env.REACT_APP_BUSINESSPARTNER_SERVICE_URL;
   const u = `${url}?businessPartnerOneId=${oneId}`;
   let myResponseData: OrganizationalDetails;
   const promise = new Promise<OrganizationalDetails>((resolve, reject) => {
@@ -195,6 +195,7 @@ const map = [{ oneId: 'Partner_00001_BOSCH', company: 'Bosch', domain: 'Bosch' }
 { oneId: 'Partner_00007_BMW', company: 'Bayerische Motoren Werke Aktiengesellschaft', domain: 'BMW' },
 { oneId: 'Partner_00008_BASF', company: 'BASF', domain: 'Basf' },
 { oneId: 'Partner_00009_MICROSOFT', company: 'Microsoft', domain: 'Microsoft' },
+{ oneId: 'Partner_00010_TSY', company: 'T-Systems International GmbH', domain: 't-systems' },
 { oneId: 'Partner_ERROR_CP', company: 'ERROR CP', domain: 'Error' }
 ];
 

@@ -1,0 +1,62 @@
+{
+  "@context" : {
+    "ids" : "https://w3id.org/idsa/core/",
+    "idsc" : "https://w3id.org/idsa/code/"
+  },
+  "@type" : "ids:ConfigurationModel",
+  "@id" : "https://w3id.org/idsa/autogen/configurationModel/7672b568-7878-4f62-8032-5c73de969414",
+  "ids:configurationModelLogLevel" : {
+    "@id" : "idsc:MINIMAL_LOGGING"
+  },
+  "ids:connectorDeployMode" : {
+    "@id" : "idsc:TEST_DEPLOYMENT"
+  },
+  "ids:connectorDescription" : {
+    "@type" : "ids:BaseConnector",
+    "@id" : "https://w3id.org/idsa/autogen/baseConnector/956e8672-f217-4c27-84c2-478336dafcba",
+    "ids:publicKey" : {
+      "@type" : "ids:PublicKey",
+      "@id" : "https://w3id.org/idsa/autogen/publicKey/2c0d5603-3294-482b-9cd9-c939f865bffa",
+      "ids:keyType" : {
+        "@id" : "idsc:RSA"
+      },
+      "ids:keyValue" : "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAupkW9d8Ui6CDzkkb94tzm5Ih83tMf2mw4Soiimq8JCwjYqRiOD9C76AXmK1BLD6nRfLPZujKChNDfR4zv+CSN2osIthcXQng+09hy/V2XDv9PqczRP4ydhf71REQjRo47Y1axsLKHDAKWM/Gyvvsn8iNqAUOSSFh7MAeOkZ6RSQu13WOGmZeuiE1MIee7fayVNPcpXH+vYXwHt+/3q/POWERrrAVNwN2gYubywO7aXP8p7jvlflZy1X8FDZlX4ZdmpZy+rfDpmJ2udl2zeRq2rS8qYVkD87B2u2JeDReZ/RMa5FU+st4Rr6fz8gXerbvzKn1HSF2X8cx6bdiFr9fSQIDAQAB"
+    },
+    "ids:description" : [ {
+      "@value" : "IDS Connector with static example resources hosted by the Fraunhofer ISST",
+      "@type" : "http://www.w3.org/2001/XMLSchema#string"
+    } ],
+    "ids:version" : "@project.version@",
+    "ids:hasDefaultEndpoint" : {
+      "@type" : "ids:ConnectorEndpoint",
+      "@id" : "https://w3id.org/idsa/autogen/connectorEndpoint/a73d2202-cb77-41db-a3a6-05ed251c0b8a",
+      "ids:accessURL" : {
+        "@id" : "https://localhost:8080/api/ids/data"
+      }
+    },
+    "ids:outboundModelVersion" : "4.0.0",
+    "ids:inboundModelVersion" : [ "4.0.0" ],
+    "ids:title" : [ {
+      "@value" : "Dataspace Connector",
+      "@type" : "http://www.w3.org/2001/XMLSchema#string"
+    } ],
+    "ids:securityProfile" : {
+      "@id" : "idsc:BASE_SECURITY_PROFILE"
+    },
+    "ids:curator" : {
+      "@id" : "https://www.isst.fraunhofer.de/"
+    },
+    "ids:maintainer" : {
+      "@id" : "https://www.isst.fraunhofer.de/"
+    }
+  },
+  "ids:trustStore" : {
+    "@id" : "file:///src/main/resources/conf/truststore.p12"
+  },
+  "ids:connectorStatus" : {
+    "@id" : "idsc:CONNECTOR_OFFLINE"
+  },
+  "ids:keyStore" : {
+    "@id" : "file:///src/main/resources/conf/catenaxdevakssrv.germanywestcentral.cloudapp.azure.com.p12"
+  }
+}

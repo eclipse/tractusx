@@ -17,7 +17,7 @@ import { initializeIcons, loadTheme } from '@fluentui/react';
 import { createBrowserHistory } from 'history';
 import { observer } from 'mobx-react';
 import { Redirect, Route, Router, Switch } from 'react-router-dom';
-import './App.css';
+import './styles/App.css';
 import Home from './components/home';
 import DataUpload from './components/apps/dataupload';
 import DataUpload2 from './components/apps/dataupload2';

@@ -1,0 +1,151 @@
+# Default values for metadata-broker-open-core.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# -- Replicas count
+replicaCount: 1
+
+image:
+  # -- Image pull policy settings
+  pullPolicy: IfNotPresent
+  # -- Apache Jena Fuseki image
+  brokerFusekiImage: idsacontainerregistry01.azurecr.io/broker-fuseki
+  # -- Apache Jena Fuseki image tag
+  brokerFusekiImageTag: latest
+  # -- Metadata-broker image 
+  brokerCoreImage: idsacontainerregistry01.azurecr.io/broker-core
+  # -- Metadata-broker image tag
+  brokerCoreImageTag: 4.0.2
+
+# -- Secret with docketconfig.json to access repository
+imagePullSecrets:
+  - name: regcred
+
+# -- Override default chart name
+nameOverride: ""
+# -- Override fullname of the release
+fullnameOverride: ""
+
+serviceAccount:
+  # -- Specifies whether a service account should be created
+  create: true
+  # -- Annotations to add to the service account
+  annotations: {}
+  # -- The name of the service account to use.
+  # -- If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+env:
+  # -- Environment variables that allow to configure application. Please check broker [repo](https://github.com/International-Data-Spaces-Association/metadata-broker-open-core)
+  config:
+    SPARQL_URL: ""
+    ELASTICSEARCH_HOSTNAME: ""
+    ELASTICSEARCH_PORT: ""
+    DAPS_URL: ""
+    DAPS_VALIDATEINCOMING: ""
+    COMPONENT_URI: ""
+    COMPONENT_CATALOG_URI: ""
+    INFOMODEL_VALIDATEWITHSHACL: ""
+    JWKS_TRUSTEDHOSTS: ""
+  # -- Environment variables that will stored in Kubernetes secret
+  secret:
+    # -- Fuseki application default admin password
+    ADMIN_PASSWORD: "admin"
+    # -- Password for generated keystore
+    KEYSTORE_PASSWORD: "changeme"
+    # -- Alias for keypair inside generated keystore
+    KEYSTORE_ALIAS: "1"
+
+broker:
+  # -- Truststore settings
+  truststore:
+    # -- Truststore password
+    password: changeit
+    # -- Truststore with additional certificates to be trusted (e.g. DAPS certificate)
+    p12: ""
+  core:
+    # -- If not null, debug will be enabled with exposed port. Example: debugOptions: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
+    debugOptions: ""
+    
+
+# -- Additional pod annotations
+podAnnotations: {}
+
+# -- Pod security context
+podSecurityContext: {}
+  # fsGroup: 2000
+
+# -- Security context
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+# -- Service settings
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  # -- Ingress host
+  host: catenaxdev001akssrv.germanywestcentral.cloudapp.azure.com
+  # -- Define path prefix starting with /, e.g. /broker
+  rootPath: ""
+  # -- Allow to enable and disable ingress
+  enabled: false
+  # -- Paths configuration
+  paths:
+  - path: /broker(/|$)(.*)
+    pathType: Prefix
+    serviceName: ""
+    portNumber: 8080
+  - path: /fuseki
+    pathType: Prefix
+    serviceName: ""
+    portNumber: 3030
+  # -- Ingress annotations
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/use-regex: "true"
+  # -- TLS settings
+  tls:
+    enabled: false
+    certMgr:
+      # -- If enabled cert-manager will be used to issue ingress cert
+      enabled: false
+      # -- Cert-manager issuer name
+      issuer: "letsencrypt-prod"
+
+# -- Resources usage and limits
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+# -- Autoscaling settings
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+# -- Node selector settings
+nodeSelector: {}
+
+# -- Toleration settings
+tolerations: []
+
+# -- Affinity settings
+affinity: {}

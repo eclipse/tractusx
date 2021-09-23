@@ -1,0 +1,48 @@
+{{- if .Values.ingress.enabled -}}
+{{- $fullName := include "dataspace-connector.fullname" . -}}
+{{- $ingressExtraPaths := .Values.ingress.extraPaths -}}
+{{- $svcName := include "dataspace-connector.fullname" . -}}
+{{- $svcPort := .Values.service.port -}}
+{{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
+apiVersion: extensions/v1beta1
+{{- end }}
+kind: Ingress
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "dataspace-connector.labels" . | nindent 4 }}
+  annotations:
+    {{- if .Values.ingress.rootPath }}
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/x-forwarded-prefix: {{ .Values.ingress.rootPath }}
+    {{- else }}
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    {{- end }}
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+spec:
+  tls:
+    - hosts:
+        - {{ .Values.certificate.dnsName }}
+      secretName: "{{ include "dataspace-connector.fullname" . }}-tls"
+  rules:
+  - host: {{ .Values.certificate.dnsName }}
+    http:
+      paths:
+      - backend:
+        {{- if $.Values.service.servicename }}
+          serviceName: {{ $.Values.service.servicename }}
+        {{- else }}
+          serviceName: {{ default $svcName .service }}
+        {{- end }}
+          servicePort: {{ default $svcPort .port }}
+        {{- if .Values.ingress.rootPath }}
+        path: "{{ .Values.ingress.rootPath }}(/|$)(.*)"
+        {{- else }}
+        path: "/(.*)"
+        {{- end }}
+{{- end }}

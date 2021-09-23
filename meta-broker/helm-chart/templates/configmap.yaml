@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "metadata-broker-open-core.fullname" . }}
+  labels:
+    {{- include "metadata-broker-open-core.labels" . | nindent 4 }}
+data:
+  {{- range $key, $val := .Values.env.config }}
+  {{- if $val}}
+    {{ $key }}: "{{ $val }}"
+  {{- end }}
+  {{- end}}

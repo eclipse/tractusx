@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Copyright (c) 2021 T-Systems International GmbH (Catena-X Consortium)
+
+    See the AUTHORS file(s) distributed with this work for additional
+    information regarding authorship.
+
+    See the LICENSE file(s) distributed with this work for
+    additional information regarding license terms.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.5.1</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <groupId>net.catenax</groupId>
+    <artifactId>semantics</artifactId>
+    <version>${revision}</version>
+    <name>Catena-X Semantic Layer</name>
+    <description>Root Module of the Catena-X Semantic Layer</description>
+
+     <organization>
+		<name>Catena-X Consortium</name>
+		<url>https://catena-x.net/</url>
+	</organization>
+
+    <licenses>
+		<license>
+			<name>${licence_name}</name>
+			<url>${licence_url}</url>
+			<distribution>${licence_distribution}</distribution>
+		</license>
+	</licenses>
+
+    <properties>
+        <revision>1.0.0</revision>
+        <java.version>11</java.version>
+        <maven.minimum.version>3.3.9</maven.minimum.version>
+        <spring.cloud.version>2020.0.3</spring.cloud.version>
+        <ids-framework.version>4.0.3</ids-framework.version>
+        <collection-utlis.version>4.4</collection-utlis.version>
+        <bamm.version>1.0.0</bamm.version>
+        <assertj.version>3.18.1</assertj.version>
+        <swagger-annotations.version>1.5.20</swagger-annotations.version>
+        <email>info@catena-x.net</email>
+		<licence_name>Apache License, Version 2.0</licence_name>
+		<licence_url>https://www.apache.org/licenses/LICENSE-2.0.txt</licence_url>
+		<licence_distribution>repo</licence_distribution>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+        
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-annotations</artifactId>
+			<version>${swagger-annotations.version}</version>
+		</dependency>
+        <dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.4.1</version>
+		</dependency>
+
+		<dependency>
+	    <groupId>org.openapitools</groupId>
+	    <artifactId>jackson-databind-nullable</artifactId>
+	    <version>0.1.0</version>
+     	</dependency>
+
+        <!-- persistence -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+		</dependency>
+
+        <!-- International Dataspaces interop -->
+        <dependency>
+            <groupId>de.fraunhofer.isst.ids.framework</groupId>
+            <artifactId>messaging</artifactId>
+            <version>${ids-framework.version}</version>
+        </dependency>
+
+        <!-- Semantics Libraries -->
+        <dependency>
+            <groupId>io.openmanufacturing</groupId>
+            <artifactId>sds-aspect-meta-model</artifactId>
+            <version>${bamm.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.jena</groupId>
+            <artifactId>jena-core</artifactId>
+            <version>4.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.jena</groupId>
+            <artifactId>jena-arq</artifactId>
+            <version>4.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.topbraid</groupId>
+            <artifactId>shacl</artifactId>
+            <version>1.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>io.vavr</groupId>
+            <artifactId>vavr</artifactId>
+            <version>0.10.3</version>
+        </dependency>
+
+        <!-- Test dependencies -->
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.6.3</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>isst-nexus-public</id>
+            <name>isst-public</name>
+            <url>https://mvn.ids.isst.fraunhofer.de/nexus/repository/ids-public/</url>
+        </repository>
+    </repositories>
+
+<build>
+		<plugins>
+         <plugin>
+          <groupId>org.openapitools</groupId>
+          <artifactId>openapi-generator-maven-plugin</artifactId>
+          <version>5.2.1</version>
+          <executions>
+           <execution>
+            <goals>
+                <goal>generate</goal>
+            </goals>
+            <configuration>
+                <inputSpec>${project.basedir}/openapi.yaml</inputSpec>
+                <generatorName>spring</generatorName>
+				<generateSupportingFiles>true</generateSupportingFiles>
+				<packageName>net.catenax.semantics.hub</packageName>
+				<modelPackage>net.catenax.semantics.hub.model</modelPackage>
+				<apiPackage>net.catenax.semantics.hub.api</apiPackage>
+
+				<supportingFilesToGenerate>
+					ApiUtil.java,HomeController.java,OpenAPIDocumentationConfig.java
+				</supportingFilesToGenerate>
+				<configOptions>
+					<delegatePattern>true</delegatePattern>
+					<packageName>net.catenax</packageName>
+				</configOptions>
+				<invokerPackage>net.catenax.semantics.hub</invokerPackage>
+            </configuration>
+          </execution>
+         </executions>
+        </plugin>
+			<plugin>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>${maven-dependency-plugin.version}</version>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>${maven-enforcer-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>enforce-maven</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<requireMavenVersion>
+									<version>${maven.minimum.version}</version>
+								</requireMavenVersion>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.2.0</version>
+				<configuration>
+					<show>private</show>
+					<author>true</author>
+				</configuration>
+				<executions>
+					<execution>
+						<id>update</id>
+						<goals>
+							<goal>fix</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>javadoc</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.0.0-M5</version>
+				<configuration>
+					<systemPropertyVariables>
+						<propertyName>licence_type</propertyName>
+						<propertyName>licence_url</propertyName>
+						<propertyName>licence_distribution</propertyName>
+						<buildDirectory>${project.build.directory}</buildDirectory>
+					</systemPropertyVariables>
+				</configuration>
+			</plugin>
+		</plugins>
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>conf/**/*.*</include>
+					<include>log4j2.xml</include>
+					<include>application.properties</include>
+				</includes>
+				<excludes>
+					<!-- The key files are binary files, which the filtering destroys. -->
+					<exclude>**/*.p12</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+				<includes>
+					<include>**/*.p12</include>
+				</includes>
+			</resource>
+		</resources>
+	</build>
+
+</project>
