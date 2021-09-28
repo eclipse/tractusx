@@ -9,7 +9,11 @@
 //
 package net.catenax.prs.testing;
 
-import com.catenax.partsrelationshipservice.dtos.*;
+import com.catenax.partsrelationshipservice.dtos.Aspect;
+import com.catenax.partsrelationshipservice.dtos.PartId;
+import com.catenax.partsrelationshipservice.dtos.PartInfo;
+import com.catenax.partsrelationshipservice.dtos.PartRelationship;
+import com.catenax.partsrelationshipservice.dtos.PartRelationshipsWithInfos;
 import com.github.javafaker.Faker;
 
 import java.util.List;
@@ -29,7 +33,7 @@ public class DtoMother {
     /**
      * Base mother object that generates test data.
      */
-    private final BaseDtoMother base = new BaseDtoMother();
+    private final transient BaseDtoMother base = new BaseDtoMother();
 
     /**
      * Generate a {@link PartRelationshipsWithInfos} containing random data.

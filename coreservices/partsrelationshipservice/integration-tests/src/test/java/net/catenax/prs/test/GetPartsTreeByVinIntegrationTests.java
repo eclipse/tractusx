@@ -27,8 +27,6 @@ public class GetPartsTreeByVinIntegrationTests extends PrsIntegrationTestsBase {
     private static final String DEPTH = "depth";
     private static final String ASPECT = "aspect";
 
-    private final PartsTreeMother expected = new PartsTreeMother();
-
     @Test
     public void getPartsTreeByVin_maintainedView_success() {
         var response =

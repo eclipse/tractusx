@@ -1,6 +1,19 @@
+//
+// Copyright (c) 2021 Copyright Holder (Catena-X Consortium)
+//
+// See the AUTHORS file(s) distributed with this work for additional
+// information regarding authorship.
+//
+// See the LICENSE file(s) distributed with this work for
+// additional information regarding license terms.
+//
 package net.catenax.prs.testing;
 
-import com.catenax.partsrelationshipservice.dtos.*;
+import com.catenax.partsrelationshipservice.dtos.Aspect;
+import com.catenax.partsrelationshipservice.dtos.PartId;
+import com.catenax.partsrelationshipservice.dtos.PartInfo;
+import com.catenax.partsrelationshipservice.dtos.PartRelationship;
+import com.catenax.partsrelationshipservice.dtos.PartRelationshipsWithInfos;
 
 import java.util.Collections;
 import java.util.List;
@@ -46,32 +59,34 @@ public class BaseDtoMother {
     }
 
     /**
-     * Generate a {@link PartId}
-     * with random values for {@link PartId#getOneIDManufacturer()}
-     * and {@link PartId#getObjectIDManufacturer()}.
+     * Generate a {@link PartId} from oneId and objectId.
+     *
+     * @param oneId one id of the manufacturer.
+     * @param objectId part serial number.
      * <p>
-     * Example: {@code PartId(oneIDManufacturer=Stiedemann Inc, objectIDManufacturer=ypiu9wzwuka1ov03)}.
+     * Example: {@code PartId(oneIDManufacturer=Stiedemann Inc, objectId=ypiu9wzwuka1ov03)}.
      *
      * @return a {@link PartId} with random identifiers.
      */
     @SuppressWarnings("checkstyle:MagicNumber")
-    public PartId partId(String companyName, String objectIDManufacturer) {
+    public PartId partId(final String oneId, final String objectId) {
         return PartId.builder()
-                .withOneIDManufacturer(companyName)
-                .withObjectIDManufacturer(objectIDManufacturer)
+                .withOneIDManufacturer(oneId)
+                .withObjectIDManufacturer(objectId)
                 .build();
     }
 
     /**
-     * Generate a {@link Aspect}
-     * with random values for {@link Aspect#getName()}
-     * and {@link Aspect#getUrl()}.
-     * <p>
+     * Generate a {@link Aspect} from aspect name and url.
+     *
+     * @param aspectName name of the aspect.
+     * @param url url location of the aspect.
+     *
      * Example: {@code Aspect(name=nihil, url=www.lincoln-smith.co)}.
      *
      * @return a {@link Aspect} with random data.
      */
-    public Aspect partAspect(String aspectName, String url) {
+    public Aspect partAspect(final String aspectName, final String url) {
         return Aspect.builder()
                 .withName(aspectName)
                 .withUrl(url)

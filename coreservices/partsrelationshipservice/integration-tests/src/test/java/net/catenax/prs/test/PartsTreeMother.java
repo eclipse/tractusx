@@ -15,6 +15,11 @@ import java.util.stream.Stream;
  */
 public class PartsTreeMother {
 
+    /**
+     * Base mother object that generates test data.
+     */
+    private final BaseDtoMother base = new BaseDtoMother();
+
     private static final String BOSCH_ONE_ID = "BOSCH";
     private static final String ZF_ONE_ID = "ZF";
     private static final String SCHAEFFLER_ONE_ID = "SCHAEFFLER";
@@ -38,11 +43,6 @@ public class PartsTreeMother {
     private final PartId gearwheelPartId = gearwheelPartId();
     private final PartId gearwheelpinPartId1 = gearwheelpinPartId1();
     private final PartId gearwheelpinPartId2 = gearwheelpinPartId2();
-
-    /**
-     * Base mother object that generates test data.
-     */
-    private final BaseDtoMother base = new BaseDtoMother();
 
     private final List<PartRelationship> gearboxDirectChildren = List.of(partRelationship(gearboxPartId, gearwheelPartId));
 

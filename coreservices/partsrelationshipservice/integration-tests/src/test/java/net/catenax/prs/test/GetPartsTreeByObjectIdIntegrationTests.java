@@ -23,7 +23,6 @@ import static org.hamcrest.Matchers.hasSize;
 
 public class GetPartsTreeByObjectIdIntegrationTests extends PrsIntegrationTestsBase {
 
-    private final PartsTreeMother expected = new PartsTreeMother();
     private static final String PATH = "/api/v0.1/parts/{oneIDManufacturer}/{objectIDManufacturer}/partsTree";
     private static final String PART_ONE_ID = "ZF";
     private static final String PART_OBJECT_ID = "I88HJHS45";
