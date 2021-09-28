@@ -9,18 +9,10 @@
 //
 package net.catenax.prs.testing;
 
-import com.catenax.partsrelationshipservice.dtos.Aspect;
-import com.catenax.partsrelationshipservice.dtos.PartId;
-import com.catenax.partsrelationshipservice.dtos.PartInfo;
-import com.catenax.partsrelationshipservice.dtos.PartRelationship;
-import com.catenax.partsrelationshipservice.dtos.PartRelationshipsWithInfos;
+import com.catenax.partsrelationshipservice.dtos.*;
 import com.github.javafaker.Faker;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-
-import static java.util.Collections.emptyList;
 
 /**
  * Object Mother to generate fake DTO data for testing.
@@ -35,19 +27,9 @@ public class DtoMother {
     private final transient Faker faker = new Faker();
 
     /**
-     * Generate a {@link PartRelationshipsWithInfos} containing provided data.
-     *
-     * @param relationships list of {@link PartRelationship}.
-     * @param partInfos     list of {@link PartInfo}.
-     * @return a {@link PartRelationshipsWithInfos} containing
-     * the provided {@code relationships} and {@code partInfos}.
+     * Base mother object that generates test data.
      */
-    public PartRelationshipsWithInfos partRelationshipsWithInfos(final List<PartRelationship> relationships, final List<PartInfo> partInfos) {
-        return PartRelationshipsWithInfos.builder()
-                .withRelationships(relationships)
-                .withPartInfos(partInfos)
-                .build();
-    }
+    private final BaseDtoMother base = new BaseDtoMother();
 
     /**
      * Generate a {@link PartRelationshipsWithInfos} containing random data.
@@ -55,21 +37,7 @@ public class DtoMother {
      * @return a {@link PartRelationshipsWithInfos} containing random dta.
      */
     public PartRelationshipsWithInfos partRelationshipsWithInfos() {
-        return partRelationshipsWithInfos(List.of(partRelationship()), List.of(partInfo()));
-    }
-
-    /**
-     * Generate a {@link PartRelationship} linking two parts.
-     *
-     * @param parentId parent in the relationship.
-     * @param childId  child in the relationship.
-     * @return a {@link PartRelationship} linking {@code parentId} to {@code childId}.
-     */
-    public PartRelationship partRelationship(final PartId parentId, final PartId childId) {
-        return PartRelationship.builder()
-                .withParent(parentId)
-                .withChild(childId)
-                .build();
+        return base.partRelationshipsWithInfos(List.of(partRelationship()), List.of(partInfo()));
     }
 
     /**
@@ -78,7 +46,7 @@ public class DtoMother {
      * @return a {@link PartRelationship} linking two random parts.
      */
     public PartRelationship partRelationship() {
-        return partRelationship(partId(), partId());
+        return base.partRelationship(partId(), partId());
     }
 
     /**
@@ -92,10 +60,7 @@ public class DtoMother {
      */
     @SuppressWarnings("checkstyle:MagicNumber")
     public PartId partId() {
-        return PartId.builder()
-                .withOneIDManufacturer(faker.company().name())
-                .withObjectIDManufacturer(faker.lorem().characters(10, 20))
-                .build();
+        return base.partId(faker.company().name(), faker.lorem().characters(10, 20));
     }
 
     /**
@@ -108,10 +73,7 @@ public class DtoMother {
      * @return a {@link Aspect} with random data.
      */
     public Aspect partAspect() {
-        return Aspect.builder()
-                .withName(faker.lorem().word())
-                .withUrl(faker.internet().url())
-                .build();
+        return base.partAspect(faker.lorem().word(), faker.internet().url());
     }
 
     /**
@@ -123,11 +85,7 @@ public class DtoMother {
      * @return a {@link PartInfo} containing the provided {@code partId} and optionally {@code aspect}.
      */
     public PartInfo partInfo(final PartId partId, final String partTypeName, final Aspect aspectOrNull) {
-        return PartInfo.builder()
-                .withPart(partId)
-                .withPartTypeName(partTypeName)
-                .withAspects(Optional.ofNullable(aspectOrNull).map(Collections::singletonList).orElse(emptyList()))
-                .build();
+        return base.partInfo(partId, partTypeName, aspectOrNull);
     }
 
     /**

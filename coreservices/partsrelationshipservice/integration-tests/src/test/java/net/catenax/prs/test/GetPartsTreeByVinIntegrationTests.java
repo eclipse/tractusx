@@ -9,15 +9,12 @@
 //
 package net.catenax.prs.test;
 
-import com.catenax.partsrelationshipservice.dtos.PartRelationshipsWithInfos;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
 import static com.catenax.partsrelationshipservice.dtos.PartsTreeView.AS_MAINTAINED;
 import static io.restassured.RestAssured.given;
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
-import static net.javacrumbs.jsonunit.assertj.JsonAssertions.json;
 import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
 
 
@@ -30,60 +27,59 @@ public class GetPartsTreeByVinIntegrationTests extends PrsIntegrationTestsBase {
     private static final String DEPTH = "depth";
     private static final String ASPECT = "aspect";
 
-    @Test
-    public void getPartsTreeByVin_maintainedView_success() throws Exception {
-        var objectMapper = new ObjectMapper();
-        var expected = objectMapper.readValue(getClass().getClassLoader().getResourceAsStream("sample_vin_response.json"), PartRelationshipsWithInfos.class);
+    private final PartsTreeMother expected = new PartsTreeMother();
 
+    @Test
+    public void getPartsTreeByVin_maintainedView_success() {
         var response =
-            given()
-                .pathParam(VIN, SAMPLE_VIN)
-                .queryParam(VIEW, AS_MAINTAINED)
-            .when()
-                .get(PATH)
-            .then()
-                .assertThat()
-                    .statusCode(HttpStatus.OK.value())
-            .extract().asString();
+                given()
+                        .pathParam(VIN, SAMPLE_VIN)
+                        .queryParam(VIEW, AS_MAINTAINED)
+                        .when()
+                        .get(PATH)
+                        .then()
+                        .assertThat()
+                        .statusCode(HttpStatus.OK.value())
+                        .extract().asString();
 
         assertThatJson(response)
                 .when(IGNORING_ARRAY_ORDER)
-                .isEqualTo(json(expected));
+                .isEqualTo(expected.sampleVinPartTree());
     }
 
     @Test
     public void getPartsTreeByVin_notExistingVIN_returns404() {
         given()
-            .pathParam(VIN, "not-existing-vin")
-            .queryParam(VIEW, AS_MAINTAINED)
-        .when()
-            .get(PATH)
-        .then()
-            .assertThat()
-            .statusCode(HttpStatus.NOT_FOUND.value());
+                .pathParam(VIN, "not-existing-vin")
+                .queryParam(VIEW, AS_MAINTAINED)
+                .when()
+                .get(PATH)
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.NOT_FOUND.value());
     }
 
     @Test
     public void getPartsTreeByVin_noView_returns400() {
         given()
-            .pathParam(VIN, SAMPLE_VIN)
-        .when()
-            .get(PATH)
-        .then()
-            .assertThat()
-            .statusCode(HttpStatus.BAD_REQUEST.value());
+                .pathParam(VIN, SAMPLE_VIN)
+                .when()
+                .get(PATH)
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
     @Test
     public void getPartsTreeByVin_invalidView_returns400() {
         given()
-            .pathParam(VIN, SAMPLE_VIN)
-            .queryParam(VIEW, "not-valid")
-        .when()
-            .get(PATH)
-        .then()
-            .assertThat()
-            .statusCode(HttpStatus.BAD_REQUEST.value());
+                .pathParam(VIN, SAMPLE_VIN)
+                .queryParam(VIEW, "not-valid")
+                .when()
+                .get(PATH)
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
     @Test
@@ -93,76 +89,67 @@ public class GetPartsTreeByVinIntegrationTests extends PrsIntegrationTestsBase {
                 .pathParam(VIN, SAMPLE_VIN)
                 .queryParam(VIEW, AS_MAINTAINED)
                 .queryParam(DEPTH, maxDepth + 1)
-        .when()
+                .when()
                 .get(PATH)
-        .then()
+                .then()
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
     @Test
-    public void getPartsTreeByVin_directChildren_success() throws Exception {
-        var objectMapper = new ObjectMapper();
-        var expected = objectMapper.readValue(getClass().getClassLoader().getResourceAsStream("sample_vin_directChildren_response.json"), PartRelationshipsWithInfos.class);
-
+    public void getPartsTreeByVin_directChildren_success() {
         var response =
                 given()
                         .pathParam(VIN, SAMPLE_VIN)
                         .queryParam(VIEW, AS_MAINTAINED)
                         .queryParam(DEPTH, 1)
-                .when()
+                        .when()
                         .get(PATH)
-                .then()
+                        .then()
                         .assertThat()
                         .statusCode(HttpStatus.OK.value())
                         .extract().asString();
 
         assertThatJson(response)
                 .when(IGNORING_ARRAY_ORDER)
-                .isEqualTo(json(expected));
+                .isEqualTo(expected.sampleVinDirectChildren());
     }
 
     @Test
-    public void getPartsTreeByVin_grandChildren_success() throws Exception {
-        var objectMapper = new ObjectMapper();
-        var expected = objectMapper.readValue(getClass().getClassLoader().getResourceAsStream("sample_vin_grandChildren_response.json"), PartRelationshipsWithInfos.class);
-
+    public void getPartsTreeByVin_grandChildren_success() {
         var response =
                 given()
                         .pathParam(VIN, SAMPLE_VIN)
                         .queryParam(VIEW, AS_MAINTAINED)
                         .queryParam(DEPTH, 2)
-                .when()
+                        .when()
                         .get(PATH)
-                .then()
+                        .then()
                         .assertThat()
                         .statusCode(HttpStatus.OK.value())
                         .extract().asString();
 
         assertThatJson(response)
                 .when(IGNORING_ARRAY_ORDER)
-                .isEqualTo(json(expected));
+                .isEqualTo(expected.sampleVinGrandChildren());
     }
 
     @Test
-    public void getPartsTreeByVin_withCEAspect_success() throws Exception {
-        var objectMapper = new ObjectMapper();
-        var expected = objectMapper.readValue(getClass().getClassLoader().getResourceAsStream("sample_vin_with_aspect_response.json"), PartRelationshipsWithInfos.class);
-
+    public void getPartsTreeByVin_withCEAspect_success() {
         var response =
                 given()
                         .pathParam(VIN, SAMPLE_VIN)
                         .queryParam(VIEW, AS_MAINTAINED)
                         .queryParam(ASPECT, "CE")
-                .when()
+                        .when()
                         .get(PATH)
-                .then()
+                        .then()
                         .assertThat()
                         .statusCode(HttpStatus.OK.value())
                         .extract().asString();
 
         assertThatJson(response)
                 .when(IGNORING_ARRAY_ORDER)
-                .isEqualTo(json(expected));
+                .isEqualTo(expected.sampleVinPartTreeWithAspects());
     }
 }
