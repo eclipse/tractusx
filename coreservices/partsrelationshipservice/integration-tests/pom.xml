@@ -16,6 +16,10 @@
     <name>PRS Tests</name>
     <description>Part Relationship Service Integration Tests</description>
 
+    <properties>
+        <groups>IntegrationTests</groups>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>net.catenax.prs</groupId>
@@ -59,6 +63,13 @@
                 <artifactId>maven-install-plugin</artifactId>
                 <configuration>
                     <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <groups>${groups}</groups>
                 </configuration>
             </plugin>
         </plugins>
