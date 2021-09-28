@@ -67,7 +67,7 @@ public class PartsTreeQueryService {
     public PartRelationshipsWithInfos getPartsTree(final PartsTreeByObjectIdRequest request) {
         final var depth = request.getDepth().orElse(configuration.getPartsTreeMaxDepth());
         if (depth > configuration.getPartsTreeMaxDepth()) {
-            throw new MaxDepthTooLargeException();
+            throw new MaxDepthTooLargeException("Depth should not be more than " + configuration.getPartsTreeMaxDepth());
         }
         final var tree = relationshipRepository.getPartsTree(
                 request.getOneIDManufacturer(),

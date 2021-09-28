@@ -58,6 +58,9 @@ public class PrsController {
         @ApiResponse(responseCode = "404", description = "A vehicle was not found with the given VIN",
                 content = {@Content(mediaType = APPLICATION_JSON_VALUE,
                         schema = @Schema(implementation = ErrorResponse.class))}),
+        @ApiResponse(responseCode = "400", description = "Bad request",
+                content = {@Content(mediaType = APPLICATION_JSON_VALUE,
+                        schema = @Schema(implementation = ErrorResponse.class))}),
     })
     @GetMapping("/vins/{vin}/partsTree")
     public ResponseEntity<PartRelationshipsWithInfos> getPartsTree(final @Valid @ParameterObject PartsTreeByVinRequest request) {
@@ -69,6 +72,9 @@ public class PrsController {
         @ApiResponse(responseCode = "200", description = "Parts tree for a part",
             content = {@Content(mediaType = APPLICATION_JSON_VALUE,
                     schema = @Schema(implementation = PartRelationshipsWithInfos.class))}),
+        @ApiResponse(responseCode = "400", description = "Bad request",
+                content = {@Content(mediaType = APPLICATION_JSON_VALUE,
+                        schema = @Schema(implementation = ErrorResponse.class))}),
     })
     @GetMapping("/parts/{oneIDManufacturer}/{objectIDManufacturer}/partsTree")
     public PartRelationshipsWithInfos getPartsTree(final @Valid @ParameterObject PartsTreeByObjectIdRequest request) {

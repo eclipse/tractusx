@@ -16,6 +16,8 @@ import lombok.Builder;
 import lombok.Value;
 import org.springframework.http.HttpStatus;
 
+import java.util.List;
+
 /*** API error response. */
 @Schema(description = "Error response")
 @Value
@@ -29,4 +31,7 @@ public class ErrorResponse {
 
     @Schema(description = "Error message")
     private String message;
+
+    @Schema(description = "List of errors")
+    private List<String> errors;
 }

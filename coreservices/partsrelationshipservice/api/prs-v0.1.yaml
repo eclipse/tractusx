@@ -55,6 +55,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/PartRelationshipsWithInfos'
           description: Parts tree for a part
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
       summary: Get a PartsTree for a part
       tags:
       - Parts Relationship Service API
@@ -99,6 +105,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/PartRelationshipsWithInfos'
           description: Parts tree for a vehicle
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
         "404":
           content:
             application/json:
@@ -130,6 +142,12 @@ components:
       type: object
       description: Error response
       properties:
+        errors:
+          type: array
+          description: List of errors
+          items:
+            type: string
+            description: List of errors
         message:
           type: string
           description: Error message
