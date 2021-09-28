@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - feature/CAX-1_PRS@185-smoke-tests
     paths:
       - coreservices/partsrelationshipservice/**
       - .github/workflows/partsrelationshipservice-deploy.yml
