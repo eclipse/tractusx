@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 
 import javax.annotation.Nullable;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
@@ -35,7 +36,8 @@ abstract class PartsTreeRequestBase {
     protected final String aspect;
 
     @Nullable
-    @Parameter(description = "Max depth of the returned tree, if empty max depth is returned", in = QUERY, schema = @Schema(implementation = Integer.class))
+    @Min(value = 1, message = "Depth should be at least 1.")
+    @Parameter(description = "Max depth of the returned tree, if empty max depth is returned", in = QUERY, schema = @Schema(implementation = Integer.class, minimum = "1"))
     protected final Integer depth;
 
     public PartsTreeView getView() {
