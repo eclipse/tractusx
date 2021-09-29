@@ -48,7 +48,7 @@ public class PrsExceptionHandler {
     }
 
     /**
-     * Handler for max depth too large exception
+     * Handler for entity not found exception
      * @param ex see {@link EntityNotFoundException}
      * @return see {@link ErrorResponse}
      */

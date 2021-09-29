@@ -167,7 +167,7 @@ public class GetPartsTreeByObjectIdIntegrationTests extends PrsIntegrationTestsB
 
     @ParameterizedTest
     @EnumSource(PartsTreeView.class)
-    public void getPartsTreeByObjectId_directChildren_success(PartsTreeView view) throws Exception {
+    public void getPartsTreeByObjectId_directChildren_success(PartsTreeView view) {
 
         var response =
                 given()
@@ -189,7 +189,7 @@ public class GetPartsTreeByObjectIdIntegrationTests extends PrsIntegrationTestsB
 
     @ParameterizedTest
     @EnumSource(PartsTreeView.class)
-    public void getPartsTreeByObjectId_CEAspect_success(PartsTreeView view) throws Exception {
+    public void getPartsTreeByObjectId_CEAspect_success(PartsTreeView view) {
 
         var response =
                 given()
