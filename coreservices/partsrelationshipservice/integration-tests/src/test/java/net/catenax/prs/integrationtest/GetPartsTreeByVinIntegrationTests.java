@@ -11,6 +11,8 @@ package net.catenax.prs.integrationtest;
 
 import net.catenax.prs.controllers.ApiErrors;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.http.HttpStatus;
 
 import java.text.MessageFormat;
@@ -68,6 +70,23 @@ public class GetPartsTreeByVinIntegrationTests extends PrsIntegrationTestsBase {
     }
 
     @Test
+    public void getPartsTreeByVin_blankVin_returns400() {
+        var response =
+                given()
+                        .pathParam(VIN, "   ")
+                        .queryParam(VIEW, AS_MAINTAINED)
+                        .when()
+                        .get(PATH)
+                        .then()
+                        .assertThat()
+                        .statusCode(HttpStatus.BAD_REQUEST.value())
+                        .extract().asString();
+
+        assertThatJson(response)
+                .isEqualTo(expected.invalidArgument(List.of(VIN +":must not be blank")));
+    }
+
+    @Test
     public void getPartsTreeByVin_noView_returns400() {
         var response =
                 given()
@@ -117,6 +136,25 @@ public class GetPartsTreeByVinIntegrationTests extends PrsIntegrationTestsBase {
 
         assertThatJson(response)
                 .isEqualTo(expected.invalidMaxDepth(List.of(MessageFormat.format(ApiErrors.PARTS_TREE_MAX_DEPTH, maxDepth))));
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {0, -1, Integer.MIN_VALUE})
+    public void getPartsTreeByVin_zeroOrNegativeDepth_returns400(int depth) {
+        var response =
+                given()
+                        .pathParam(VIN, SAMPLE_VIN)
+                        .queryParam(VIEW, AS_MAINTAINED)
+                        .queryParam(DEPTH, depth)
+                .when()
+                        .get(PATH)
+                .then()
+                        .assertThat()
+                        .statusCode(HttpStatus.BAD_REQUEST.value())
+                        .extract().asString();
+
+        assertThatJson(response)
+                .isEqualTo(expected.invalidArgument(List.of(DEPTH +":"+ ApiErrors.PARTS_TREE_MIN_DEPTH)));
     }
 
     @Test
