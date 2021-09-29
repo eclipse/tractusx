@@ -163,6 +163,18 @@ public class PartsTreeMother {
     }
 
     /**
+     * Generates error response for entity not found scenario.
+     * @param errors List of errors.
+     * @return An {@link ErrorResponse} object containing list of supplied errors.
+     */
+    public ErrorResponse entityNotFound(List<String> errors) {
+        return ErrorResponse.builder()
+                .withStatusCode(HttpStatus.NOT_FOUND)
+                .withMessage(HttpStatus.NOT_FOUND.getReasonPhrase())
+                .withErrors(errors).build();
+    }
+
+    /**
      * Generates error response for invalid max depth provided scenario.
      * @param errors List of errors.
      * @return An {@link ErrorResponse} object containing list of supplied errors.

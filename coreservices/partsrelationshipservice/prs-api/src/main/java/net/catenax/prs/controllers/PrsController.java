@@ -26,7 +26,6 @@ import net.catenax.prs.requests.PartsTreeByVinRequest;
 import net.catenax.prs.services.PartsTreeQueryByVinService;
 import net.catenax.prs.services.PartsTreeQueryService;
 import org.springdoc.api.annotations.ParameterObject;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -63,8 +62,8 @@ public class PrsController {
                         schema = @Schema(implementation = ErrorResponse.class))}),
     })
     @GetMapping("/vins/{vin}/partsTree")
-    public ResponseEntity<PartRelationshipsWithInfos> getPartsTree(final @Valid @ParameterObject PartsTreeByVinRequest request) {
-        return ResponseEntity.of(queryByVinService.getPartsTree(request));
+    public PartRelationshipsWithInfos getPartsTree(final @Valid @ParameterObject PartsTreeByVinRequest request) {
+        return queryByVinService.getPartsTree(request);
     }
 
     @Operation(operationId = "getPartsTreeByOneIdAndObjectId", summary = "Get a PartsTree for a part")

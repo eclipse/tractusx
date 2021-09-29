@@ -13,9 +13,11 @@ import com.catenax.partsrelationshipservice.dtos.PartRelationshipsWithInfos;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.catenax.prs.configuration.PrsConfiguration;
+import net.catenax.prs.controllers.ApiErrors;
 import net.catenax.prs.entities.PartAttributeEntity;
 import net.catenax.prs.entities.PartIdEntityPart;
 import net.catenax.prs.entities.PartInformationKey;
+import net.catenax.prs.exceptions.EntityNotFoundException;
 import net.catenax.prs.repositories.PartAttributeRepository;
 import net.catenax.prs.requests.PartsTreeByObjectIdRequest;
 import net.catenax.prs.requests.PartsTreeByVinRequest;
@@ -23,7 +25,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.text.MessageFormat;
 import java.util.function.Function;
 
 /**
@@ -52,7 +54,7 @@ public class PartsTreeQueryByVinService {
      * @param request Request.
      * @return PartsTree with parts info.
      */
-    public Optional<PartRelationshipsWithInfos> getPartsTree(final PartsTreeByVinRequest request) {
+    public PartRelationshipsWithInfos getPartsTree(final PartsTreeByVinRequest request) {
 
         // Find vehicle, i.e. part with attribute partTypeName="Vehicle" and objectId=VIN
         final var vin = request.getVin();
@@ -62,19 +64,19 @@ public class PartsTreeQueryByVinService {
                         .value(PrsConfiguration.VEHICLE_ATTRIBUTE_VALUE).build());
         final var vehicles = attributeRepository.findAll(searchFilter, SORTED_BY_ONEID);
         if (vehicles.isEmpty()) {
-            return Optional.empty();
+            throw new EntityNotFoundException(MessageFormat.format(ApiErrors.VEHICLE_NOT_FOUND_BY_VIN, request.getVin()));
         }
         final var moreThanOneMatch = vehicles.size() > 1;
         if (moreThanOneMatch) {
             log.warn("Multiple OneIDs match VIN");
         }
         final var vehicle = vehicles.get(0).getKey().getPartId();
-        return Optional.of(queryService.getPartsTree(PartsTreeByObjectIdRequest.builder()
+        return queryService.getPartsTree(PartsTreeByObjectIdRequest.builder()
                 .oneIDManufacturer(vehicle.getOneIDManufacturer())
                 .objectIDManufacturer(vehicle.getObjectIDManufacturer())
                 .aspect(request.getAspect().orElse(null))
                 .depth(request.getDepth().orElse(null))
-                .build()));
+                .build());
     }
 
     private static PartInformationKey getPartInformationKey(final String vin) {

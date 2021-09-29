@@ -11,6 +11,7 @@ package net.catenax.prs.controllers;
 
 import com.catenax.partsrelationshipservice.dtos.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
+import net.catenax.prs.exceptions.EntityNotFoundException;
 import net.catenax.prs.exceptions.MaxDepthTooLargeException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,6 +44,23 @@ public class PrsExceptionHandler {
                 .body(ErrorResponse.builder()
                         .withStatusCode(HttpStatus.BAD_REQUEST)
                         .withMessage(ApiErrors.INVALID_DEPTH)
+                        .withErrors(List.of(ex.getMessage())).build());
+    }
+
+    /**
+     * Handler for max depth too large exception
+     * @param ex see {@link EntityNotFoundException}
+     * @return see {@link ErrorResponse}
+     */
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleEntityNotFound(final EntityNotFoundException ex) {
+        log.info(ex.getClass().getName(), ex);
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(ErrorResponse.builder()
+                        .withStatusCode(HttpStatus.NOT_FOUND)
+                        .withMessage(HttpStatus.NOT_FOUND.getReasonPhrase())
                         .withErrors(List.of(ex.getMessage())).build());
     }
 
