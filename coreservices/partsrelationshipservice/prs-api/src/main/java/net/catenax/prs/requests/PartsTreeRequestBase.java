@@ -13,6 +13,7 @@ import com.catenax.partsrelationshipservice.dtos.PartsTreeView;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
+import net.catenax.prs.annotations.ValueOfEnum;
 
 import javax.annotation.Nullable;
 import javax.validation.constraints.Min;
@@ -28,8 +29,9 @@ import static io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY;
 @SuppressWarnings({"PMD.CommentRequired", "PMD.AbstractClassWithoutAbstractMethod"})
 abstract class PartsTreeRequestBase {
     @NotNull
-    @Parameter(description = "PartsTree View to retrieve", in = QUERY, required = true)
-    protected final PartsTreeView view;
+    @ValueOfEnum(enumClass = PartsTreeView.class, message = "Must be either AS_BUILT or AS_MAINTAINED.")
+    @Parameter(description = "PartsTree View to retrieve", in = QUERY, required = true, schema = @Schema(implementation = PartsTreeView.class))
+    protected final String view;
 
     @Nullable
     @Parameter(description = "Aspect information to add to the returned tree", in = QUERY, example = "CE", schema = @Schema(implementation = String.class))
@@ -41,7 +43,7 @@ abstract class PartsTreeRequestBase {
     protected final Integer depth;
 
     public PartsTreeView getView() {
-        return view;
+        return PartsTreeView.valueOf(view);
     }
 
     public Optional<String> getAspect() {

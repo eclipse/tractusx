@@ -16,7 +16,7 @@ public class RequestMother {
     public PartsTreeByVinRequest byVin(String vin) {
         return PartsTreeByVinRequest.builder()
                 .vin(vin)
-                .view(faker.options().option(PartsTreeView.class))
+                .view(faker.options().option(PartsTreeView.class).name())
                 .build();
     }
 
@@ -24,7 +24,7 @@ public class RequestMother {
         return PartsTreeByObjectIdRequest.builder()
                 .oneIDManufacturer(partId.getOneIDManufacturer())
                 .objectIDManufacturer(partId.getObjectIDManufacturer())
-                .view(faker.options().option(PartsTreeView.class))
+                .view(faker.options().option(PartsTreeView.class).name())
                 .build();
     }
 

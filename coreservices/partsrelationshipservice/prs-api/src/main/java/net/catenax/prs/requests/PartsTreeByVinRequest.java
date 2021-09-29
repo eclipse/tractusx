@@ -9,7 +9,6 @@
 //
 package net.catenax.prs.requests;
 
-import com.catenax.partsrelationshipservice.dtos.PartsTreeView;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.Builder;
 import lombok.Value;
@@ -40,7 +39,7 @@ public class PartsTreeByVinRequest extends PartsTreeRequestBase {
      * @param depth  see {@link #getDepth()}
      */
     @Builder(toBuilder = true)
-    public PartsTreeByVinRequest(final String vin, final PartsTreeView view, final String aspect, final Integer depth) {
+    public PartsTreeByVinRequest(final String vin, final String view, final String aspect, final Integer depth) {
         super(view, aspect, depth);
         this.vin = vin;
     }
