@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import net.catenax.prs.annotations.ValueOfEnum;
+import net.catenax.prs.controllers.ApiErrors;
 
 import javax.annotation.Nullable;
 import javax.validation.constraints.Min;
@@ -28,8 +29,8 @@ import static io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY;
 @RequiredArgsConstructor
 @SuppressWarnings({"PMD.CommentRequired", "PMD.AbstractClassWithoutAbstractMethod"})
 abstract class PartsTreeRequestBase {
-    @NotNull
-    @ValueOfEnum(enumClass = PartsTreeView.class, message = "Must be either AS_BUILT or AS_MAINTAINED.")
+    @NotNull(message = ApiErrors.PARTS_TREE_VIEW_NOT_NULL)
+    @ValueOfEnum(enumClass = PartsTreeView.class, message = ApiErrors.PARTS_TREE_VIEW_MUST_MATCH_ENUM)
     @Parameter(description = "PartsTree View to retrieve", in = QUERY, required = true, schema = @Schema(implementation = PartsTreeView.class))
     protected final String view;
 
@@ -38,7 +39,7 @@ abstract class PartsTreeRequestBase {
     protected final String aspect;
 
     @Nullable
-    @Min(value = 1, message = "Depth should be at least 1.")
+    @Min(value = 1, message = ApiErrors.PARTS_TREE_MIN_DEPTH)
     @Parameter(description = "Max depth of the returned tree, if empty max depth is returned", in = QUERY, schema = @Schema(implementation = Integer.class, minimum = "1"))
     protected final Integer depth;
 

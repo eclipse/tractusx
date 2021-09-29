@@ -1,7 +1,9 @@
 package net.catenax.prs.integrationtest;
 
 import com.catenax.partsrelationshipservice.dtos.*;
+import net.catenax.prs.controllers.ApiErrors;
 import net.catenax.prs.testing.BaseDtoMother;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -158,6 +160,30 @@ public class PartsTreeMother {
                         partInfo(bearingPartId, BEARING),
                         partInfo(gearboxPartId, GEARBOX),
                         partInfo(gearwheelPartId, GEARWHEEL)));
+    }
+
+    /**
+     * Generates error response for invalid max depth provided scenario.
+     * @param errors List of errors.
+     * @return An {@link ErrorResponse} object containing list of supplied errors.
+     */
+    public ErrorResponse invalidMaxDepth(List<String> errors) {
+        return ErrorResponse.builder()
+                .withStatusCode(HttpStatus.BAD_REQUEST)
+                .withMessage(ApiErrors.INVALID_DEPTH)
+                .withErrors(errors).build();
+    }
+
+    /**
+     * Generates error response for invalid arguments provided scenario.
+     * @param errors List of errors.
+     * @return An {@link ErrorResponse} object containing list of supplied errors.
+     */
+    public ErrorResponse invalidArgument(List<String> errors) {
+        return ErrorResponse.builder()
+                .withStatusCode(HttpStatus.BAD_REQUEST)
+                .withMessage(ApiErrors.INVALID_ARGUMENTS)
+                .withErrors(errors).build();
     }
 
     private PartRelationshipsWithInfos partRelationshipsWithInfos(List<PartRelationship> relationships, List<PartInfo> infos) {

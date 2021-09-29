@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * API Exception Handler.
@@ -41,7 +42,7 @@ public class PrsExceptionHandler {
                 .status(HttpStatus.BAD_REQUEST)
                 .body(ErrorResponse.builder()
                         .withStatusCode(HttpStatus.BAD_REQUEST)
-                        .withMessage("Provided value for depth argument is too large")
+                        .withMessage(ApiErrors.INVALID_DEPTH)
                         .withErrors(List.of(ex.getMessage())).build());
     }
 
@@ -54,22 +55,16 @@ public class PrsExceptionHandler {
     public ResponseEntity<ErrorResponse> handleBindException(final BindException ex) {
         log.info(ex.getClass().getName(), ex);
 
-        List<String> errors = new ArrayList<>();
-        ex.getBindingResult().getFieldErrors()
+        List<String> errors = ex.getBindingResult().getFieldErrors()
                 .stream()
-                .map(e -> e.getField() + ": " + e.getDefaultMessage())
-                .forEachOrdered(errors::add);
-
-        ex.getBindingResult().getGlobalErrors()
-                .stream()
-                .map(e -> e.getObjectName() + ": " + e.getDefaultMessage())
-                .forEachOrdered(errors::add);
+                .map(e -> e.getField() + ":" + e.getDefaultMessage())
+                .collect(Collectors.toList());
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(ErrorResponse.builder()
                         .withStatusCode(HttpStatus.BAD_REQUEST)
-                        .withMessage("Invalid Arguments")
+                        .withMessage(ApiErrors.INVALID_ARGUMENTS)
                         .withErrors(errors).build());
     }
 
