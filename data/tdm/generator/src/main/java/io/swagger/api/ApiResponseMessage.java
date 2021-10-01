@@ -1,69 +1,131 @@
+/*
+ *
+ */
 package io.swagger.api;
 
 import javax.xml.bind.annotation.XmlTransient;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-09-13T14:11:36.281Z[GMT]")
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ApiResponseMessage.
+ */
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-09-22T08:24:51.189Z[GMT]")
 @javax.xml.bind.annotation.XmlRootElement
 public class ApiResponseMessage {
-    public static final int ERROR = 1;
-    public static final int WARNING = 2;
-    public static final int INFO = 3;
-    public static final int OK = 4;
-    public static final int TOO_BUSY = 5;
 
-    int code;
-    String type;
-    String message;
+	/** The Constant ERROR. */
+	public static final int ERROR = 1;
 
-    public ApiResponseMessage(){}
+	/** The Constant WARNING. */
+	public static final int WARNING = 2;
 
-    public ApiResponseMessage(int code, String message){
-        this.code = code;
-        switch(code){
-        case ERROR:
-            setType("error");
-            break;
-        case WARNING:
-            setType("warning");
-            break;
-        case INFO:
-            setType("info");
-            break;
-        case OK:
-            setType("ok");
-            break;
-        case TOO_BUSY:
-            setType("too busy");
-            break;
-        default:
-            setType("unknown");
-            break;
-        }
-        this.message = message;
-    }
+	/** The Constant INFO. */
+	public static final int INFO = 3;
 
-    @XmlTransient
-    public int getCode() {
-        return code;
-    }
+	/** The Constant OK. */
+	public static final int OK = 4;
 
-    public void setCode(int code) {
-        this.code = code;
-    }
+	/** The Constant TOO_BUSY. */
+	public static final int TOO_BUSY = 5;
 
-    public String getType() {
-        return type;
-    }
+	/** The code. */
+	int code;
 
-    public void setType(String type) {
-        this.type = type;
-    }
+	/** The type. */
+	String type;
 
-    public String getMessage() {
-        return message;
-    }
+	/** The message. */
+	String message;
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+	/**
+	 * Instantiates a new api response message.
+	 */
+	public ApiResponseMessage() {
+	}
+
+	/**
+	 * Instantiates a new api response message.
+	 *
+	 * @param code    the code
+	 * @param message the message
+	 */
+	public ApiResponseMessage(int code, String message) {
+		this.code = code;
+		switch (code) {
+		case ERROR:
+			setType("error");
+			break;
+		case WARNING:
+			setType("warning");
+			break;
+		case INFO:
+			setType("info");
+			break;
+		case OK:
+			setType("ok");
+			break;
+		case TOO_BUSY:
+			setType("too busy");
+			break;
+		default:
+			setType("unknown");
+			break;
+		}
+		this.message = message;
+	}
+
+	/**
+	 * Gets the code.
+	 *
+	 * @return the code
+	 */
+	@XmlTransient
+	public int getCode() {
+		return code;
+	}
+
+	/**
+	 * Gets the message.
+	 *
+	 * @return the message
+	 */
+	public String getMessage() {
+		return message;
+	}
+
+	/**
+	 * Gets the type.
+	 *
+	 * @return the type
+	 */
+	public String getType() {
+		return type;
+	}
+
+	/**
+	 * Sets the code.
+	 *
+	 * @param code the new code
+	 */
+	public void setCode(int code) {
+		this.code = code;
+	}
+
+	/**
+	 * Sets the message.
+	 *
+	 * @param message the new message
+	 */
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	/**
+	 * Sets the type.
+	 *
+	 * @param type the new type
+	 */
+	public void setType(String type) {
+		this.type = type;
+	}
 }

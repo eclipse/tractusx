@@ -1,22 +1,21 @@
+/*
+ *
+ */
 package com.catenax.tdm.model.v1;
 
-import java.util.Objects;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.catenax.tdm.model.v1.PartRelationshipUpdate;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import javax.validation.Valid;
+
 import org.springframework.validation.annotation.Validated;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+// TODO: Auto-generated Javadoc
 /**
  * Describes an update of (part of) a BOM.
  */
@@ -26,38 +25,31 @@ import javax.validation.constraints.*;
 
 public class PartRelationshipUpdateList {
 
+	/** The relationships. */
 	@JsonProperty("relationships")
 	@Valid
 	private List<PartRelationshipUpdate> relationships = null;
 
-	public PartRelationshipUpdateList relationships(List<PartRelationshipUpdate> relationships) {
-		this.relationships = relationships;
-		return this;
-	}
-
+	/**
+	 * Adds the relationships item.
+	 *
+	 * @param relationshipsItem the relationships item
+	 * @return the part relationship update list
+	 */
 	public PartRelationshipUpdateList addRelationshipsItem(PartRelationshipUpdate relationshipsItem) {
 		if (this.relationships == null) {
-			this.relationships = new ArrayList<PartRelationshipUpdate>();
+			this.relationships = new ArrayList<>();
 		}
 		this.relationships.add(relationshipsItem);
 		return this;
 	}
 
 	/**
-	 * List of relationships updates
-	 * 
-	 * @return relationships
-	 **/
-	@Schema(description = "List of relationships updates")
-	@Valid
-	public List<PartRelationshipUpdate> getRelationships() {
-		return relationships;
-	}
-
-	public void setRelationships(List<PartRelationshipUpdate> relationships) {
-		this.relationships = relationships;
-	}
-
+	 * Equals.
+	 *
+	 * @param o the o
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean equals(java.lang.Object o) {
 		if (this == o) {
@@ -66,33 +58,77 @@ public class PartRelationshipUpdateList {
 		if (o == null || getClass() != o.getClass()) {
 			return false;
 		}
-		PartRelationshipUpdateList partRelationshipUpdateList = (PartRelationshipUpdateList) o;
+		final PartRelationshipUpdateList partRelationshipUpdateList = (PartRelationshipUpdateList) o;
 		return Objects.equals(this.relationships, partRelationshipUpdateList.relationships);
 	}
 
+	/**
+	 * List of relationships updates.
+	 *
+	 * @return relationships
+	 */
+	@Schema(description = "List of relationships updates")
+	@Valid
+	public List<PartRelationshipUpdate> getRelationships() {
+		return relationships;
+	}
+
+	/**
+	 * Hash code.
+	 *
+	 * @return the int
+	 */
 	@Override
 	public int hashCode() {
 		return Objects.hash(relationships);
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("class PartRelationshipUpdateList {\n");
+	/**
+	 * Relationships.
+	 *
+	 * @param relationships the relationships
+	 * @return the part relationship update list
+	 */
+	public PartRelationshipUpdateList relationships(List<PartRelationshipUpdate> relationships) {
+		this.relationships = relationships;
+		return this;
+	}
 
-		sb.append("    relationships: ").append(toIndentedString(relationships)).append("\n");
-		sb.append("}");
-		return sb.toString();
+	/**
+	 * Sets the relationships.
+	 *
+	 * @param relationships the new relationships
+	 */
+	public void setRelationships(List<PartRelationshipUpdate> relationships) {
+		this.relationships = relationships;
 	}
 
 	/**
 	 * Convert the given object to string with each line indented by 4 spaces
 	 * (except the first line).
+	 *
+	 * @param o the o
+	 * @return the string
 	 */
 	private String toIndentedString(java.lang.Object o) {
 		if (o == null) {
 			return "null";
 		}
 		return o.toString().replace("\n", "\n    ");
+	}
+
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
+	@Override
+	public String toString() {
+		final StringBuilder sb = new StringBuilder();
+		sb.append("class PartRelationshipUpdateList {\n");
+
+		sb.append("    relationships: ").append(toIndentedString(relationships)).append("\n");
+		sb.append("}");
+		return sb.toString();
 	}
 }

@@ -1,20 +1,68 @@
+/*
+ *
+ */
 package com.catenax.tdm.dao;
 
 import java.io.Serializable;
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface IGenericDao.
+ *
+ * @param <T> the generic type
+ */
 public interface IGenericDao<T extends Serializable> {
-    void setClazz(Class< T > clazzToSet);
 
-    T findOne(final long id);
+	/**
+	 * Creates the.
+	 *
+	 * @param entity the entity
+	 * @return the t
+	 */
+	T create(final T entity);
 
-    List<T> findAll();
+	/**
+	 * Delete.
+	 *
+	 * @param entity the entity
+	 */
+	void delete(final T entity);
 
-    T create(final T entity);
+	/**
+	 * Delete by id.
+	 *
+	 * @param entityId the entity id
+	 */
+	void deleteById(final long entityId);
 
-    T update(final T entity);
+	/**
+	 * Find all.
+	 *
+	 * @return the list
+	 */
+	List<T> findAll();
 
-    void delete(final T entity);
+	/**
+	 * Find one.
+	 *
+	 * @param id the id
+	 * @return the t
+	 */
+	T findOne(final long id);
 
-    void deleteById(final long entityId);
+	/**
+	 * Sets the clazz.
+	 *
+	 * @param clazzToSet the new clazz
+	 */
+	void setClazz(Class<T> clazzToSet);
+
+	/**
+	 * Update.
+	 *
+	 * @param entity the entity
+	 * @return the t
+	 */
+	T update(final T entity);
 }

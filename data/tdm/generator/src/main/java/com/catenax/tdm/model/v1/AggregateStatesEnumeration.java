@@ -1,40 +1,60 @@
+/*
+ *
+ */
 package com.catenax.tdm.model.v1;
 
-import java.util.Objects;
-import com.fasterxml.jackson.annotation.JsonValue;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 
+// TODO: Auto-generated Javadoc
 /**
- * Gets or Sets AggregateStatesEnumeration
+ * Gets or Sets AggregateStatesEnumeration.
  */
 public enum AggregateStatesEnumeration {
-  GAS("gas"),
-    LIQUID("liquid"),
-    SOLID("solid");
 
-  private String value;
+	/** The gas. */
+	GAS("gas"),
+	/** The liquid. */
+	LIQUID("liquid"),
+	/** The solid. */
+	SOLID("solid");
 
-  AggregateStatesEnumeration(String value) {
-    this.value = value;
-  }
+	/**
+	 * From value.
+	 *
+	 * @param text the text
+	 * @return the aggregate states enumeration
+	 */
+	@JsonCreator
+	public static AggregateStatesEnumeration fromValue(String text) {
+		for (final AggregateStatesEnumeration b : AggregateStatesEnumeration.values()) {
+			if (String.valueOf(b.value).equals(text)) {
+				return b;
+			}
+		}
+		return null;
+	}
 
-  @Override
-  @JsonValue
-  public String toString() {
-    return String.valueOf(value);
-  }
+	/** The value. */
+	private String value;
 
-  @JsonCreator
-  public static AggregateStatesEnumeration fromValue(String text) {
-    for (AggregateStatesEnumeration b : AggregateStatesEnumeration.values()) {
-      if (String.valueOf(b.value).equals(text)) {
-        return b;
-      }
-    }
-    return null;
-  }
+	/**
+	 * Instantiates a new aggregate states enumeration.
+	 *
+	 * @param value the value
+	 */
+	AggregateStatesEnumeration(String value) {
+		this.value = value;
+	}
+
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
+	@Override
+	@JsonValue
+	public String toString() {
+		return String.valueOf(value);
+	}
 }

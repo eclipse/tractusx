@@ -1,42 +1,65 @@
+/*
+ *
+ */
 package com.catenax.tdm.model.v1;
 
-import java.util.Objects;
-import com.fasterxml.jackson.annotation.JsonValue;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 
+// TODO: Auto-generated Javadoc
 /**
- * Gets or Sets Role
+ * Gets or Sets Role.
  */
 public enum Role {
-  AUTHOR("Author"),
-    CUSTOMER("Customer"),
-    SUPPLIER("Supplier"),
-    MANUFACTURER("Manufacturer"),
-    RESPONSIBLE("Responsible");
 
-  private String value;
+	/** The author. */
+	AUTHOR("Author"),
+	/** The customer. */
+	CUSTOMER("Customer"),
+	/** The supplier. */
+	SUPPLIER("Supplier"),
+	/** The manufacturer. */
+	MANUFACTURER("Manufacturer"),
 
-  Role(String value) {
-    this.value = value;
-  }
+	/** The responsible. */
+	RESPONSIBLE("Responsible");
 
-  @Override
-  @JsonValue
-  public String toString() {
-    return String.valueOf(value);
-  }
+	/**
+	 * From value.
+	 *
+	 * @param text the text
+	 * @return the role
+	 */
+	@JsonCreator
+	public static Role fromValue(String text) {
+		for (final Role b : Role.values()) {
+			if (String.valueOf(b.value).equals(text)) {
+				return b;
+			}
+		}
+		return null;
+	}
 
-  @JsonCreator
-  public static Role fromValue(String text) {
-    for (Role b : Role.values()) {
-      if (String.valueOf(b.value).equals(text)) {
-        return b;
-      }
-    }
-    return null;
-  }
+	/** The value. */
+	private String value;
+
+	/**
+	 * Instantiates a new role.
+	 *
+	 * @param value the value
+	 */
+	Role(String value) {
+		this.value = value;
+	}
+
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
+	@Override
+	@JsonValue
+	public String toString() {
+		return String.valueOf(value);
+	}
 }

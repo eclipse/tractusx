@@ -1,80 +1,148 @@
+/*
+ *
+ */
 package com.catenax.tdm.model.v1;
 
 import java.util.Objects;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.v3.oas.annotations.media.Schema;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.validation.annotation.Validated;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+
+// TODO: Auto-generated Javadoc
 /**
- * LanguageSetInner
+ * LanguageSetInner.
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-09-14T13:43:11.126Z[GMT]")
 
+@Entity
+@Table(name = "aspect_basic_language_set_inner")
+public class LanguageSetInner {
 
-public class LanguageSetInner   {
-  @JsonProperty("language")
-  private String language = null;
+	/** The db id. */
+	@Id
+	@GeneratedValue
+	@JsonIgnore
+	private Long dbId;
 
-  public LanguageSetInner language(String language) {
-    this.language = language;
-    return this;
-  }
+	/** The language. */
+	@JsonProperty("language")
+	private String language = null;
 
-  /**
-   * Get language
-   * @return language
-   **/
-  @Schema(required = true, description = "")
-      @NotNull
+	/**
+	 * Equals.
+	 *
+	 * @param o the o
+	 * @return true, if successful
+	 */
+	@Override
+	public boolean equals(java.lang.Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		final LanguageSetInner languageSetInner = (LanguageSetInner) o;
+		return Objects.equals(this.language, languageSetInner.language);
+	}
 
-    public String getLanguage() {
-    return language;
-  }
+	/**
+	 * Gets the db id.
+	 *
+	 * @return the db id
+	 */
+	public Long getDbId() {
+		return dbId;
+	}
 
-  public void setLanguage(String language) {
-    this.language = language;
-  }
+	/**
+	 * Get language.
+	 *
+	 * @return language
+	 */
+	@Schema(required = true, description = "")
+	@NotNull
 
+	public String getLanguage() {
+		return language;
+	}
 
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    LanguageSetInner languageSetInner = (LanguageSetInner) o;
-    return Objects.equals(this.language, languageSetInner.language);
-  }
+	/**
+	 * Hash code.
+	 *
+	 * @return the int
+	 */
+	@Override
+	public int hashCode() {
+		return Objects.hash(language);
+	}
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(language);
-  }
+	/**
+	 * Language.
+	 *
+	 * @param language the language
+	 * @return the language set inner
+	 */
+	public LanguageSetInner language(String language) {
+		this.language = language;
+		return this;
+	}
 
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class LanguageSetInner {\n");
-    
-    sb.append("    language: ").append(toIndentedString(language)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
+	/**
+	 * Sets the db id.
+	 *
+	 * @param dbId the new db id
+	 */
+	public void setDbId(Long dbId) {
+		this.dbId = dbId;
+	}
 
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
+	/**
+	 * Sets the language.
+	 *
+	 * @param language the new language
+	 */
+	public void setLanguage(String language) {
+		this.language = language;
+	}
+
+	/**
+	 * Convert the given object to string with each line indented by 4 spaces
+	 * (except the first line).
+	 *
+	 * @param o the o
+	 * @return the string
+	 */
+	private String toIndentedString(java.lang.Object o) {
+		if (o == null) {
+			return "null";
+		}
+		return o.toString().replace("\n", "\n    ");
+	}
+
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
+	@Override
+	public String toString() {
+		final StringBuilder sb = new StringBuilder();
+		sb.append("class LanguageSetInner {\n");
+
+		sb.append("    language: ").append(toIndentedString(language)).append("\n");
+		sb.append("}");
+		return sb.toString();
+	}
 }

@@ -1,3 +1,6 @@
+/*
+ *
+ */
 package com.catenax.tdm.model.v1;
 
 import java.util.ArrayList;
@@ -9,60 +12,94 @@ import javax.persistence.Id;
 
 import org.springframework.validation.annotation.Validated;
 
+// TODO: Auto-generated Javadoc
 /**
- * UrnBammComCatenaX001IsParentOfCharacteristic
+ * UrnBammComCatenaX001IsParentOfCharacteristic.
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-09-10T07:44:31.526Z[GMT]")
 
 @Entity
-public class IsParentOfCharacteristic extends ArrayList<String>  {
+public class IsParentOfCharacteristic extends ArrayList<String> {
 
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = -6400027906490282291L;
+
+	/** The db id. */
 	@Id
 	@GeneratedValue
 	private Long dbId;
 
+	/**
+	 * Equals.
+	 *
+	 * @param o the o
+	 * @return true, if successful
+	 */
+	@Override
+	public boolean equals(java.lang.Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Gets the db id.
+	 *
+	 * @return the db id
+	 */
 	public Long getDbId() {
 		return dbId;
 	}
 
+	/**
+	 * Hash code.
+	 *
+	 * @return the int
+	 */
+	@Override
+	public int hashCode() {
+		return Objects.hash(super.hashCode());
+	}
+
+	/**
+	 * Sets the db id.
+	 *
+	 * @param dbId the new db id
+	 */
 	public void setDbId(Long dbId) {
 		this.dbId = dbId;
 	}
-	
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    return true;
-  }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(super.hashCode());
-  }
+	/**
+	 * Convert the given object to string with each line indented by 4 spaces
+	 * (except the first line).
+	 *
+	 * @param o the o
+	 * @return the string
+	 */
+	private String toIndentedString(java.lang.Object o) {
+		if (o == null) {
+			return "null";
+		}
+		return o.toString().replace("\n", "\n    ");
+	}
 
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class UrnBammComCatenaX001IsParentOfCharacteristic {\n");
-    sb.append("    ").append(toIndentedString(super.toString())).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
+	@Override
+	public String toString() {
+		final StringBuilder sb = new StringBuilder();
+		sb.append("class UrnBammComCatenaX001IsParentOfCharacteristic {\n");
+		sb.append("    ").append(toIndentedString(super.toString())).append("\n");
+		sb.append("}");
+		return sb.toString();
+	}
 }

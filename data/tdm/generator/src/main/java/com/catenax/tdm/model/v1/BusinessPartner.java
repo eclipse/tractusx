@@ -1,19 +1,14 @@
+/*
+ *
+ */
 package com.catenax.tdm.model.v1;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.Valid;
 import javax.validation.constraints.Size;
 
 import org.springframework.validation.annotation.Validated;
@@ -22,8 +17,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+// TODO: Auto-generated Javadoc
 /**
- * Business Partner
+ * Business Partner.
  */
 @Schema(description = "Business Partner")
 @Validated
@@ -33,644 +29,191 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Table(name = "BUSINESS_PARTNER")
 public class BusinessPartner implements Serializable {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 2022622745531725843L;
 
+	/** The bpn. */
 	@Id
 	@JsonProperty("bpn")
 	private String bpn = null;
 
+	/** The parent. */
 	@JsonProperty("parent")
 	private String parent = null;
 
+	/** The account group. */
 	@JsonProperty("accountGroup")
 	private String accountGroup = null;
 
 	/*
 	 * @JsonProperty("name")
-	 * 
+	 *
 	 * @Valid
-	 * 
+	 *
 	 * @ElementCollection
-	 * 
+	 *
 	 * @CollectionTable(name = "BUSINESS_PARTNER_NAMES")
-	 * 
+	 *
 	 * @Column(name = "name") private List<String> name = null;
 	 */
 
+	/** The name 1. */
 	@JsonProperty("name1")
 	private String name1 = null;
 
+	/** The name 2. */
 	@JsonProperty("name2")
 	private String name2 = null;
 
+	/** The name 3. */
 	@JsonProperty("name3")
 	private String name3 = null;
 
+	/** The name 4. */
 	@JsonProperty("name4")
 	private String name4 = null;
 
+	/** The address version. */
 	@JsonProperty("addressVersion")
 	private String addressVersion = null;
 
+	/** The country. */
 	@JsonProperty("country")
 	private String country = null;
 
+	/** The city. */
 	@JsonProperty("city")
 	private String city = null;
 
+	/** The postal code. */
 	@JsonProperty("postalCode")
 	private String postalCode = null;
 
+	/** The street 1. */
 	@JsonProperty("street1")
 	private String street1 = null;
 
+	/** The street 2. */
 	@JsonProperty("street2")
 	private String street2 = null;
 
+	/** The street 3. */
 	@JsonProperty("street3")
 	private String street3 = null;
 
+	/** The house number. */
 	@JsonProperty("houseNumber")
 	private String houseNumber = null;
 
+	/** The tax number 1. */
 	@JsonProperty("taxNumber1")
 	private String taxNumber1 = null;
 
+	/** The tax number 1 type. */
 	@JsonProperty("taxNumber1Type")
 	private String taxNumber1Type = null;
 
+	/** The tax number 2. */
 	@JsonProperty("taxNumber2")
 	private String taxNumber2 = null;
 
+	/** The tax number 2 type. */
 	@JsonProperty("taxNumber2Type")
 	private String taxNumber2Type = null;
 
+	/** The tax number 3. */
 	@JsonProperty("taxNumber3")
 	private String taxNumber3 = null;
 
+	/** The tax number 3 type. */
 	@JsonProperty("taxNumber3Type")
 	private String taxNumber3Type = null;
 
+	/** The tax number 4. */
 	@JsonProperty("taxNumber4")
 	private String taxNumber4 = null;
 
+	/** The tax number 4 type. */
 	@JsonProperty("taxNumber4Type")
 	private String taxNumber4Type = null;
 
+	/** The tax number 5. */
 	@JsonProperty("taxNumber5")
 	private String taxNumber5 = null;
 
+	/** The tax number 5 type. */
 	@JsonProperty("taxNumber5Type")
 	private String taxNumber5Type = null;
 
+	/** The vat number. */
 	@JsonProperty("vatNumber")
 	private String vatNumber = null;
 
+	/** The vat number type. */
 	@JsonProperty("vatNumberType")
 	private String vatNumberType = null;
 
-	public BusinessPartner bpn(String bpn) {
-		this.bpn = bpn;
-		return this;
-	}
-
 	/**
-	 * Get BPN
-	 * 
-	 * @return BPN
-	 **/
-	@Schema(description = "")
-
-	@Size(min = 16, max = 16)
-	public String getBpn() {
-		return bpn;
-	}
-
-	public void setBpn(String bpn) {
-		this.bpn = bpn;
-	}
-
-	public BusinessPartner parent(String parent) {
-		this.parent = parent;
-		return this;
-	}
-
-	/**
-	 * Get parent
-	 * 
-	 * @return parent
-	 **/
-	@Schema(description = "")
-
-	@Size(min = 16, max = 16)
-	public String getParent() {
-		return parent;
-	}
-
-	public void setParent(String parent) {
-		this.parent = parent;
-	}
-
+	 * Account group.
+	 *
+	 * @param accountGroup the account group
+	 * @return the business partner
+	 */
 	public BusinessPartner accountGroup(String accountGroup) {
 		this.accountGroup = accountGroup;
 		return this;
 	}
 
 	/**
-	 * Get accountGroup
-	 * 
-	 * @return accountGroup
-	 **/
-	@Schema(description = "")
-
-	public String getAccountGroup() {
-		return accountGroup;
-	}
-
-	public void setAccountGroup(String accountGroup) {
-		this.accountGroup = accountGroup;
-	}
-
-	public BusinessPartner name1(String name1) {
-		this.name1 = name1;
-		return this;
-	}
-
-	/**
-	 * Get name1
-	 * 
-	 * @return name1
-	 **/
-	@Schema(description = "")
-
-	public String getName1() {
-		return name1;
-	}
-
-	public void setName1(String name1) {
-		this.name1 = name1;
-	}
-
-	public BusinessPartner name2(String name2) {
-		this.name2 = name2;
-		return this;
-	}
-
-	/**
-	 * Get name2
-	 * 
-	 * @return name2
-	 **/
-	@Schema(description = "")
-
-	public String getName2() {
-		return name2;
-	}
-
-	public void setName2(String name2) {
-		this.name2 = name2;
-	}
-
-	public BusinessPartner name3(String name3) {
-		this.name3 = name3;
-		return this;
-	}
-
-	/**
-	 * Get name3
-	 * 
-	 * @return name3
-	 **/
-	@Schema(description = "")
-
-	public String getName3() {
-		return name3;
-	}
-
-	public void setName3(String name3) {
-		this.name3 = name3;
-	}
-
-	public BusinessPartner name4(String name4) {
-		this.name4 = name4;
-		return this;
-	}
-
-	/**
-	 * Get name4
-	 * 
-	 * @return name4
-	 **/
-	@Schema(description = "")
-
-	public String getName4() {
-		return name4;
-	}
-
-	public void setName4(String name4) {
-		this.name4 = name4;
-	}
-
+	 * Address version.
+	 *
+	 * @param addressVersion the address version
+	 * @return the business partner
+	 */
 	public BusinessPartner addressVersion(String addressVersion) {
 		this.addressVersion = addressVersion;
 		return this;
 	}
 
 	/**
-	 * Get addressVersion
-	 * 
-	 * @return addressVersion
-	 **/
-	@Schema(description = "")
-
-	public String getAddressVersion() {
-		return addressVersion;
-	}
-
-	public void setAddressVersion(String addressVersion) {
-		this.addressVersion = addressVersion;
-	}
-
-	public BusinessPartner country(String country) {
-		this.country = country;
+	 * Bpn.
+	 *
+	 * @param bpn the bpn
+	 * @return the business partner
+	 */
+	public BusinessPartner bpn(String bpn) {
+		this.bpn = bpn;
 		return this;
 	}
 
 	/**
-	 * Get country
-	 * 
-	 * @return country
-	 **/
-	@Schema(description = "")
-
-	public String getCountry() {
-		return country;
-	}
-
-	public void setCountry(String country) {
-		this.country = country;
-	}
-
+	 * City.
+	 *
+	 * @param city the city
+	 * @return the business partner
+	 */
 	public BusinessPartner city(String city) {
 		this.city = city;
 		return this;
 	}
 
 	/**
-	 * Get city
-	 * 
-	 * @return city
-	 **/
-	@Schema(description = "")
-
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-	public BusinessPartner postalCode(String postalCode) {
-		this.postalCode = postalCode;
+	 * Country.
+	 *
+	 * @param country the country
+	 * @return the business partner
+	 */
+	public BusinessPartner country(String country) {
+		this.country = country;
 		return this;
 	}
 
 	/**
-	 * Get postalCode
-	 * 
-	 * @return postalCode
-	 **/
-	@Schema(description = "")
-
-	public String getPostalCode() {
-		return postalCode;
-	}
-
-	public void setPostalCode(String postalCode) {
-		this.postalCode = postalCode;
-	}
-
-	public BusinessPartner street1(String street1) {
-		this.street1 = street1;
-		return this;
-	}
-
-	/**
-	 * Get street1
-	 * 
-	 * @return street1
-	 **/
-	@Schema(description = "")
-
-	public String getStreet1() {
-		return street1;
-	}
-
-	public void setStreet1(String street1) {
-		this.street1 = street1;
-	}
-
-	public BusinessPartner street2(String street2) {
-		this.street2 = street2;
-		return this;
-	}
-
-	/**
-	 * Get street2
-	 * 
-	 * @return street2
-	 **/
-	@Schema(description = "")
-
-	public String getStreet2() {
-		return street2;
-	}
-
-	public void setStreet2(String street2) {
-		this.street2 = street2;
-	}
-
-	public BusinessPartner street3(String street3) {
-		this.street3 = street3;
-		return this;
-	}
-
-	/**
-	 * Get street3
-	 * 
-	 * @return street3
-	 **/
-	@Schema(description = "")
-
-	public String getStreet3() {
-		return street3;
-	}
-
-	public void setStreet3(String street3) {
-		this.street3 = street3;
-	}
-
-	public BusinessPartner houseNumber(String houseNumber) {
-		this.houseNumber = houseNumber;
-		return this;
-	}
-
-	/**
-	 * Get houseNumber
-	 * 
-	 * @return houseNumber
-	 **/
-	@Schema(description = "")
-
-	public String getHouseNumber() {
-		return houseNumber;
-	}
-
-	public void setHouseNumber(String houseNumber) {
-		this.houseNumber = houseNumber;
-	}
-
-	public BusinessPartner taxNumber1(String taxNumber1) {
-		this.taxNumber1 = taxNumber1;
-		return this;
-	}
-
-	/**
-	 * Get taxNumber1
-	 * 
-	 * @return taxNumber1
-	 **/
-	@Schema(description = "")
-
-	public String getTaxNumber1() {
-		return taxNumber1;
-	}
-
-	public void setTaxNumber1(String taxNumber1) {
-		this.taxNumber1 = taxNumber1;
-	}
-
-	public BusinessPartner taxNumber1Type(String taxNumber1Type) {
-		this.taxNumber1Type = taxNumber1Type;
-		return this;
-	}
-
-	/**
-	 * Get taxNumber1Type
-	 * 
-	 * @return taxNumber1Type
-	 **/
-	@Schema(description = "")
-
-	public String getTaxNumber1Type() {
-		return taxNumber1Type;
-	}
-
-	public void setTaxNumber1Type(String taxNumber1Type) {
-		this.taxNumber1Type = taxNumber1Type;
-	}
-
-	public BusinessPartner taxNumber2(String taxNumber2) {
-		this.taxNumber2 = taxNumber2;
-		return this;
-	}
-
-	/**
-	 * Get taxNumber2
-	 * 
-	 * @return taxNumber2
-	 **/
-	@Schema(description = "")
-
-	public String getTaxNumber2() {
-		return taxNumber2;
-	}
-
-	public void setTaxNumber2(String taxNumber2) {
-		this.taxNumber2 = taxNumber2;
-	}
-
-	public BusinessPartner taxNumber2Type(String taxNumber2Type) {
-		this.taxNumber2Type = taxNumber2Type;
-		return this;
-	}
-
-	/**
-	 * Get taxNumber2Type
-	 * 
-	 * @return taxNumber2Type
-	 **/
-	@Schema(description = "")
-
-	public String getTaxNumber2Type() {
-		return taxNumber2Type;
-	}
-
-	public void setTaxNumber2Type(String taxNumber2Type) {
-		this.taxNumber2Type = taxNumber2Type;
-	}
-
-	public BusinessPartner taxNumber3(String taxNumber3) {
-		this.taxNumber3 = taxNumber3;
-		return this;
-	}
-
-	/**
-	 * Get taxNumber3
-	 * 
-	 * @return taxNumber3
-	 **/
-	@Schema(description = "")
-
-	public String getTaxNumber3() {
-		return taxNumber3;
-	}
-
-	public void setTaxNumber3(String taxNumber3) {
-		this.taxNumber3 = taxNumber3;
-	}
-
-	public BusinessPartner taxNumber3Type(String taxNumber3Type) {
-		this.taxNumber3Type = taxNumber3Type;
-		return this;
-	}
-
-	/**
-	 * Get taxNumber3Type
-	 * 
-	 * @return taxNumber3Type
-	 **/
-	@Schema(description = "")
-
-	public String getTaxNumber3Type() {
-		return taxNumber3Type;
-	}
-
-	public void setTaxNumber3Type(String taxNumber3Type) {
-		this.taxNumber3Type = taxNumber3Type;
-	}
-
-	public BusinessPartner taxNumber4(String taxNumber4) {
-		this.taxNumber4 = taxNumber4;
-		return this;
-	}
-
-	/**
-	 * Get taxNumber4
-	 * 
-	 * @return taxNumber4
-	 **/
-	@Schema(description = "")
-
-	public String getTaxNumber4() {
-		return taxNumber4;
-	}
-
-	public void setTaxNumber4(String taxNumber4) {
-		this.taxNumber4 = taxNumber4;
-	}
-
-	public BusinessPartner taxNumber4Type(String taxNumber4Type) {
-		this.taxNumber4Type = taxNumber4Type;
-		return this;
-	}
-
-	/**
-	 * Get taxNumber4Type
-	 * 
-	 * @return taxNumber4Type
-	 **/
-	@Schema(description = "")
-
-	public String getTaxNumber4Type() {
-		return taxNumber4Type;
-	}
-
-	public void setTaxNumber4Type(String taxNumber4Type) {
-		this.taxNumber4Type = taxNumber4Type;
-	}
-
-	public BusinessPartner taxNumber5(String taxNumber5) {
-		this.taxNumber5 = taxNumber5;
-		return this;
-	}
-
-	/**
-	 * Get taxNumber5
-	 * 
-	 * @return taxNumber5
-	 **/
-	@Schema(description = "")
-
-	public String getTaxNumber5() {
-		return taxNumber5;
-	}
-
-	public void setTaxNumber5(String taxNumber5) {
-		this.taxNumber5 = taxNumber5;
-	}
-
-	public BusinessPartner taxNumber5Type(String taxNumber5Type) {
-		this.taxNumber5Type = taxNumber5Type;
-		return this;
-	}
-
-	/**
-	 * Get taxNumber5Type
-	 * 
-	 * @return taxNumber5Type
-	 **/
-	@Schema(description = "")
-
-	public String getTaxNumber5Type() {
-		return taxNumber5Type;
-	}
-
-	public void setTaxNumber5Type(String taxNumber5Type) {
-		this.taxNumber5Type = taxNumber5Type;
-	}
-
-	public BusinessPartner vatNumber(String vatNumber) {
-		this.vatNumber = vatNumber;
-		return this;
-	}
-
-	/**
-	 * Get vatNumber
-	 * 
-	 * @return vatNumber
-	 **/
-	@Schema(description = "")
-
-	public String getVatNumber() {
-		return vatNumber;
-	}
-
-	public void setVatNumber(String vatNumber) {
-		this.vatNumber = vatNumber;
-	}
-
-	public BusinessPartner vatNumberType(String vatNumberType) {
-		this.vatNumberType = vatNumberType;
-		return this;
-	}
-
-	/**
-	 * Get vatNumberType
-	 * 
-	 * @return vatNumberType
-	 **/
-	@Schema(description = "")
-
-	public String getVatNumberType() {
-		return vatNumberType;
-	}
-
-	public void setVatNumberType(String vatNumberType) {
-		this.vatNumberType = vatNumberType;
-	}
-
+	 * Equals.
+	 *
+	 * @param o the o
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean equals(java.lang.Object o) {
 		if (this == o) {
@@ -679,7 +222,7 @@ public class BusinessPartner implements Serializable {
 		if (o == null || getClass() != o.getClass()) {
 			return false;
 		}
-		BusinessPartner businessPartner = (BusinessPartner) o;
+		final BusinessPartner businessPartner = (BusinessPartner) o;
 		return Objects.equals(this.bpn, businessPartner.bpn) && Objects.equals(this.parent, businessPartner.parent)
 				&& Objects.equals(this.accountGroup, businessPartner.accountGroup)
 				&& Objects.equals(this.name1, businessPartner.name1)
@@ -708,6 +251,310 @@ public class BusinessPartner implements Serializable {
 				&& Objects.equals(this.vatNumberType, businessPartner.vatNumberType);
 	}
 
+	/**
+	 * Get accountGroup.
+	 *
+	 * @return accountGroup
+	 */
+	@Schema(description = "")
+
+	public String getAccountGroup() {
+		return accountGroup;
+	}
+
+	/**
+	 * Get addressVersion.
+	 *
+	 * @return addressVersion
+	 */
+	@Schema(description = "")
+
+	public String getAddressVersion() {
+		return addressVersion;
+	}
+
+	/**
+	 * Get BPN.
+	 *
+	 * @return BPN
+	 */
+	@Schema(description = "")
+
+	@Size(min = 16, max = 16)
+	public String getBpn() {
+		return bpn;
+	}
+
+	/**
+	 * Get city.
+	 *
+	 * @return city
+	 */
+	@Schema(description = "")
+
+	public String getCity() {
+		return city;
+	}
+
+	/**
+	 * Get country.
+	 *
+	 * @return country
+	 */
+	@Schema(description = "")
+
+	public String getCountry() {
+		return country;
+	}
+
+	/**
+	 * Get houseNumber.
+	 *
+	 * @return houseNumber
+	 */
+	@Schema(description = "")
+
+	public String getHouseNumber() {
+		return houseNumber;
+	}
+
+	/**
+	 * Get name1.
+	 *
+	 * @return name1
+	 */
+	@Schema(description = "")
+
+	public String getName1() {
+		return name1;
+	}
+
+	/**
+	 * Get name2.
+	 *
+	 * @return name2
+	 */
+	@Schema(description = "")
+
+	public String getName2() {
+		return name2;
+	}
+
+	/**
+	 * Get name3.
+	 *
+	 * @return name3
+	 */
+	@Schema(description = "")
+
+	public String getName3() {
+		return name3;
+	}
+
+	/**
+	 * Get name4.
+	 *
+	 * @return name4
+	 */
+	@Schema(description = "")
+
+	public String getName4() {
+		return name4;
+	}
+
+	/**
+	 * Get parent.
+	 *
+	 * @return parent
+	 */
+	@Schema(description = "")
+
+	@Size(min = 16, max = 16)
+	public String getParent() {
+		return parent;
+	}
+
+	/**
+	 * Get postalCode.
+	 *
+	 * @return postalCode
+	 */
+	@Schema(description = "")
+
+	public String getPostalCode() {
+		return postalCode;
+	}
+
+	/**
+	 * Get street1.
+	 *
+	 * @return street1
+	 */
+	@Schema(description = "")
+
+	public String getStreet1() {
+		return street1;
+	}
+
+	/**
+	 * Get street2.
+	 *
+	 * @return street2
+	 */
+	@Schema(description = "")
+
+	public String getStreet2() {
+		return street2;
+	}
+
+	/**
+	 * Get street3.
+	 *
+	 * @return street3
+	 */
+	@Schema(description = "")
+
+	public String getStreet3() {
+		return street3;
+	}
+
+	/**
+	 * Get taxNumber1.
+	 *
+	 * @return taxNumber1
+	 */
+	@Schema(description = "")
+
+	public String getTaxNumber1() {
+		return taxNumber1;
+	}
+
+	/**
+	 * Get taxNumber1Type.
+	 *
+	 * @return taxNumber1Type
+	 */
+	@Schema(description = "")
+
+	public String getTaxNumber1Type() {
+		return taxNumber1Type;
+	}
+
+	/**
+	 * Get taxNumber2.
+	 *
+	 * @return taxNumber2
+	 */
+	@Schema(description = "")
+
+	public String getTaxNumber2() {
+		return taxNumber2;
+	}
+
+	/**
+	 * Get taxNumber2Type.
+	 *
+	 * @return taxNumber2Type
+	 */
+	@Schema(description = "")
+
+	public String getTaxNumber2Type() {
+		return taxNumber2Type;
+	}
+
+	/**
+	 * Get taxNumber3.
+	 *
+	 * @return taxNumber3
+	 */
+	@Schema(description = "")
+
+	public String getTaxNumber3() {
+		return taxNumber3;
+	}
+
+	/**
+	 * Get taxNumber3Type.
+	 *
+	 * @return taxNumber3Type
+	 */
+	@Schema(description = "")
+
+	public String getTaxNumber3Type() {
+		return taxNumber3Type;
+	}
+
+	/**
+	 * Get taxNumber4.
+	 *
+	 * @return taxNumber4
+	 */
+	@Schema(description = "")
+
+	public String getTaxNumber4() {
+		return taxNumber4;
+	}
+
+	/**
+	 * Get taxNumber4Type.
+	 *
+	 * @return taxNumber4Type
+	 */
+	@Schema(description = "")
+
+	public String getTaxNumber4Type() {
+		return taxNumber4Type;
+	}
+
+	/**
+	 * Get taxNumber5.
+	 *
+	 * @return taxNumber5
+	 */
+	@Schema(description = "")
+
+	public String getTaxNumber5() {
+		return taxNumber5;
+	}
+
+	/**
+	 * Get taxNumber5Type.
+	 *
+	 * @return taxNumber5Type
+	 */
+	@Schema(description = "")
+
+	public String getTaxNumber5Type() {
+		return taxNumber5Type;
+	}
+
+	/**
+	 * Get vatNumber.
+	 *
+	 * @return vatNumber
+	 */
+	@Schema(description = "")
+
+	public String getVatNumber() {
+		return vatNumber;
+	}
+
+	/**
+	 * Get vatNumberType.
+	 *
+	 * @return vatNumberType
+	 */
+	@Schema(description = "")
+
+	public String getVatNumberType() {
+		return vatNumberType;
+	}
+
+	/**
+	 * Hash code.
+	 *
+	 * @return the int
+	 */
 	@Override
 	public int hashCode() {
 		return Objects.hash(bpn, parent, accountGroup, name1, name2, name3, name4, addressVersion, country, city,
@@ -716,9 +563,491 @@ public class BusinessPartner implements Serializable {
 				vatNumber, vatNumberType);
 	}
 
+	/**
+	 * House number.
+	 *
+	 * @param houseNumber the house number
+	 * @return the business partner
+	 */
+	public BusinessPartner houseNumber(String houseNumber) {
+		this.houseNumber = houseNumber;
+		return this;
+	}
+
+	/**
+	 * Name 1.
+	 *
+	 * @param name1 the name 1
+	 * @return the business partner
+	 */
+	public BusinessPartner name1(String name1) {
+		this.name1 = name1;
+		return this;
+	}
+
+	/**
+	 * Name 2.
+	 *
+	 * @param name2 the name 2
+	 * @return the business partner
+	 */
+	public BusinessPartner name2(String name2) {
+		this.name2 = name2;
+		return this;
+	}
+
+	/**
+	 * Name 3.
+	 *
+	 * @param name3 the name 3
+	 * @return the business partner
+	 */
+	public BusinessPartner name3(String name3) {
+		this.name3 = name3;
+		return this;
+	}
+
+	/**
+	 * Name 4.
+	 *
+	 * @param name4 the name 4
+	 * @return the business partner
+	 */
+	public BusinessPartner name4(String name4) {
+		this.name4 = name4;
+		return this;
+	}
+
+	/**
+	 * Parent.
+	 *
+	 * @param parent the parent
+	 * @return the business partner
+	 */
+	public BusinessPartner parent(String parent) {
+		this.parent = parent;
+		return this;
+	}
+
+	/**
+	 * Postal code.
+	 *
+	 * @param postalCode the postal code
+	 * @return the business partner
+	 */
+	public BusinessPartner postalCode(String postalCode) {
+		this.postalCode = postalCode;
+		return this;
+	}
+
+	/**
+	 * Sets the account group.
+	 *
+	 * @param accountGroup the new account group
+	 */
+	public void setAccountGroup(String accountGroup) {
+		this.accountGroup = accountGroup;
+	}
+
+	/**
+	 * Sets the address version.
+	 *
+	 * @param addressVersion the new address version
+	 */
+	public void setAddressVersion(String addressVersion) {
+		this.addressVersion = addressVersion;
+	}
+
+	/**
+	 * Sets the bpn.
+	 *
+	 * @param bpn the new bpn
+	 */
+	public void setBpn(String bpn) {
+		this.bpn = bpn;
+	}
+
+	/**
+	 * Sets the city.
+	 *
+	 * @param city the new city
+	 */
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	/**
+	 * Sets the country.
+	 *
+	 * @param country the new country
+	 */
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	/**
+	 * Sets the house number.
+	 *
+	 * @param houseNumber the new house number
+	 */
+	public void setHouseNumber(String houseNumber) {
+		this.houseNumber = houseNumber;
+	}
+
+	/**
+	 * Sets the name 1.
+	 *
+	 * @param name1 the new name 1
+	 */
+	public void setName1(String name1) {
+		this.name1 = name1;
+	}
+
+	/**
+	 * Sets the name 2.
+	 *
+	 * @param name2 the new name 2
+	 */
+	public void setName2(String name2) {
+		this.name2 = name2;
+	}
+
+	/**
+	 * Sets the name 3.
+	 *
+	 * @param name3 the new name 3
+	 */
+	public void setName3(String name3) {
+		this.name3 = name3;
+	}
+
+	/**
+	 * Sets the name 4.
+	 *
+	 * @param name4 the new name 4
+	 */
+	public void setName4(String name4) {
+		this.name4 = name4;
+	}
+
+	/**
+	 * Sets the parent.
+	 *
+	 * @param parent the new parent
+	 */
+	public void setParent(String parent) {
+		this.parent = parent;
+	}
+
+	/**
+	 * Sets the postal code.
+	 *
+	 * @param postalCode the new postal code
+	 */
+	public void setPostalCode(String postalCode) {
+		this.postalCode = postalCode;
+	}
+
+	/**
+	 * Sets the street 1.
+	 *
+	 * @param street1 the new street 1
+	 */
+	public void setStreet1(String street1) {
+		this.street1 = street1;
+	}
+
+	/**
+	 * Sets the street 2.
+	 *
+	 * @param street2 the new street 2
+	 */
+	public void setStreet2(String street2) {
+		this.street2 = street2;
+	}
+
+	/**
+	 * Sets the street 3.
+	 *
+	 * @param street3 the new street 3
+	 */
+	public void setStreet3(String street3) {
+		this.street3 = street3;
+	}
+
+	/**
+	 * Sets the tax number 1.
+	 *
+	 * @param taxNumber1 the new tax number 1
+	 */
+	public void setTaxNumber1(String taxNumber1) {
+		this.taxNumber1 = taxNumber1;
+	}
+
+	/**
+	 * Sets the tax number 1 type.
+	 *
+	 * @param taxNumber1Type the new tax number 1 type
+	 */
+	public void setTaxNumber1Type(String taxNumber1Type) {
+		this.taxNumber1Type = taxNumber1Type;
+	}
+
+	/**
+	 * Sets the tax number 2.
+	 *
+	 * @param taxNumber2 the new tax number 2
+	 */
+	public void setTaxNumber2(String taxNumber2) {
+		this.taxNumber2 = taxNumber2;
+	}
+
+	/**
+	 * Sets the tax number 2 type.
+	 *
+	 * @param taxNumber2Type the new tax number 2 type
+	 */
+	public void setTaxNumber2Type(String taxNumber2Type) {
+		this.taxNumber2Type = taxNumber2Type;
+	}
+
+	/**
+	 * Sets the tax number 3.
+	 *
+	 * @param taxNumber3 the new tax number 3
+	 */
+	public void setTaxNumber3(String taxNumber3) {
+		this.taxNumber3 = taxNumber3;
+	}
+
+	/**
+	 * Sets the tax number 3 type.
+	 *
+	 * @param taxNumber3Type the new tax number 3 type
+	 */
+	public void setTaxNumber3Type(String taxNumber3Type) {
+		this.taxNumber3Type = taxNumber3Type;
+	}
+
+	/**
+	 * Sets the tax number 4.
+	 *
+	 * @param taxNumber4 the new tax number 4
+	 */
+	public void setTaxNumber4(String taxNumber4) {
+		this.taxNumber4 = taxNumber4;
+	}
+
+	/**
+	 * Sets the tax number 4 type.
+	 *
+	 * @param taxNumber4Type the new tax number 4 type
+	 */
+	public void setTaxNumber4Type(String taxNumber4Type) {
+		this.taxNumber4Type = taxNumber4Type;
+	}
+
+	/**
+	 * Sets the tax number 5.
+	 *
+	 * @param taxNumber5 the new tax number 5
+	 */
+	public void setTaxNumber5(String taxNumber5) {
+		this.taxNumber5 = taxNumber5;
+	}
+
+	/**
+	 * Sets the tax number 5 type.
+	 *
+	 * @param taxNumber5Type the new tax number 5 type
+	 */
+	public void setTaxNumber5Type(String taxNumber5Type) {
+		this.taxNumber5Type = taxNumber5Type;
+	}
+
+	/**
+	 * Sets the vat number.
+	 *
+	 * @param vatNumber the new vat number
+	 */
+	public void setVatNumber(String vatNumber) {
+		this.vatNumber = vatNumber;
+	}
+
+	/**
+	 * Sets the vat number type.
+	 *
+	 * @param vatNumberType the new vat number type
+	 */
+	public void setVatNumberType(String vatNumberType) {
+		this.vatNumberType = vatNumberType;
+	}
+
+	/**
+	 * Street 1.
+	 *
+	 * @param street1 the street 1
+	 * @return the business partner
+	 */
+	public BusinessPartner street1(String street1) {
+		this.street1 = street1;
+		return this;
+	}
+
+	/**
+	 * Street 2.
+	 *
+	 * @param street2 the street 2
+	 * @return the business partner
+	 */
+	public BusinessPartner street2(String street2) {
+		this.street2 = street2;
+		return this;
+	}
+
+	/**
+	 * Street 3.
+	 *
+	 * @param street3 the street 3
+	 * @return the business partner
+	 */
+	public BusinessPartner street3(String street3) {
+		this.street3 = street3;
+		return this;
+	}
+
+	/**
+	 * Tax number 1.
+	 *
+	 * @param taxNumber1 the tax number 1
+	 * @return the business partner
+	 */
+	public BusinessPartner taxNumber1(String taxNumber1) {
+		this.taxNumber1 = taxNumber1;
+		return this;
+	}
+
+	/**
+	 * Tax number 1 type.
+	 *
+	 * @param taxNumber1Type the tax number 1 type
+	 * @return the business partner
+	 */
+	public BusinessPartner taxNumber1Type(String taxNumber1Type) {
+		this.taxNumber1Type = taxNumber1Type;
+		return this;
+	}
+
+	/**
+	 * Tax number 2.
+	 *
+	 * @param taxNumber2 the tax number 2
+	 * @return the business partner
+	 */
+	public BusinessPartner taxNumber2(String taxNumber2) {
+		this.taxNumber2 = taxNumber2;
+		return this;
+	}
+
+	/**
+	 * Tax number 2 type.
+	 *
+	 * @param taxNumber2Type the tax number 2 type
+	 * @return the business partner
+	 */
+	public BusinessPartner taxNumber2Type(String taxNumber2Type) {
+		this.taxNumber2Type = taxNumber2Type;
+		return this;
+	}
+
+	/**
+	 * Tax number 3.
+	 *
+	 * @param taxNumber3 the tax number 3
+	 * @return the business partner
+	 */
+	public BusinessPartner taxNumber3(String taxNumber3) {
+		this.taxNumber3 = taxNumber3;
+		return this;
+	}
+
+	/**
+	 * Tax number 3 type.
+	 *
+	 * @param taxNumber3Type the tax number 3 type
+	 * @return the business partner
+	 */
+	public BusinessPartner taxNumber3Type(String taxNumber3Type) {
+		this.taxNumber3Type = taxNumber3Type;
+		return this;
+	}
+
+	/**
+	 * Tax number 4.
+	 *
+	 * @param taxNumber4 the tax number 4
+	 * @return the business partner
+	 */
+	public BusinessPartner taxNumber4(String taxNumber4) {
+		this.taxNumber4 = taxNumber4;
+		return this;
+	}
+
+	/**
+	 * Tax number 4 type.
+	 *
+	 * @param taxNumber4Type the tax number 4 type
+	 * @return the business partner
+	 */
+	public BusinessPartner taxNumber4Type(String taxNumber4Type) {
+		this.taxNumber4Type = taxNumber4Type;
+		return this;
+	}
+
+	/**
+	 * Tax number 5.
+	 *
+	 * @param taxNumber5 the tax number 5
+	 * @return the business partner
+	 */
+	public BusinessPartner taxNumber5(String taxNumber5) {
+		this.taxNumber5 = taxNumber5;
+		return this;
+	}
+
+	/**
+	 * Tax number 5 type.
+	 *
+	 * @param taxNumber5Type the tax number 5 type
+	 * @return the business partner
+	 */
+	public BusinessPartner taxNumber5Type(String taxNumber5Type) {
+		this.taxNumber5Type = taxNumber5Type;
+		return this;
+	}
+
+	/**
+	 * Convert the given object to string with each line indented by 4 spaces
+	 * (except the first line).
+	 *
+	 * @param o the o
+	 * @return the string
+	 */
+	private String toIndentedString(java.lang.Object o) {
+		if (o == null) {
+			return "null";
+		}
+		return o.toString().replace("\n", "\n    ");
+	}
+
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 		sb.append("class BusinessPartner {\n");
 
 		sb.append("    bpn: ").append(toIndentedString(bpn)).append("\n");
@@ -753,13 +1082,24 @@ public class BusinessPartner implements Serializable {
 	}
 
 	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
+	 * Vat number.
+	 *
+	 * @param vatNumber the vat number
+	 * @return the business partner
 	 */
-	private String toIndentedString(java.lang.Object o) {
-		if (o == null) {
-			return "null";
-		}
-		return o.toString().replace("\n", "\n    ");
+	public BusinessPartner vatNumber(String vatNumber) {
+		this.vatNumber = vatNumber;
+		return this;
+	}
+
+	/**
+	 * Vat number type.
+	 *
+	 * @param vatNumberType the vat number type
+	 * @return the business partner
+	 */
+	public BusinessPartner vatNumberType(String vatNumberType) {
+		this.vatNumberType = vatNumberType;
+		return this;
 	}
 }

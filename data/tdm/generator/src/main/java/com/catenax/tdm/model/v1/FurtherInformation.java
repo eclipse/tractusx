@@ -1,107 +1,193 @@
+/*
+ *
+ */
 package com.catenax.tdm.model.v1;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.validation.annotation.Validated;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.catenax.tdm.model.v1.TextStatementSet;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 
+// TODO: Auto-generated Javadoc
 /**
- * FurtherInformation
+ * FurtherInformation.
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-09-14T13:43:11.126Z[GMT]")
 
+@Entity
+@Table(name = "aspect_technicaldata_further")
+public class FurtherInformation {
 
-public class FurtherInformation   {
-  @JsonProperty("textStatements")
-  private TextStatementSet textStatements = null;
+	/** The db id. */
+	@Id
+	@GeneratedValue
+	@JsonIgnore
+	private Long dbId;
 
-  @JsonProperty("validDate")
-  private String validDate = null;
+	/** The text statements. */
+	@JsonProperty("textStatements")
+	@Column(name = "text_statement")
+	@ElementCollection(targetClass = String.class)
+	private List<String> textStatements = new ArrayList<>();
 
-  public FurtherInformation textStatements(TextStatementSet textStatements) {
-    this.textStatements = textStatements;
-    return this;
-  }
+	/** The valid date. */
+	@JsonProperty("validDate")
+	private String validDate = null;
 
-  /**
-   * Get textStatements
-   * @return textStatements
-   **/
-  @Schema(description = "")
-  
-    @Valid
-    public TextStatementSet getTextStatements() {
-    return textStatements;
-  }
+	/**
+	 * Equals.
+	 *
+	 * @param o the o
+	 * @return true, if successful
+	 */
+	@Override
+	public boolean equals(java.lang.Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		final FurtherInformation furtherInformation = (FurtherInformation) o;
+		return Objects.equals(this.textStatements, furtherInformation.textStatements)
+				&& Objects.equals(this.validDate, furtherInformation.validDate);
+	}
 
-  public void setTextStatements(TextStatementSet textStatements) {
-    this.textStatements = textStatements;
-  }
+	/**
+	 * Gets the db id.
+	 *
+	 * @return the db id
+	 */
+	public Long getDbId() {
+		return dbId;
+	}
 
-  public FurtherInformation validDate(String validDate) {
-    this.validDate = validDate;
-    return this;
-  }
+	/**
+	 * Get textStatements.
+	 *
+	 * @return textStatements
+	 */
+	@Schema(description = "")
 
-  /**
-   * Get validDate
-   * @return validDate
-   **/
-  @Schema(required = true, description = "")
-      @NotNull
+	@Valid
+	public List<String> getTextStatements() {
+		return textStatements;
+	}
 
-  public String getValidDate() {
-    return validDate;
-  }
+	/**
+	 * Get validDate.
+	 *
+	 * @return validDate
+	 */
+	@Schema(required = true, description = "")
+	@NotNull
 
-  public void setValidDate(String validDate) {
-    this.validDate = validDate;
-  }
+	public String getValidDate() {
+		return validDate;
+	}
 
+	/**
+	 * Hash code.
+	 *
+	 * @return the int
+	 */
+	@Override
+	public int hashCode() {
+		return Objects.hash(textStatements, validDate);
+	}
 
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    FurtherInformation furtherInformation = (FurtherInformation) o;
-    return Objects.equals(this.textStatements, furtherInformation.textStatements) &&
-        Objects.equals(this.validDate, furtherInformation.validDate);
-  }
+	/**
+	 * Sets the db id.
+	 *
+	 * @param dbId the new db id
+	 */
+	public void setDbId(Long dbId) {
+		this.dbId = dbId;
+	}
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(textStatements, validDate);
-  }
+	/**
+	 * Sets the text statements.
+	 *
+	 * @param textStatements the new text statements
+	 */
+	public void setTextStatements(List<String> textStatements) {
+		this.textStatements = textStatements;
+	}
 
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class FurtherInformation {\n");
-    
-    sb.append("    textStatements: ").append(toIndentedString(textStatements)).append("\n");
-    sb.append("    validDate: ").append(toIndentedString(validDate)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
+	/**
+	 * Sets the valid date.
+	 *
+	 * @param validDate the new valid date
+	 */
+	public void setValidDate(String validDate) {
+		this.validDate = validDate;
+	}
 
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
+	/**
+	 * Text statements.
+	 *
+	 * @param textStatements the text statements
+	 * @return the further information
+	 */
+	public FurtherInformation textStatements(List<String> textStatements) {
+		this.textStatements = textStatements;
+		return this;
+	}
+
+	/**
+	 * Convert the given object to string with each line indented by 4 spaces
+	 * (except the first line).
+	 *
+	 * @param o the o
+	 * @return the string
+	 */
+	private String toIndentedString(java.lang.Object o) {
+		if (o == null) {
+			return "null";
+		}
+		return o.toString().replace("\n", "\n    ");
+	}
+
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
+	@Override
+	public String toString() {
+		final StringBuilder sb = new StringBuilder();
+		sb.append("class FurtherInformation {\n");
+
+		sb.append("    textStatements: ").append(toIndentedString(textStatements)).append("\n");
+		sb.append("    validDate: ").append(toIndentedString(validDate)).append("\n");
+		sb.append("}");
+		return sb.toString();
+	}
+
+	/**
+	 * Valid date.
+	 *
+	 * @param validDate the valid date
+	 * @return the further information
+	 */
+	public FurtherInformation validDate(String validDate) {
+		this.validDate = validDate;
+		return this;
+	}
 }

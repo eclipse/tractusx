@@ -1,9 +1,11 @@
+/*
+ *
+ */
 package com.catenax.tdm.model.v1;
 
-
 /**
-* OneOfStatusValueCharacteristic
-*/
+ * OneOfStatusValueCharacteristic.
+ */
 public interface OneOfStatusValueCharacteristic {
 
 }

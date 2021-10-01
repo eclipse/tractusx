@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
-  title: "Catena-X Speedboat TDM MockData"
-  description: Catena-X Speedboat TDM MockData Services
+  title: "Catena-X Speedboat Test Data Generator"
+  description: "Disclaimer: This service serves synthetic, none-productive data for testing purposes only. All BOMs, part trees, VINs, serialNos etc. are synthetic"
   version: 0.0.1 Speedboat
   termsOfService: https://projects.eclipse.org/proposals/eclipse-tractus-x
   license:
@@ -206,60 +206,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
                 
-  /catena-x/tdm/1.0/prs/bom/{oneIDManufacturer}/{objectIDManufacturer}:
-    get:
-      tags:
-        - Parts Relationship Service
-      summary: Get a BOM by its id
-      operationId: getBOM
-      parameters:
-        - name: oneIDManufacturer
-          in: path
-          description: Readable ID of manufacturer including plant
-          required: true
-          schema:
-            type: string
-          example: BMW MUC
-        - name: objectIDManufacturer
-          in: path
-          description: 'Unique identifier of a single, unique physical (sub)component/part/batch, given by its manufacturer'
-          required: true
-          schema:
-            type: string
-          example: YS3DD78N4X7055320
-        - name: aspect
-          in: query
-          description: Aspect information to add to the returned bom
-          required: false
-          schema:
-            type: string
-          example: CE
-        - name: depth
-          in: query
-          description: 'Max depth of the returned bom, if empty max depth is returned'
-          required: false
-          schema:
-            type: integer
-            format: int32
-      responses:
-        '200':
-          description: Found the BOM
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/PartRelationshipWithInfos'
-        '404':
-          description: BOM not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-                
-
-
-
                 
   /catena-x/tdm/1.0/prs/broker/PartTypeNameUpdate:
     get:

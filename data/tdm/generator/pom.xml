@@ -5,19 +5,25 @@
 	<groupId>com.catena-x</groupId>
 	<artifactId>tdm-generator</artifactId>
 	<packaging>jar</packaging>
-	<name>swagger-spring</name>
+	<name>Catena-X Speedboat Test Data Generator</name>
 	<version>1.0.0</version>
 	<properties>
 		<java.version>1.8</java.version>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 		<springfox-version>3.0.0</springfox-version>
-		<sqllite.version>3.36.0</sqllite.version>
+		<opencsv-version>5.5.2</opencsv-version>
+		<checkstyle-plugin-version>3.1.2</checkstyle-plugin-version>
+		<checkstyle-version>9.0</checkstyle-version>
+		<spotbugs-plugin-version>4.2.0</spotbugs-plugin-version>
+		<spotbugs-version>4.4.1</spotbugs-version>
+		<javadoc-version>3.3.1</javadoc-version>
+		<failsOnError>true</failsOnError>
 	</properties>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.1.16.RELEASE</version>
+		<version>2.5.4</version>
 	</parent>
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
@@ -33,6 +39,66 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<plugin>
+				<groupId>com.github.spotbugs</groupId>
+				<artifactId>spotbugs-maven-plugin</artifactId>
+				<version>${spotbugs-plugin-version}</version>
+				<dependencies>
+					<!-- overwrite dependency on spotbugs if you want to specify the version 
+						of spotbugs -->
+					<dependency>
+						<groupId>com.github.spotbugs</groupId>
+						<artifactId>spotbugs</artifactId>
+						<version>${spotbugs-version}</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${javadoc-version}</version>
+				<configuration>
+					<show>private</show>
+					<destDir>doc</destDir>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>${checkstyle-plugin-version}</version>
+				<dependencies>
+					<dependency>
+						<groupId>com.puppycrawl.tools</groupId>
+						<artifactId>checkstyle</artifactId>
+						<version>${checkstyle-version}</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<configLocation>src/main/resources/checkstyle/checkstyle.xml</configLocation>
+					<encoding>UTF-8</encoding>
+					<consoleOutput>true</consoleOutput>
+					<failsOnError>${failsOnError}</failsOnError>
+					<linkXRef>false</linkXRef>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 	<dependencies>
@@ -107,5 +173,31 @@
 			<type>jar</type>
 		</dependency>
 
+		<dependency>
+			<groupId>com.opencsv</groupId>
+			<artifactId>opencsv</artifactId>
+			<version>${opencsv-version}</version>
+		</dependency>
+
 	</dependencies>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>${checkstyle-plugin-version}</version>
+				<configuration>
+					<configLocation>src/main/resources/checkstyle/checkstyle.xml</configLocation>
+				</configuration>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>checkstyle</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+		</plugins>
+	</reporting>
 </project>

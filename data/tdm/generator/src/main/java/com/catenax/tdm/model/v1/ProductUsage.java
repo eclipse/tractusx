@@ -1,290 +1,467 @@
+/*
+ *
+ */
 package com.catenax.tdm.model.v1;
 
-import java.util.Objects;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
+import java.util.Objects;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.validation.annotation.Validated;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+
+// TODO: Auto-generated Javadoc
 /**
- * ProductUsage
+ * ProductUsage.
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-09-14T13:39:46.417Z[GMT]")
 
+@Entity
+@Table(name = "aspect_product_usage")
+public class ProductUsage {
 
-public class ProductUsage   {
-  @JsonProperty("lifeSpan")
-  private BigDecimal lifeSpan = null;
+	/** The db id. */
+	@Id
+	@GeneratedValue
+	@JsonIgnore
+	private Long dbId;
 
-  @JsonProperty("stateOfHealth")
-  private BigDecimal stateOfHealth = null;
+	/** The life span. */
+	@JsonProperty("lifeSpan")
+	private BigDecimal lifeSpan = null;
 
-  @JsonProperty("stateOfCharge")
-  private BigDecimal stateOfCharge = null;
+	/** The state of health. */
+	@JsonProperty("stateOfHealth")
+	private BigDecimal stateOfHealth = null;
 
-  @JsonProperty("mileage")
-  private BigDecimal mileage = null;
+	/** The state of charge. */
+	@JsonProperty("stateOfCharge")
+	private BigDecimal stateOfCharge = null;
 
-  @JsonProperty("numberOfChargingCycles")
-  private BigDecimal numberOfChargingCycles = null;
+	/** The mileage. */
+	@JsonProperty("mileage")
+	private BigDecimal mileage = null;
 
-  @JsonProperty("voltage")
-  private BigDecimal voltage = null;
+	/** The number of charging cycles. */
+	@JsonProperty("numberOfChargingCycles")
+	private BigDecimal numberOfChargingCycles = null;
 
-  @JsonProperty("residualCurrentHazard")
-  private BigDecimal residualCurrentHazard = null;
+	/** The voltage. */
+	@JsonProperty("voltage")
+	private BigDecimal voltage = null;
 
-  @JsonProperty("lifeSpanAsPlanned")
-  private BigDecimal lifeSpanAsPlanned = null;
+	/** The residual current hazard. */
+	@JsonProperty("residualCurrentHazard")
+	private BigDecimal residualCurrentHazard = null;
 
-  @JsonProperty("numberOfChargingCyclesAsPlanned")
-  private BigDecimal numberOfChargingCyclesAsPlanned = null;
+	/** The life span as planned. */
+	@JsonProperty("lifeSpanAsPlanned")
+	private BigDecimal lifeSpanAsPlanned = null;
 
-  public ProductUsage lifeSpan(BigDecimal lifeSpan) {
-    this.lifeSpan = lifeSpan;
-    return this;
-  }
+	/** The number of charging cycles as planned. */
+	@JsonProperty("numberOfChargingCyclesAsPlanned")
+	private BigDecimal numberOfChargingCyclesAsPlanned = null;
 
-  /**
-   * Get lifeSpan
-   * @return lifeSpan
-   **/
-  @Schema(required = true, description = "")
-      @NotNull
+	/**
+	 * Equals.
+	 *
+	 * @param o the o
+	 * @return true, if successful
+	 */
+	@Override
+	public boolean equals(java.lang.Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		final ProductUsage productUsage = (ProductUsage) o;
+		return Objects.equals(this.lifeSpan, productUsage.lifeSpan)
+				&& Objects.equals(this.stateOfHealth, productUsage.stateOfHealth)
+				&& Objects.equals(this.stateOfCharge, productUsage.stateOfCharge)
+				&& Objects.equals(this.mileage, productUsage.mileage)
+				&& Objects.equals(this.numberOfChargingCycles, productUsage.numberOfChargingCycles)
+				&& Objects.equals(this.voltage, productUsage.voltage)
+				&& Objects.equals(this.residualCurrentHazard, productUsage.residualCurrentHazard)
+				&& Objects.equals(this.lifeSpanAsPlanned, productUsage.lifeSpanAsPlanned)
+				&& Objects.equals(this.numberOfChargingCyclesAsPlanned, productUsage.numberOfChargingCyclesAsPlanned);
+	}
 
-    @Valid
-    public BigDecimal getLifeSpan() {
-    return lifeSpan;
-  }
+	/**
+	 * Gets the db id.
+	 *
+	 * @return the db id
+	 */
+	public Long getDbId() {
+		return dbId;
+	}
 
-  public void setLifeSpan(BigDecimal lifeSpan) {
-    this.lifeSpan = lifeSpan;
-  }
+	/**
+	 * Get lifeSpan.
+	 *
+	 * @return lifeSpan
+	 */
+	@Schema(required = true, description = "")
+	@NotNull
 
-  public ProductUsage stateOfHealth(BigDecimal stateOfHealth) {
-    this.stateOfHealth = stateOfHealth;
-    return this;
-  }
+	@Valid
+	public BigDecimal getLifeSpan() {
+		return lifeSpan;
+	}
 
-  /**
-   * Get stateOfHealth
-   * @return stateOfHealth
-   **/
-  @Schema(required = true, description = "")
-      @NotNull
+	/**
+	 * Get lifeSpanAsPlanned.
+	 *
+	 * @return lifeSpanAsPlanned
+	 */
+	@Schema(required = true, description = "")
+	@NotNull
 
-    @Valid
-    public BigDecimal getStateOfHealth() {
-    return stateOfHealth;
-  }
+	@Valid
+	public BigDecimal getLifeSpanAsPlanned() {
+		return lifeSpanAsPlanned;
+	}
 
-  public void setStateOfHealth(BigDecimal stateOfHealth) {
-    this.stateOfHealth = stateOfHealth;
-  }
+	/**
+	 * Get mileage.
+	 *
+	 * @return mileage
+	 */
+	@Schema(required = true, description = "")
+	@NotNull
 
-  public ProductUsage stateOfCharge(BigDecimal stateOfCharge) {
-    this.stateOfCharge = stateOfCharge;
-    return this;
-  }
+	@Valid
+	public BigDecimal getMileage() {
+		return mileage;
+	}
 
-  /**
-   * Get stateOfCharge
-   * @return stateOfCharge
-   **/
-  @Schema(required = true, description = "")
-      @NotNull
+	/**
+	 * Get numberOfChargingCycles.
+	 *
+	 * @return numberOfChargingCycles
+	 */
+	@Schema(required = true, description = "")
+	@NotNull
 
-    @Valid
-    public BigDecimal getStateOfCharge() {
-    return stateOfCharge;
-  }
+	@Valid
+	public BigDecimal getNumberOfChargingCycles() {
+		return numberOfChargingCycles;
+	}
 
-  public void setStateOfCharge(BigDecimal stateOfCharge) {
-    this.stateOfCharge = stateOfCharge;
-  }
+	/**
+	 * Get numberOfChargingCyclesAsPlanned.
+	 *
+	 * @return numberOfChargingCyclesAsPlanned
+	 */
+	@Schema(required = true, description = "")
+	@NotNull
 
-  public ProductUsage mileage(BigDecimal mileage) {
-    this.mileage = mileage;
-    return this;
-  }
+	@Valid
+	public BigDecimal getNumberOfChargingCyclesAsPlanned() {
+		return numberOfChargingCyclesAsPlanned;
+	}
 
-  /**
-   * Get mileage
-   * @return mileage
-   **/
-  @Schema(required = true, description = "")
-      @NotNull
+	/**
+	 * Get residualCurrentHazard.
+	 *
+	 * @return residualCurrentHazard
+	 */
+	@Schema(required = true, description = "")
+	@NotNull
 
-    @Valid
-    public BigDecimal getMileage() {
-    return mileage;
-  }
+	@Valid
+	public BigDecimal getResidualCurrentHazard() {
+		return residualCurrentHazard;
+	}
 
-  public void setMileage(BigDecimal mileage) {
-    this.mileage = mileage;
-  }
+	/**
+	 * Get stateOfCharge.
+	 *
+	 * @return stateOfCharge
+	 */
+	@Schema(required = true, description = "")
+	@NotNull
 
-  public ProductUsage numberOfChargingCycles(BigDecimal numberOfChargingCycles) {
-    this.numberOfChargingCycles = numberOfChargingCycles;
-    return this;
-  }
+	@Valid
+	public BigDecimal getStateOfCharge() {
+		return stateOfCharge;
+	}
 
-  /**
-   * Get numberOfChargingCycles
-   * @return numberOfChargingCycles
-   **/
-  @Schema(required = true, description = "")
-      @NotNull
+	/**
+	 * Get stateOfHealth.
+	 *
+	 * @return stateOfHealth
+	 */
+	@Schema(required = true, description = "")
+	@NotNull
 
-    @Valid
-    public BigDecimal getNumberOfChargingCycles() {
-    return numberOfChargingCycles;
-  }
+	@Valid
+	public BigDecimal getStateOfHealth() {
+		return stateOfHealth;
+	}
 
-  public void setNumberOfChargingCycles(BigDecimal numberOfChargingCycles) {
-    this.numberOfChargingCycles = numberOfChargingCycles;
-  }
+	/**
+	 * Get voltage.
+	 *
+	 * @return voltage
+	 */
+	@Schema(required = true, description = "")
+	@NotNull
 
-  public ProductUsage voltage(BigDecimal voltage) {
-    this.voltage = voltage;
-    return this;
-  }
+	@Valid
+	public BigDecimal getVoltage() {
+		return voltage;
+	}
 
-  /**
-   * Get voltage
-   * @return voltage
-   **/
-  @Schema(required = true, description = "")
-      @NotNull
+	/**
+	 * Hash code.
+	 *
+	 * @return the int
+	 */
+	@Override
+	public int hashCode() {
+		return Objects.hash(lifeSpan, stateOfHealth, stateOfCharge, mileage, numberOfChargingCycles, voltage,
+				residualCurrentHazard, lifeSpanAsPlanned, numberOfChargingCyclesAsPlanned);
+	}
 
-    @Valid
-    public BigDecimal getVoltage() {
-    return voltage;
-  }
+	/**
+	 * Life span.
+	 *
+	 * @param lifeSpan the life span
+	 * @return the product usage
+	 */
+	public ProductUsage lifeSpan(BigDecimal lifeSpan) {
+		this.lifeSpan = lifeSpan;
+		return this;
+	}
 
-  public void setVoltage(BigDecimal voltage) {
-    this.voltage = voltage;
-  }
+	/**
+	 * Life span as planned.
+	 *
+	 * @param lifeSpanAsPlanned the life span as planned
+	 * @return the product usage
+	 */
+	public ProductUsage lifeSpanAsPlanned(BigDecimal lifeSpanAsPlanned) {
+		this.lifeSpanAsPlanned = lifeSpanAsPlanned;
+		return this;
+	}
 
-  public ProductUsage residualCurrentHazard(BigDecimal residualCurrentHazard) {
-    this.residualCurrentHazard = residualCurrentHazard;
-    return this;
-  }
+	/**
+	 * Mileage.
+	 *
+	 * @param mileage the mileage
+	 * @return the product usage
+	 */
+	public ProductUsage mileage(BigDecimal mileage) {
+		this.mileage = mileage;
+		return this;
+	}
 
-  /**
-   * Get residualCurrentHazard
-   * @return residualCurrentHazard
-   **/
-  @Schema(required = true, description = "")
-      @NotNull
+	/**
+	 * Number of charging cycles.
+	 *
+	 * @param numberOfChargingCycles the number of charging cycles
+	 * @return the product usage
+	 */
+	public ProductUsage numberOfChargingCycles(BigDecimal numberOfChargingCycles) {
+		this.numberOfChargingCycles = numberOfChargingCycles;
+		return this;
+	}
 
-    @Valid
-    public BigDecimal getResidualCurrentHazard() {
-    return residualCurrentHazard;
-  }
+	/**
+	 * Number of charging cycles as planned.
+	 *
+	 * @param numberOfChargingCyclesAsPlanned the number of charging cycles as
+	 *                                        planned
+	 * @return the product usage
+	 */
+	public ProductUsage numberOfChargingCyclesAsPlanned(BigDecimal numberOfChargingCyclesAsPlanned) {
+		this.numberOfChargingCyclesAsPlanned = numberOfChargingCyclesAsPlanned;
+		return this;
+	}
 
-  public void setResidualCurrentHazard(BigDecimal residualCurrentHazard) {
-    this.residualCurrentHazard = residualCurrentHazard;
-  }
+	/**
+	 * Residual current hazard.
+	 *
+	 * @param residualCurrentHazard the residual current hazard
+	 * @return the product usage
+	 */
+	public ProductUsage residualCurrentHazard(BigDecimal residualCurrentHazard) {
+		this.residualCurrentHazard = residualCurrentHazard;
+		return this;
+	}
 
-  public ProductUsage lifeSpanAsPlanned(BigDecimal lifeSpanAsPlanned) {
-    this.lifeSpanAsPlanned = lifeSpanAsPlanned;
-    return this;
-  }
+	/**
+	 * Sets the db id.
+	 *
+	 * @param dbId the new db id
+	 */
+	public void setDbId(Long dbId) {
+		this.dbId = dbId;
+	}
 
-  /**
-   * Get lifeSpanAsPlanned
-   * @return lifeSpanAsPlanned
-   **/
-  @Schema(required = true, description = "")
-      @NotNull
+	/**
+	 * Sets the life span.
+	 *
+	 * @param lifeSpan the new life span
+	 */
+	public void setLifeSpan(BigDecimal lifeSpan) {
+		this.lifeSpan = lifeSpan;
+	}
 
-    @Valid
-    public BigDecimal getLifeSpanAsPlanned() {
-    return lifeSpanAsPlanned;
-  }
+	/**
+	 * Sets the life span as planned.
+	 *
+	 * @param lifeSpanAsPlanned the new life span as planned
+	 */
+	public void setLifeSpanAsPlanned(BigDecimal lifeSpanAsPlanned) {
+		this.lifeSpanAsPlanned = lifeSpanAsPlanned;
+	}
 
-  public void setLifeSpanAsPlanned(BigDecimal lifeSpanAsPlanned) {
-    this.lifeSpanAsPlanned = lifeSpanAsPlanned;
-  }
+	/**
+	 * Sets the mileage.
+	 *
+	 * @param mileage the new mileage
+	 */
+	public void setMileage(BigDecimal mileage) {
+		this.mileage = mileage;
+	}
 
-  public ProductUsage numberOfChargingCyclesAsPlanned(BigDecimal numberOfChargingCyclesAsPlanned) {
-    this.numberOfChargingCyclesAsPlanned = numberOfChargingCyclesAsPlanned;
-    return this;
-  }
+	/**
+	 * Sets the number of charging cycles.
+	 *
+	 * @param numberOfChargingCycles the new number of charging cycles
+	 */
+	public void setNumberOfChargingCycles(BigDecimal numberOfChargingCycles) {
+		this.numberOfChargingCycles = numberOfChargingCycles;
+	}
 
-  /**
-   * Get numberOfChargingCyclesAsPlanned
-   * @return numberOfChargingCyclesAsPlanned
-   **/
-  @Schema(required = true, description = "")
-      @NotNull
+	/**
+	 * Sets the number of charging cycles as planned.
+	 *
+	 * @param numberOfChargingCyclesAsPlanned the new number of charging cycles as
+	 *                                        planned
+	 */
+	public void setNumberOfChargingCyclesAsPlanned(BigDecimal numberOfChargingCyclesAsPlanned) {
+		this.numberOfChargingCyclesAsPlanned = numberOfChargingCyclesAsPlanned;
+	}
 
-    @Valid
-    public BigDecimal getNumberOfChargingCyclesAsPlanned() {
-    return numberOfChargingCyclesAsPlanned;
-  }
+	/**
+	 * Sets the residual current hazard.
+	 *
+	 * @param residualCurrentHazard the new residual current hazard
+	 */
+	public void setResidualCurrentHazard(BigDecimal residualCurrentHazard) {
+		this.residualCurrentHazard = residualCurrentHazard;
+	}
 
-  public void setNumberOfChargingCyclesAsPlanned(BigDecimal numberOfChargingCyclesAsPlanned) {
-    this.numberOfChargingCyclesAsPlanned = numberOfChargingCyclesAsPlanned;
-  }
+	/**
+	 * Sets the state of charge.
+	 *
+	 * @param stateOfCharge the new state of charge
+	 */
+	public void setStateOfCharge(BigDecimal stateOfCharge) {
+		this.stateOfCharge = stateOfCharge;
+	}
 
+	/**
+	 * Sets the state of health.
+	 *
+	 * @param stateOfHealth the new state of health
+	 */
+	public void setStateOfHealth(BigDecimal stateOfHealth) {
+		this.stateOfHealth = stateOfHealth;
+	}
 
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    ProductUsage productUsage = (ProductUsage) o;
-    return Objects.equals(this.lifeSpan, productUsage.lifeSpan) &&
-        Objects.equals(this.stateOfHealth, productUsage.stateOfHealth) &&
-        Objects.equals(this.stateOfCharge, productUsage.stateOfCharge) &&
-        Objects.equals(this.mileage, productUsage.mileage) &&
-        Objects.equals(this.numberOfChargingCycles, productUsage.numberOfChargingCycles) &&
-        Objects.equals(this.voltage, productUsage.voltage) &&
-        Objects.equals(this.residualCurrentHazard, productUsage.residualCurrentHazard) &&
-        Objects.equals(this.lifeSpanAsPlanned, productUsage.lifeSpanAsPlanned) &&
-        Objects.equals(this.numberOfChargingCyclesAsPlanned, productUsage.numberOfChargingCyclesAsPlanned);
-  }
+	/**
+	 * Sets the voltage.
+	 *
+	 * @param voltage the new voltage
+	 */
+	public void setVoltage(BigDecimal voltage) {
+		this.voltage = voltage;
+	}
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(lifeSpan, stateOfHealth, stateOfCharge, mileage, numberOfChargingCycles, voltage, residualCurrentHazard, lifeSpanAsPlanned, numberOfChargingCyclesAsPlanned);
-  }
+	/**
+	 * State of charge.
+	 *
+	 * @param stateOfCharge the state of charge
+	 * @return the product usage
+	 */
+	public ProductUsage stateOfCharge(BigDecimal stateOfCharge) {
+		this.stateOfCharge = stateOfCharge;
+		return this;
+	}
 
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class ProductUsage {\n");
-    
-    sb.append("    lifeSpan: ").append(toIndentedString(lifeSpan)).append("\n");
-    sb.append("    stateOfHealth: ").append(toIndentedString(stateOfHealth)).append("\n");
-    sb.append("    stateOfCharge: ").append(toIndentedString(stateOfCharge)).append("\n");
-    sb.append("    mileage: ").append(toIndentedString(mileage)).append("\n");
-    sb.append("    numberOfChargingCycles: ").append(toIndentedString(numberOfChargingCycles)).append("\n");
-    sb.append("    voltage: ").append(toIndentedString(voltage)).append("\n");
-    sb.append("    residualCurrentHazard: ").append(toIndentedString(residualCurrentHazard)).append("\n");
-    sb.append("    lifeSpanAsPlanned: ").append(toIndentedString(lifeSpanAsPlanned)).append("\n");
-    sb.append("    numberOfChargingCyclesAsPlanned: ").append(toIndentedString(numberOfChargingCyclesAsPlanned)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
+	/**
+	 * State of health.
+	 *
+	 * @param stateOfHealth the state of health
+	 * @return the product usage
+	 */
+	public ProductUsage stateOfHealth(BigDecimal stateOfHealth) {
+		this.stateOfHealth = stateOfHealth;
+		return this;
+	}
 
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
+	/**
+	 * Convert the given object to string with each line indented by 4 spaces
+	 * (except the first line).
+	 *
+	 * @param o the o
+	 * @return the string
+	 */
+	private String toIndentedString(java.lang.Object o) {
+		if (o == null) {
+			return "null";
+		}
+		return o.toString().replace("\n", "\n    ");
+	}
+
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
+	@Override
+	public String toString() {
+		final StringBuilder sb = new StringBuilder();
+		sb.append("class ProductUsage {\n");
+
+		sb.append("    lifeSpan: ").append(toIndentedString(lifeSpan)).append("\n");
+		sb.append("    stateOfHealth: ").append(toIndentedString(stateOfHealth)).append("\n");
+		sb.append("    stateOfCharge: ").append(toIndentedString(stateOfCharge)).append("\n");
+		sb.append("    mileage: ").append(toIndentedString(mileage)).append("\n");
+		sb.append("    numberOfChargingCycles: ").append(toIndentedString(numberOfChargingCycles)).append("\n");
+		sb.append("    voltage: ").append(toIndentedString(voltage)).append("\n");
+		sb.append("    residualCurrentHazard: ").append(toIndentedString(residualCurrentHazard)).append("\n");
+		sb.append("    lifeSpanAsPlanned: ").append(toIndentedString(lifeSpanAsPlanned)).append("\n");
+		sb.append("    numberOfChargingCyclesAsPlanned: ").append(toIndentedString(numberOfChargingCyclesAsPlanned))
+				.append("\n");
+		sb.append("}");
+		return sb.toString();
+	}
+
+	/**
+	 * Voltage.
+	 *
+	 * @param voltage the voltage
+	 * @return the product usage
+	 */
+	public ProductUsage voltage(BigDecimal voltage) {
+		this.voltage = voltage;
+		return this;
+	}
 }

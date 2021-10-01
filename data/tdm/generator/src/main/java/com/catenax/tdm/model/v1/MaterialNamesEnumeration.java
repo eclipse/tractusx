@@ -1,40 +1,64 @@
+/*
+ *
+ */
 package com.catenax.tdm.model.v1;
 
-import java.util.Objects;
-import com.fasterxml.jackson.annotation.JsonValue;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 
+// TODO: Auto-generated Javadoc
 /**
- * Gets or Sets MaterialNamesEnumeration
+ * Gets or Sets MaterialNamesEnumeration.
  */
 public enum MaterialNamesEnumeration {
-  ALUMINIUM("aluminium"),
-    POLYAMIDE("polyamide"),
-    OTHERS("others");
 
-  private String value;
+	/** The aluminium. */
+	ALUMINIUM("aluminium"),
+	/** The polyamide. */
+	POLYAMIDE("polyamide"),
+	/** The lithium. */
+	LITHIUM("lithium"),
+	/** The iron. */
+	IRON("iron"),
+	/** The others. */
+	OTHERS("others");
 
-  MaterialNamesEnumeration(String value) {
-    this.value = value;
-  }
+	/**
+	 * From value.
+	 *
+	 * @param text the text
+	 * @return the material names enumeration
+	 */
+	@JsonCreator
+	public static MaterialNamesEnumeration fromValue(String text) {
+		for (final MaterialNamesEnumeration b : MaterialNamesEnumeration.values()) {
+			if (String.valueOf(b.value).equals(text)) {
+				return b;
+			}
+		}
+		return null;
+	}
 
-  @Override
-  @JsonValue
-  public String toString() {
-    return String.valueOf(value);
-  }
+	/** The value. */
+	private String value;
 
-  @JsonCreator
-  public static MaterialNamesEnumeration fromValue(String text) {
-    for (MaterialNamesEnumeration b : MaterialNamesEnumeration.values()) {
-      if (String.valueOf(b.value).equals(text)) {
-        return b;
-      }
-    }
-    return null;
-  }
+	/**
+	 * Instantiates a new material names enumeration.
+	 *
+	 * @param value the value
+	 */
+	MaterialNamesEnumeration(String value) {
+		this.value = value;
+	}
+
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
+	@Override
+	@JsonValue
+	public String toString() {
+		return String.valueOf(value);
+	}
 }

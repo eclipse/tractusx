@@ -1,71 +1,131 @@
+/*
+ *
+ */
 package com.catenax.tdm.sampledata;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.catenax.tdm.BOM;
+import com.catenax.tdm.BOM.PartRelation;
 import com.catenax.tdm.TestDataGenerator;
+import com.catenax.tdm.model.v1.PartId;
+import com.catenax.tdm.model.v1.PartInfo;
+import com.catenax.tdm.sampledata.Blueprint.BlueprintItem;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class VehicleSampleData.
+ */
 public class VehicleSampleData {
-	
+
+	/** The Constant log. */
 	private static final Logger log = LoggerFactory.getLogger(VehicleSampleData.class);
-	
-	private static Map<String, VehicleSampleDataGenerator> GENERATORS = new HashMap<String, VehicleSampleDataGenerator>();
 
-	static {
-		// add BMW vehicles
-		GENERATORS.put("G30", new DefaultVehicleSampleDataGenerator(BusinessPartnerSampleData.BPN_BMWDGF, "G30"));
-		GENERATORS.put("I01", new DefaultVehicleSampleDataGenerator(BusinessPartnerSampleData.BPN_BMWLPZ, "I01"));
-		
-		GENERATORS.put("G01", new DefaultVehicleSampleDataGenerator(BusinessPartnerSampleData.BPN_BMWGROUP, "G01"));
-		GENERATORS.put("G02", new DefaultVehicleSampleDataGenerator(BusinessPartnerSampleData.BPN_BMWGROUP, "G02"));
-		GENERATORS.put("G05", new DefaultVehicleSampleDataGenerator(BusinessPartnerSampleData.BPN_BMWGROUP, "G05"));
-		GENERATORS.put("G06", new DefaultVehicleSampleDataGenerator(BusinessPartnerSampleData.BPN_BMWGROUP, "G06"));		
-		GENERATORS.put("G20", new DefaultVehicleSampleDataGenerator(BusinessPartnerSampleData.BPN_BMWGROUP, "G20"));
-		GENERATORS.put("G21", new DefaultVehicleSampleDataGenerator(BusinessPartnerSampleData.BPN_BMWGROUP, "G21"));
-		GENERATORS.put("G22", new DefaultVehicleSampleDataGenerator(BusinessPartnerSampleData.BPN_BMWGROUP, "G22"));			
-		GENERATORS.put("G12", new DefaultVehicleSampleDataGenerator(BusinessPartnerSampleData.BPN_BMWGROUP, "G12"));
-		GENERATORS.put("G32", new DefaultVehicleSampleDataGenerator(BusinessPartnerSampleData.BPN_BMWGROUP, "G32"));
-		GENERATORS.put("G31", new DefaultVehicleSampleDataGenerator(BusinessPartnerSampleData.BPN_BMWGROUP, "G31"));
+	/**
+	 * Blueprint item to part info.
+	 *
+	 * @param bpi the bpi
+	 * @return the part info
+	 */
+	private static PartInfo blueprintItemToPartInfo(BlueprintItem bpi) {
+		final PartInfo pi = new PartInfo();
+		final PartId pid = new PartId();
 
+		pid.setOneIDManufacturer(bpi.getBpn());
+		pid.setObjectIDManufacturer(bpi.getPartNumber());
+
+		pi.setPart(pid);
+		pi.setPartTypeName(bpi.getPartType());
+
+		final AspectSampleData aspectData = new AspectSampleData(pi);
+
+		return pi;
 	}
-	
-	private static VehicleSampleDataGenerator getVehicleSampleDataGenerator(String bpn, String vehicleType) {
-		VehicleSampleDataGenerator result = new DefaultVehicleSampleDataGenerator(bpn, "G01");
-		String genId = vehicleType.toUpperCase();
-		if(GENERATORS.containsKey(genId)) {
-			result = GENERATORS.get(genId);
-		}			
+
+	/**
+	 * Blueprint item to part realation.
+	 *
+	 * @param bpi the bpi
+	 * @return the part relation
+	 */
+	private static PartRelation blueprintItemToPartRealation(BlueprintItem bpi) {
+		final PartInfo pi = blueprintItemToPartInfo(bpi);
+		final List<PartRelation> children = new ArrayList<>();
+
+		for (final BlueprintItem child : bpi.getChildren()) {
+			for (int i = 0; i < child.getCount(); i++) {
+				children.add(blueprintItemToPartRealation(child));
+			}
+		}
+
+		final PartRelation result = new PartRelation(pi, children);
 		return result;
 	}
-	
-	public static BOM generateVehicle(String bpn, String vehicleType) {
-		BOM vehicle = new BOM();
-		
-		String oid = bpn.toUpperCase();
-		String vType = vehicleType.toUpperCase();
-		String vin = TestDataGenerator.genVIN("");
-		
-		log.info("Create vehicle for '" + oid + "' of Type: '" + vType + "'");
-		
-		VehicleSampleDataGenerator generator = getVehicleSampleDataGenerator(oid, vType);
-		vehicle = generator.generateVehicle(vin);
-		
-		log.info("Vehicle with vin '" + vin + "' successfully created");		
+
+	/**
+	 * Blueprint to part realation.
+	 *
+	 * @param bp the bp
+	 * @return the part relation
+	 */
+	private static PartRelation blueprintToPartRealation(Blueprint bp) {
+		return blueprintItemToPartRealation(bp.getParent());
+	}
+
+	/**
+	 * Generate vehicle.
+	 *
+	 * @param bp the bp
+	 * @return the bom
+	 */
+	public static BOM generateVehicle(Blueprint bp) {
+
+		final String bpn = bp.getParent().getBpn();
+		final String vehicleType = bp.getParent().getPartNumber();
+		final String vin = TestDataGenerator.genVIN("");
+
+		log.info("Create vehicle for '" + bpn + "' of Type: '" + vehicleType + "'");
+		final BOM vehicle = new BOM(blueprintToPartRealation(bp));
+
+		final PartInfo piTemplate = PartSampleData.generatePartInfo(bpn, vehicleType, bp.getParent().getPartType());
+		final AspectSampleData aspectData = new AspectSampleData(piTemplate, vehicle.getTopLevelRelation().getParent());
+
+		vehicle.getTopLevelRelation().getParent().getPart().setObjectIDManufacturer(vin);
+
+		log.info("Vehicle with vin '" + vin + "' successfully created");
 		return vehicle;
 	}
-	
-	public static String getPartNameManufacturerFromPartNumber(String partNumber) {
-		return TraceabilitySampleData.resolvePartNameManufacturer(partNumber);
-	}
-	
+
+	/**
+	 * Gets the part name customer from part number.
+	 *
+	 * @param partNumber the part number
+	 * @return the part name customer from part number
+	 */
 	public static String getPartNameCustomerFromPartNumber(String partNumber) {
 		return TraceabilitySampleData.resolvePartNameCustomerMapping(partNumber);
 	}
-	
+
+	/**
+	 * Gets the part name manufacturer from part number.
+	 *
+	 * @param partNumber the part number
+	 * @return the part name manufacturer from part number
+	 */
+	public static String getPartNameManufacturerFromPartNumber(String partNumber) {
+		return TraceabilitySampleData.resolvePartNameManufacturer(partNumber);
+	}
+
+	/**
+	 * Gets the part number customer from part number.
+	 *
+	 * @param partNumber the part number
+	 * @return the part number customer from part number
+	 */
 	public static String getPartNumberCustomerFromPartNumber(String partNumber) {
 		return TraceabilitySampleData.resolvePartNumberCustomerMapping(partNumber);
 	}

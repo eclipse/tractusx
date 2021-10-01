@@ -1,342 +1,543 @@
+/*
+ *
+ */
 package com.catenax.tdm.model.v1;
 
 import java.util.Objects;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.validation.annotation.Validated;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.catenax.tdm.model.v1.DigitalFiles;
-import com.catenax.tdm.model.v1.LanguageSet;
-import com.catenax.tdm.model.v1.MultiLanguageProperty;
-import com.catenax.tdm.model.v1.Role;
-import com.catenax.tdm.model.v1.StatusValueCharacteristic;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 
+// TODO: Auto-generated Javadoc
 /**
- * DocumentVersionsInner
+ * DocumentVersionsInner.
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-09-14T13:43:11.126Z[GMT]")
 
+@Entity
+@Table(name = "aspect_documentation_version_inner")
+public class DocumentVersionsInner {
 
-public class DocumentVersionsInner   {
-  @JsonProperty("languages")
-  private LanguageSet languages = null;
+	/** The db id. */
+	@Id
+	@GeneratedValue
+	@JsonIgnore
+	private Long dbId;
 
-  @JsonProperty("documentVersionId")
-  private String documentVersionId = null;
+	/** The languages. */
+	@JsonProperty("languages")
+	@OneToOne
+	private LanguageSet languages = null;
 
-  @JsonProperty("title")
-  private MultiLanguageProperty title = null;
+	/** The document version id. */
+	@JsonProperty("documentVersionId")
+	private String documentVersionId = null;
 
-  @JsonProperty("summary")
-  private MultiLanguageProperty summary = null;
+	/** The title. */
+	@JsonProperty("title")
+	@OneToOne
+	private MultiLanguageProperty title = null;
 
-  @JsonProperty("keyWords")
-  private MultiLanguageProperty keyWords = null;
+	/** The summary. */
+	@JsonProperty("summary")
+	@OneToOne
+	private MultiLanguageProperty summary = null;
 
-  @JsonProperty("setDate")
-  private String setDate = null;
+	/** The key words. */
+	@JsonProperty("keyWords")
+	@OneToOne
+	private MultiLanguageProperty keyWords = null;
 
-  @JsonProperty("statusValue")
-  private StatusValueCharacteristic statusValue = null;
+	/** The set date. */
+	@JsonProperty("setDate")
+	private String setDate = null;
 
-  @JsonProperty("role")
-  private Role role = null;
+	/** The status value. */
+	@JsonProperty("statusValue")
+	@OneToOne
+	private StatusValueCharacteristic statusValue = null;
 
-  @JsonProperty("organizationOfficialName")
-  private String organizationOfficialName = null;
+	/** The role. */
+	@JsonProperty("role")
+	private Role role = null;
 
-  @JsonProperty("organizationName")
-  private String organizationName = null;
+	/** The organization official name. */
+	@JsonProperty("organizationOfficialName")
+	private String organizationOfficialName = null;
 
-  @JsonProperty("digitalFiles")
-  private DigitalFiles digitalFiles = null;
+	/** The organization name. */
+	@JsonProperty("organizationName")
+	private String organizationName = null;
 
-  public DocumentVersionsInner languages(LanguageSet languages) {
-    this.languages = languages;
-    return this;
-  }
+	/** The digital files. */
+	@JsonProperty("digitalFiles")
+	@OneToOne
+	private DigitalFiles digitalFiles = null;
 
-  /**
-   * Get languages
-   * @return languages
-   **/
-  @Schema(required = true, description = "")
-      @NotNull
+	/**
+	 * Digital files.
+	 *
+	 * @param digitalFiles the digital files
+	 * @return the document versions inner
+	 */
+	public DocumentVersionsInner digitalFiles(DigitalFiles digitalFiles) {
+		this.digitalFiles = digitalFiles;
+		return this;
+	}
 
-    @Valid
-    public LanguageSet getLanguages() {
-    return languages;
-  }
+	/**
+	 * Document version id.
+	 *
+	 * @param documentVersionId the document version id
+	 * @return the document versions inner
+	 */
+	public DocumentVersionsInner documentVersionId(String documentVersionId) {
+		this.documentVersionId = documentVersionId;
+		return this;
+	}
 
-  public void setLanguages(LanguageSet languages) {
-    this.languages = languages;
-  }
+	/**
+	 * Equals.
+	 *
+	 * @param o the o
+	 * @return true, if successful
+	 */
+	@Override
+	public boolean equals(java.lang.Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		final DocumentVersionsInner documentVersionsInner = (DocumentVersionsInner) o;
+		return Objects.equals(this.languages, documentVersionsInner.languages)
+				&& Objects.equals(this.documentVersionId, documentVersionsInner.documentVersionId)
+				&& Objects.equals(this.title, documentVersionsInner.title)
+				&& Objects.equals(this.summary, documentVersionsInner.summary)
+				&& Objects.equals(this.keyWords, documentVersionsInner.keyWords)
+				&& Objects.equals(this.setDate, documentVersionsInner.setDate)
+				&& Objects.equals(this.statusValue, documentVersionsInner.statusValue)
+				&& Objects.equals(this.role, documentVersionsInner.role)
+				&& Objects.equals(this.organizationOfficialName, documentVersionsInner.organizationOfficialName)
+				&& Objects.equals(this.organizationName, documentVersionsInner.organizationName)
+				&& Objects.equals(this.digitalFiles, documentVersionsInner.digitalFiles);
+	}
 
-  public DocumentVersionsInner documentVersionId(String documentVersionId) {
-    this.documentVersionId = documentVersionId;
-    return this;
-  }
+	/**
+	 * Gets the db id.
+	 *
+	 * @return the db id
+	 */
+	public Long getDbId() {
+		return dbId;
+	}
 
-  /**
-   * Get documentVersionId
-   * @return documentVersionId
-   **/
-  @Schema(required = true, description = "")
-      @NotNull
+	/**
+	 * Get digitalFiles.
+	 *
+	 * @return digitalFiles
+	 */
+	@Schema(required = true, description = "")
+	@NotNull
 
-    public String getDocumentVersionId() {
-    return documentVersionId;
-  }
+	@Valid
+	public DigitalFiles getDigitalFiles() {
+		return digitalFiles;
+	}
 
-  public void setDocumentVersionId(String documentVersionId) {
-    this.documentVersionId = documentVersionId;
-  }
+	/**
+	 * Get documentVersionId.
+	 *
+	 * @return documentVersionId
+	 */
+	@Schema(required = true, description = "")
+	@NotNull
 
-  public DocumentVersionsInner title(MultiLanguageProperty title) {
-    this.title = title;
-    return this;
-  }
+	public String getDocumentVersionId() {
+		return documentVersionId;
+	}
 
-  /**
-   * Get title
-   * @return title
-   **/
-  @Schema(required = true, description = "")
-      @NotNull
+	/**
+	 * Get keyWords.
+	 *
+	 * @return keyWords
+	 */
+	@Schema(description = "")
 
-    @Valid
-    public MultiLanguageProperty getTitle() {
-    return title;
-  }
+	@Valid
+	public MultiLanguageProperty getKeyWords() {
+		return keyWords;
+	}
 
-  public void setTitle(MultiLanguageProperty title) {
-    this.title = title;
-  }
+	/**
+	 * Get languages.
+	 *
+	 * @return languages
+	 */
+	@Schema(required = true, description = "")
+	@NotNull
 
-  public DocumentVersionsInner summary(MultiLanguageProperty summary) {
-    this.summary = summary;
-    return this;
-  }
+	@Valid
+	public LanguageSet getLanguages() {
+		return languages;
+	}
 
-  /**
-   * Get summary
-   * @return summary
-   **/
-  @Schema(required = true, description = "")
-      @NotNull
+	/**
+	 * Get organizationName.
+	 *
+	 * @return organizationName
+	 */
+	@Schema(required = true, description = "")
+	@NotNull
 
-    @Valid
-    public MultiLanguageProperty getSummary() {
-    return summary;
-  }
+	public String getOrganizationName() {
+		return organizationName;
+	}
 
-  public void setSummary(MultiLanguageProperty summary) {
-    this.summary = summary;
-  }
+	/**
+	 * Get organizationOfficialName.
+	 *
+	 * @return organizationOfficialName
+	 */
+	@Schema(required = true, description = "")
+	@NotNull
 
-  public DocumentVersionsInner keyWords(MultiLanguageProperty keyWords) {
-    this.keyWords = keyWords;
-    return this;
-  }
+	public String getOrganizationOfficialName() {
+		return organizationOfficialName;
+	}
 
-  /**
-   * Get keyWords
-   * @return keyWords
-   **/
-  @Schema(description = "")
-  
-    @Valid
-    public MultiLanguageProperty getKeyWords() {
-    return keyWords;
-  }
+	/**
+	 * Get role.
+	 *
+	 * @return role
+	 */
+	@Schema(required = true, description = "")
+	@NotNull
 
-  public void setKeyWords(MultiLanguageProperty keyWords) {
-    this.keyWords = keyWords;
-  }
+	@Valid
+	public Role getRole() {
+		return role;
+	}
 
-  public DocumentVersionsInner setDate(String setDate) {
-    this.setDate = setDate;
-    return this;
-  }
+	/**
+	 * Get setDate.
+	 *
+	 * @return setDate
+	 */
+	@Schema(required = true, description = "")
+	@NotNull
 
-  /**
-   * Get setDate
-   * @return setDate
-   **/
-  @Schema(required = true, description = "")
-      @NotNull
+	public String getSetDate() {
+		return setDate;
+	}
 
-  public String getSetDate() {
-    return setDate;
-  }
+	/**
+	 * Get statusValue.
+	 *
+	 * @return statusValue
+	 */
+	@Schema(required = true, description = "")
+	@NotNull
 
-  public void setSetDate(String setDate) {
-    this.setDate = setDate;
-  }
+	@Valid
+	public StatusValueCharacteristic getStatusValue() {
+		return statusValue;
+	}
 
-  public DocumentVersionsInner statusValue(StatusValueCharacteristic statusValue) {
-    this.statusValue = statusValue;
-    return this;
-  }
+	/**
+	 * Get summary.
+	 *
+	 * @return summary
+	 */
+	@Schema(required = true, description = "")
+	@NotNull
 
-  /**
-   * Get statusValue
-   * @return statusValue
-   **/
-  @Schema(required = true, description = "")
-      @NotNull
+	@Valid
+	public MultiLanguageProperty getSummary() {
+		return summary;
+	}
 
-    @Valid
-    public StatusValueCharacteristic getStatusValue() {
-    return statusValue;
-  }
+	/**
+	 * Get title.
+	 *
+	 * @return title
+	 */
+	@Schema(required = true, description = "")
+	@NotNull
 
-  public void setStatusValue(StatusValueCharacteristic statusValue) {
-    this.statusValue = statusValue;
-  }
+	@Valid
+	public MultiLanguageProperty getTitle() {
+		return title;
+	}
 
-  public DocumentVersionsInner role(Role role) {
-    this.role = role;
-    return this;
-  }
+	/**
+	 * Hash code.
+	 *
+	 * @return the int
+	 */
+	@Override
+	public int hashCode() {
+		return Objects.hash(languages, documentVersionId, title, summary, keyWords, setDate, statusValue, role,
+				organizationOfficialName, organizationName, digitalFiles);
+	}
 
-  /**
-   * Get role
-   * @return role
-   **/
-  @Schema(required = true, description = "")
-      @NotNull
+	/**
+	 * Key words.
+	 *
+	 * @param keyWords the key words
+	 * @return the document versions inner
+	 */
+	public DocumentVersionsInner keyWords(MultiLanguageProperty keyWords) {
+		this.keyWords = keyWords;
+		return this;
+	}
 
-    @Valid
-    public Role getRole() {
-    return role;
-  }
+	/**
+	 * Languages.
+	 *
+	 * @param languages the languages
+	 * @return the document versions inner
+	 */
+	public DocumentVersionsInner languages(LanguageSet languages) {
+		this.languages = languages;
+		return this;
+	}
 
-  public void setRole(Role role) {
-    this.role = role;
-  }
+	/**
+	 * Organization name.
+	 *
+	 * @param organizationName the organization name
+	 * @return the document versions inner
+	 */
+	public DocumentVersionsInner organizationName(String organizationName) {
+		this.organizationName = organizationName;
+		return this;
+	}
 
-  public DocumentVersionsInner organizationOfficialName(String organizationOfficialName) {
-    this.organizationOfficialName = organizationOfficialName;
-    return this;
-  }
+	/**
+	 * Organization official name.
+	 *
+	 * @param organizationOfficialName the organization official name
+	 * @return the document versions inner
+	 */
+	public DocumentVersionsInner organizationOfficialName(String organizationOfficialName) {
+		this.organizationOfficialName = organizationOfficialName;
+		return this;
+	}
 
-  /**
-   * Get organizationOfficialName
-   * @return organizationOfficialName
-   **/
-  @Schema(required = true, description = "")
-      @NotNull
+	/**
+	 * Role.
+	 *
+	 * @param role the role
+	 * @return the document versions inner
+	 */
+	public DocumentVersionsInner role(Role role) {
+		this.role = role;
+		return this;
+	}
 
-    public String getOrganizationOfficialName() {
-    return organizationOfficialName;
-  }
+	/**
+	 * Sets the date.
+	 *
+	 * @param setDate the set date
+	 * @return the document versions inner
+	 */
+	public DocumentVersionsInner setDate(String setDate) {
+		this.setDate = setDate;
+		return this;
+	}
 
-  public void setOrganizationOfficialName(String organizationOfficialName) {
-    this.organizationOfficialName = organizationOfficialName;
-  }
+	/**
+	 * Sets the db id.
+	 *
+	 * @param dbId the new db id
+	 */
+	public void setDbId(Long dbId) {
+		this.dbId = dbId;
+	}
 
-  public DocumentVersionsInner organizationName(String organizationName) {
-    this.organizationName = organizationName;
-    return this;
-  }
+	/**
+	 * Sets the digital files.
+	 *
+	 * @param digitalFiles the new digital files
+	 */
+	public void setDigitalFiles(DigitalFiles digitalFiles) {
+		this.digitalFiles = digitalFiles;
+	}
 
-  /**
-   * Get organizationName
-   * @return organizationName
-   **/
-  @Schema(required = true, description = "")
-      @NotNull
+	/**
+	 * Sets the document version id.
+	 *
+	 * @param documentVersionId the new document version id
+	 */
+	public void setDocumentVersionId(String documentVersionId) {
+		this.documentVersionId = documentVersionId;
+	}
 
-    public String getOrganizationName() {
-    return organizationName;
-  }
+	/**
+	 * Sets the key words.
+	 *
+	 * @param keyWords the new key words
+	 */
+	public void setKeyWords(MultiLanguageProperty keyWords) {
+		this.keyWords = keyWords;
+	}
 
-  public void setOrganizationName(String organizationName) {
-    this.organizationName = organizationName;
-  }
+	/**
+	 * Sets the languages.
+	 *
+	 * @param languages the new languages
+	 */
+	public void setLanguages(LanguageSet languages) {
+		this.languages = languages;
+	}
 
-  public DocumentVersionsInner digitalFiles(DigitalFiles digitalFiles) {
-    this.digitalFiles = digitalFiles;
-    return this;
-  }
+	/**
+	 * Sets the organization name.
+	 *
+	 * @param organizationName the new organization name
+	 */
+	public void setOrganizationName(String organizationName) {
+		this.organizationName = organizationName;
+	}
 
-  /**
-   * Get digitalFiles
-   * @return digitalFiles
-   **/
-  @Schema(required = true, description = "")
-      @NotNull
+	/**
+	 * Sets the organization official name.
+	 *
+	 * @param organizationOfficialName the new organization official name
+	 */
+	public void setOrganizationOfficialName(String organizationOfficialName) {
+		this.organizationOfficialName = organizationOfficialName;
+	}
 
-    @Valid
-    public DigitalFiles getDigitalFiles() {
-    return digitalFiles;
-  }
+	/**
+	 * Sets the role.
+	 *
+	 * @param role the new role
+	 */
+	public void setRole(Role role) {
+		this.role = role;
+	}
 
-  public void setDigitalFiles(DigitalFiles digitalFiles) {
-    this.digitalFiles = digitalFiles;
-  }
+	/**
+	 * Sets the sets the date.
+	 *
+	 * @param setDate the new sets the date
+	 */
+	public void setSetDate(String setDate) {
+		this.setDate = setDate;
+	}
 
+	/**
+	 * Sets the status value.
+	 *
+	 * @param statusValue the new status value
+	 */
+	public void setStatusValue(StatusValueCharacteristic statusValue) {
+		this.statusValue = statusValue;
+	}
 
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    DocumentVersionsInner documentVersionsInner = (DocumentVersionsInner) o;
-    return Objects.equals(this.languages, documentVersionsInner.languages) &&
-        Objects.equals(this.documentVersionId, documentVersionsInner.documentVersionId) &&
-        Objects.equals(this.title, documentVersionsInner.title) &&
-        Objects.equals(this.summary, documentVersionsInner.summary) &&
-        Objects.equals(this.keyWords, documentVersionsInner.keyWords) &&
-        Objects.equals(this.setDate, documentVersionsInner.setDate) &&
-        Objects.equals(this.statusValue, documentVersionsInner.statusValue) &&
-        Objects.equals(this.role, documentVersionsInner.role) &&
-        Objects.equals(this.organizationOfficialName, documentVersionsInner.organizationOfficialName) &&
-        Objects.equals(this.organizationName, documentVersionsInner.organizationName) &&
-        Objects.equals(this.digitalFiles, documentVersionsInner.digitalFiles);
-  }
+	/**
+	 * Sets the summary.
+	 *
+	 * @param summary the new summary
+	 */
+	public void setSummary(MultiLanguageProperty summary) {
+		this.summary = summary;
+	}
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(languages, documentVersionId, title, summary, keyWords, setDate, statusValue, role, organizationOfficialName, organizationName, digitalFiles);
-  }
+	/**
+	 * Sets the title.
+	 *
+	 * @param title the new title
+	 */
+	public void setTitle(MultiLanguageProperty title) {
+		this.title = title;
+	}
 
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class DocumentVersionsInner {\n");
-    
-    sb.append("    languages: ").append(toIndentedString(languages)).append("\n");
-    sb.append("    documentVersionId: ").append(toIndentedString(documentVersionId)).append("\n");
-    sb.append("    title: ").append(toIndentedString(title)).append("\n");
-    sb.append("    summary: ").append(toIndentedString(summary)).append("\n");
-    sb.append("    keyWords: ").append(toIndentedString(keyWords)).append("\n");
-    sb.append("    setDate: ").append(toIndentedString(setDate)).append("\n");
-    sb.append("    statusValue: ").append(toIndentedString(statusValue)).append("\n");
-    sb.append("    role: ").append(toIndentedString(role)).append("\n");
-    sb.append("    organizationOfficialName: ").append(toIndentedString(organizationOfficialName)).append("\n");
-    sb.append("    organizationName: ").append(toIndentedString(organizationName)).append("\n");
-    sb.append("    digitalFiles: ").append(toIndentedString(digitalFiles)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
+	/**
+	 * Status value.
+	 *
+	 * @param statusValue the status value
+	 * @return the document versions inner
+	 */
+	public DocumentVersionsInner statusValue(StatusValueCharacteristic statusValue) {
+		this.statusValue = statusValue;
+		return this;
+	}
 
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
+	/**
+	 * Summary.
+	 *
+	 * @param summary the summary
+	 * @return the document versions inner
+	 */
+	public DocumentVersionsInner summary(MultiLanguageProperty summary) {
+		this.summary = summary;
+		return this;
+	}
+
+	/**
+	 * Title.
+	 *
+	 * @param title the title
+	 * @return the document versions inner
+	 */
+	public DocumentVersionsInner title(MultiLanguageProperty title) {
+		this.title = title;
+		return this;
+	}
+
+	/**
+	 * Convert the given object to string with each line indented by 4 spaces
+	 * (except the first line).
+	 *
+	 * @param o the o
+	 * @return the string
+	 */
+	private String toIndentedString(java.lang.Object o) {
+		if (o == null) {
+			return "null";
+		}
+		return o.toString().replace("\n", "\n    ");
+	}
+
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
+	@Override
+	public String toString() {
+		final StringBuilder sb = new StringBuilder();
+		sb.append("class DocumentVersionsInner {\n");
+
+		sb.append("    languages: ").append(toIndentedString(languages)).append("\n");
+		sb.append("    documentVersionId: ").append(toIndentedString(documentVersionId)).append("\n");
+		sb.append("    title: ").append(toIndentedString(title)).append("\n");
+		sb.append("    summary: ").append(toIndentedString(summary)).append("\n");
+		sb.append("    keyWords: ").append(toIndentedString(keyWords)).append("\n");
+		sb.append("    setDate: ").append(toIndentedString(setDate)).append("\n");
+		sb.append("    statusValue: ").append(toIndentedString(statusValue)).append("\n");
+		sb.append("    role: ").append(toIndentedString(role)).append("\n");
+		sb.append("    organizationOfficialName: ").append(toIndentedString(organizationOfficialName)).append("\n");
+		sb.append("    organizationName: ").append(toIndentedString(organizationName)).append("\n");
+		sb.append("    digitalFiles: ").append(toIndentedString(digitalFiles)).append("\n");
+		sb.append("}");
+		return sb.toString();
+	}
 }

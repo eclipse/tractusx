@@ -1,76 +1,80 @@
+/*
+ *
+ */
 package com.catenax.tdm.aspect;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.catenax.tdm.TestDataFactory;
-import com.catenax.tdm.model.v1.DocumentClassificationCharacteristic;
-import com.catenax.tdm.model.v1.DocumentClassificationCharacteristicInner;
-import com.catenax.tdm.model.v1.DocumentIdCharacteristic;
-import com.catenax.tdm.model.v1.DocumentIdCharacteristicInner;
-import com.catenax.tdm.model.v1.DocumentVersions;
-import com.catenax.tdm.model.v1.DocumentVersionsInner;
-import com.catenax.tdm.model.v1.Documents;
+import com.catenax.tdm.dao.QueueDao;
+import com.catenax.tdm.model.v1.AspectMapping;
 import com.catenax.tdm.model.v1.DocumentsInner;
-import com.catenax.tdm.model.v1.Material;
-import com.catenax.tdm.model.v1.ReferenceElementSet;
-import com.catenax.tdm.model.v1.Role;
-import com.catenax.tdm.model.v1.StatusValueCharacteristic;
+import com.catenax.tdm.model.v1.PartId;
 
-public class DocumentationAspectHandler implements AspectHandler<Documents> {
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DocumentationAspectHandler.
+ */
+public class DocumentationAspectHandler implements AspectHandler<DocumentsInner> {
 
+	/**
+	 * Creates the aspect.
+	 *
+	 * @param part the part
+	 */
 	@Override
-	public List<Documents> retrieveAspect(String oneID, String partUniqueID) {
-		List<Documents> list = new ArrayList<Documents>();
-		
-		Documents result = new Documents();
-		
-		DocumentsInner di = this.generateDocument();		
-		result.add(di);
-		
-		list.add(result);
+	public void createAspect(PartId part) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/**
+	 * Gets the main entity class.
+	 *
+	 * @return the main entity class
+	 */
+	@Override
+	public Class<DocumentsInner> getMainEntityClass() {
+		return DocumentsInner.class;
+	}
+
+	/**
+	 * Retrieve aspect.
+	 *
+	 * @param part the part
+	 * @param dao  the dao
+	 * @return the list
+	 */
+	@Override
+	public List<DocumentsInner> retrieveAspect(PartId part, QueueDao dao) {
+		return retrieveAspect(part.getOneIDManufacturer(), part.getObjectIDManufacturer(), dao);
+	}
+
+	/**
+	 * Retrieve aspect.
+	 *
+	 * @param oneID        the one ID
+	 * @param partUniqueID the part unique ID
+	 * @param dao          the dao
+	 * @return the list
+	 */
+	@Override
+	public List<DocumentsInner> retrieveAspect(String oneID, String partUniqueID, QueueDao dao) {
+		final List<DocumentsInner> list = new ArrayList<>();
+
+		final String bpn = oneID.trim();
+		final String serialNo = partUniqueID.trim();
+
+		final List<Object> mappings = dao.findAll(AspectMapping.class);
+		for (final Object o : mappings) {
+			final AspectMapping mapping = (AspectMapping) o;
+			if (AspectFactory.matchKey(bpn, mapping.getPart().getOneIDManufacturer(), serialNo,
+					mapping.getPart().getObjectIDManufacturer())) {
+				list.addAll(mapping.getDocuments());
+			}
+		}
 
 		return list;
-	}
-	
-	private DocumentsInner generateDocument() {
-		DocumentsInner di = new DocumentsInner();
-		
-		DocumentClassificationCharacteristic classification = new DocumentClassificationCharacteristic();
-		DocumentClassificationCharacteristicInner c = new DocumentClassificationCharacteristicInner();
-		
-		//TODO: add classifications
-		
-		classification.add(c);
-		di.setDocumentClassifications(classification);
-		
-		ReferenceElementSet res = new ReferenceElementSet();
-		//TODO: add strings
-		di.setDocumentEntities(res);
-		
-		DocumentIdCharacteristic did = new DocumentIdCharacteristic();
-		DocumentIdCharacteristicInner didi = new DocumentIdCharacteristicInner();
-		
-		didi.setDocumentDomainId("");
-		didi.setIsPrimary(true);
-		didi.setValueId("");
-		
-		did.add(didi);
-		di.setDocumentId(did);
-		
-		DocumentVersions versions = new DocumentVersions();
-		DocumentVersionsInner version = new DocumentVersionsInner();
-		
-		version.setDate("");
-		version.setDocumentVersionId("");
-		version.setOrganizationName(TestDataFactory.getInstance().getBusinessName());
-		version.setOrganizationOfficialName(version.getOrganizationName());
-		version.setRole(Role.AUTHOR);
-		
-		versions.add(version);
-		di.setDocumentVersions(versions);
-		
-		return di;
 	}
 
 }
