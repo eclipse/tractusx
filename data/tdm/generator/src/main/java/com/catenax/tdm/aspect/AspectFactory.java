@@ -86,7 +86,7 @@ public class AspectFactory {
 	 * @return the aspect URL
 	 */
 	public static String getAspectURL() {
-		final String result = Config.BASE_URL + "/catena-x/tdm/aspect/";
+		final String result = Config.BASE_URL + "/catena-x/tdm/1.0/aspect/";
 
 		return result;
 	}
