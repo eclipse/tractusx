@@ -34,8 +34,8 @@ consumer_url = sys.argv[2]
 provider_alias = sys.argv[3]
 # Consumer alias in the connector network. The provider needs this alias to reach out to the connector.
 consumer_alias = sys.argv[4]
-relative_reference = sys.argv[5]
-catalog_url = sys.argv[6]
+catalog_url = sys.argv[5]
+relative_reference = sys.argv[6]
 # User having an access to the consumer connector.
 user = sys.argv[7]
 password = sys.argv[8]
