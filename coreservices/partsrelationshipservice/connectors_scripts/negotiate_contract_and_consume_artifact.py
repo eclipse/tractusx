@@ -35,9 +35,10 @@ provider_alias = sys.argv[3]
 # Consumer alias in the connector network. The provider needs this alias to reach out to the connector.
 consumer_alias = sys.argv[4]
 relative_reference = sys.argv[5]
+catalog_url = sys.argv[6]
 # User having an access to the consumer connector.
-user = sys.argv[6]
-password = sys.argv[7]
+user = sys.argv[7]
+password = sys.argv[8]
 
 print("Setting provider url:", provider_url)
 print("Setting consumer url:", consumer_url)
@@ -56,7 +57,7 @@ print("description:")
 pprint.pprint(description)
 
 # Getting first catalog because we should have only one catalog registered.
-catalog_url = description["ids:resourceCatalog"][0]["@id"]
+# catalog_url = description["ids:resourceCatalog"][0]["@id"]
 print("catalog_url:")
 pprint.pprint(catalog_url)
 

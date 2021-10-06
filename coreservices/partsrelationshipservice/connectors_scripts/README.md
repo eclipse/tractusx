@@ -38,11 +38,12 @@ pipenv shell
 ```bash
 pipenv sync
 pipenv shell
-./negotiate_contract_and_consume_artifact.py \
+./consume_artifact.py \
 <provider-url> \
 <consumer-url> \
 <provider-internal-alias> \
 <consumer-internal-alias> \
+<catalog_url> \
 <pathparams-and-query-params-to-append-to-the-url-to-access-a-specific-resource> \
 <username> \
 <password>
@@ -58,14 +59,41 @@ pipenv shell
 "https://catenaxdev001akssrv.germanywestcentral.cloudapp.azure.com/env001/consumer" \
 "https://catenaxdev001akssrv.germanywestcentral.cloudapp.azure.com/env001/producer" \
 "https://catenaxdev001akssrv.germanywestcentral.cloudapp.azure.com/env001/consumer" \
+"https://catenaxdev001akssrv.germanywestcentral.cloudapp.azure.com/env001/producer/api/catalogs/184ba395-7f5a-4700-b418-ba23b396292b"
 "/api/v0.1/vins/YS3DD78N4X7055320/partsTree?view=AS_BUILT" \
+<username> \
+<password>
+```
+
+## Only consume the data of an artifact after negotiation has been done
+
+```bash
+pipenv sync
+pipenv shell
+./consume_artifact.py \
+<provider-url> \
+<artifact-on-consumer-side> \
+<pathparams-and-query-params-to-append-to-the-url-to-access-a-specific-resource> \
+<username> \
+<password>
+```
+
+## Only consume the data of an artifact after negotiation has been done in the env001 environment
+
+```bash
+pipenv sync
+pipenv shell
+./consume_artifact.py \
+"https://catenaxdev006akssrv.germanywestcentral.cloudapp.azure.com/kaputt/consumer" \
+"https://catenaxdev006akssrv.germanywestcentral.cloudapp.azure.com/kaputt/consumer/api/artifacts/45824c35-e6f5-4425-abbe-cd3023b2b1ff" \
+"/MATERIAL/CAXSJRTGOPVESVZZ/fyyiwwdwbybviwxgrpegnpizrxpxaudopnlopeubfwoijmrlihwzhcofpcbmgcjb" \
 <username> \
 <password>
 ```
 
 ## Consume data when contract is already negotiated
 When running the negotiate_contract_and_consume_artifact.py script, please note the url printed by the script under "Consumer data url to access the artifact".
-This url should end by `/data`. You need to append path params and query params to the url to make your query.
+This url should end by /data. You need to append path params and query params to the url to make your query.
 
 ## Scripts explanation
 

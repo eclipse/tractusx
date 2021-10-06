@@ -123,9 +123,9 @@ class ResourceApi:
         else:
             return [obj]
 
-    def get_data(self, artifact, relative_reference):
+    def get_data(self, artifact, relative_reference, headers={}):
         print(artifact + "/data" + relative_reference)
-        return self.session.get(artifact + "/data" + relative_reference)
+        return self.session.get(artifact + "/data" + relative_reference, headers={"accept": "application/json"})
 
     def get_artifacts_for_agreement(self, agreement):
         return json.loads(self.session.get(agreement + "/artifacts").text)
