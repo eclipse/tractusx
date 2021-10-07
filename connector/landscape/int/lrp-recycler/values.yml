@@ -1,0 +1,2 @@
+ingress:
+  rootPath: "/lrp/recycler"

@@ -77,6 +77,19 @@
 			<version>1.4.2.Final</version>
 		</dependency>
 
+		<dependency>
+			<groupId>io.openmanufacturing</groupId>
+			<artifactId>sds-aspect-model-starter</artifactId>
+			<version>DEV-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.jena</groupId>
+			<artifactId>jena-core</artifactId>
+			<version>4.2.0</version>
+		</dependency>
+		
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -191,13 +204,22 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.1</version>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<release>${java.version}</release>
 					<annotationProcessorPaths>
 						<path>
 							<groupId>org.mapstruct</groupId>
 							<artifactId>mapstruct-processor</artifactId>
 							<version>1.4.2.Final</version>
+						</path>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${lombok.version}</version>
+						</path>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok-mapstruct-binding</artifactId>
+							<version>0.2.0</version>
 						</path>
 					</annotationProcessorPaths>
 				</configuration>
@@ -208,6 +230,7 @@
           <version>5.2.1</version>
           <executions>
            <execution>
+			<id>generate-semantic-hub-stubs</id>
             <goals>
                 <goal>generate</goal>
             </goals>
@@ -220,7 +243,7 @@
 				<apiPackage>net.catenax.semantics.hub.api</apiPackage>
 
 				<supportingFilesToGenerate>
-					ApiUtil.java,HomeController.java,OpenAPIDocumentationConfig.java
+					ApiUtil.java
 				</supportingFilesToGenerate>
 				<configOptions>
 					<delegatePattern>true</delegatePattern>
@@ -229,16 +252,47 @@
 				<invokerPackage>net.catenax.semantics.hub</invokerPackage>
             </configuration>
           </execution>
-         </executions>
+		  <execution>
+			  <id>generate-digital-twin-registry-api-stubs</id>
+			  <goals>
+				  <goal>generate</goal>
+			  </goals>
+			  <configuration>
+				  <inputSpec>${project.basedir}/digital-twin-registry-openapi.yaml</inputSpec>
+				  <generatorName>spring</generatorName>
+				  <generateSupportingFiles>true</generateSupportingFiles>
+				  <packageName>net.catenax.semantics.registry</packageName>
+				  <modelPackage>net.catenax.semantics.registry.model</modelPackage>
+				  <apiPackage>net.catenax.semantics.registry.api</apiPackage>
+
+				  <supportingFilesToGenerate>
+					  ApiUtil.java
+				  </supportingFilesToGenerate>
+				  <configOptions>
+					  <delegatePattern>true</delegatePattern>
+					  <packageName>net.catenax</packageName>
+				  </configOptions>
+				  <invokerPackage>net.catenax.semantics</invokerPackage>
+			  </configuration>
+		  </execution>
+		  </executions>
         </plugin>
 			<plugin>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<version>${maven-dependency-plugin.version}</version>
 			</plugin>
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <requiresUnpack>
+                        <dependency>
+                            <groupId>org.asciidoctor</groupId>
+                            <artifactId>asciidoctorj</artifactId>
+                        </dependency>
+                    </requiresUnpack>
+                </configuration>
+            </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
@@ -266,6 +320,7 @@
 				<configuration>
 					<show>private</show>
 					<author>true</author>
+					<source>${java.version}</source>
 				</configuration>
 				<executions>
 					<execution>

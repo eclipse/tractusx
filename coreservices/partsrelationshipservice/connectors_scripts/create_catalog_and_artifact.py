@@ -40,9 +40,8 @@ access_url = sys.argv[5]
 # User having an access to the  provider connector.
 user = sys.argv[6]
 password = sys.argv[7]
-
-print("Setting provider url:", provider_url)
-print("Setting provider alias as:", provider_alias)
+# Consumer id to restrict access only to this consumer
+consumer_id = sys.argv[8]
 
 # Suppress ssl verification warning
 requests.packages.urllib3.disable_warnings()
@@ -64,7 +63,47 @@ artifact = provider.create_artifact(data=
 })
 
 contract = provider.create_contract()
-use_rule = provider.create_rule()
+
+# ids:constraint and ids:Permission must have an @id, that can be any URL. The content of the @id does not have
+# any impact.
+# In the rule definition, ids:constraint should be read in the following order:
+# ids:leftOperand ids:operand ids:rightOperand. In our case it means:
+# SYSTEM SAME_AS consumer_id
+rule_definition={"value": f"""{{
+                "@context" : {{
+                  "ids" : "https://w3id.org/idsa/core/",
+                  "idsc" : "https://w3id.org/idsa/code/"
+                }},
+                "@type" : "ids:Permission",
+                "@id" : "https://w3id.org/idsa/autogen/permission/d504b82f-79dd-4c93-969d-937ab6a1d676",
+                "ids:description" : [ {{
+                  "@value" : "connector-restriction",
+                  "@type" : "http://www.w3.org/2001/XMLSchema#string"
+                }} ],
+                "ids:title" : [ {{
+                  "@value" : "PRS access Policy",
+                  "@type" : "http://www.w3.org/2001/XMLSchema#string"
+                }} ],
+                "ids:action" : [ {{
+                  "@id" : "idsc:USE"
+                }} ],
+                "ids:constraint" : [ {{
+                  "@type" : "ids:Constraint",
+                  "@id" : "https://w3id.org/idsa/autogen/constraint/572c96ec-dd86-4b20-a849-a0ce8c255eee",
+                  "ids:rightOperand" : {{
+                    "@value" : "{consumer_id}",
+                    "@type" : "http://www.w3.org/2001/XMLSchema#anyURI"
+                  }},
+                  "ids:leftOperand" : {{
+                    "@id" : "idsc:SYSTEM"
+                  }},
+                  "ids:operator" : {{
+                    "@id" : "idsc:SAME_AS"
+                  }}
+                }} ]
+              }}"""}
+
+use_rule = provider.create_rule(data=rule_definition)
 
 ## Link resources
 provider.add_resource_to_catalog(catalog, offers)

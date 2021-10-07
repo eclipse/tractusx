@@ -15,6 +15,7 @@ on:
 env:
   HELM_EXPERIMENTAL_OCI: 1
   ACR_NAME: catenaxacr.azurecr.io
+  version: 0.1.0
   
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -64,9 +65,9 @@ jobs:
          echo ${{ secrets.AZURE_REGISTRY_PASSWORD }} | helm registry login  ${{ env.ACR_NAME }} --username ${{ secrets.AZURE_REGISTRY_USERNAME }} --password-stdin 
     - name: save helm chart to local registry
       run: |
-        helm chart save tractusx/meta-broker/helm-chart ${{ env.ACR_NAME }}/helm/meta-broker:latest
+        helm chart save tractusx/meta-broker/helm-chart ${{ env.ACR_NAME }}/helm/meta-broker:${{ env.version }}
       
     - name: publish chart to acr
       run: |
-        helm chart push ${{ env.ACR_NAME }}/helm/meta-broker:latest
+        helm chart push ${{ env.ACR_NAME }}/helm/meta-broker:${{ env.version }}
 

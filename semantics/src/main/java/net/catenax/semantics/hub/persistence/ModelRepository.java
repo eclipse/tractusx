@@ -29,6 +29,6 @@ import net.catenax.semantics.hub.persistence.model.ModelEntity;
 public interface ModelRepository extends JpaRepository<ModelEntity, String> {
     public ModelEntity getModelById(String id);
 
-    @Query(value = "SELECT m FROM ModelEntity m WHERE m._private = :isPrivate AND m.name LIKE %:nameFilter% AND m.id LIKE %:namespaceFilter% AND m.type = :type")
-    public Page<ModelEntity> filterModels(@Param("isPrivate") boolean isPrivate, @Param("nameFilter") String nameFilter, @Param("namespaceFilter") String namespaceFilter, @Param("type") String type, Pageable pageable);
+    @Query(value = "SELECT m FROM ModelEntity m WHERE (m._private = :isPrivate OR :isPrivate is null) AND m.name LIKE %:nameFilter% AND m.id LIKE %:namespaceFilter% AND (m.type = :type OR :type is null)")
+    public Page<ModelEntity> filterModels(@Param("isPrivate") Boolean isPrivate, @Param("nameFilter") String nameFilter, @Param("namespaceFilter") String namespaceFilter, @Param("type") String type, Pageable pageable);
 }

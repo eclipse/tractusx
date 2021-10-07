@@ -1,12 +1,12 @@
 /*
  * Copyright (c) 2021 Robert Bosch Manufacturing Solutions GmbH
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,35 +14,18 @@
  * limitations under the License.
  */
 
-package net.catenax.semantics.hub.persistence.model;
+package net.catenax.semantics;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
-import lombok.Getter;
-import lombok.Setter;
+@SpringBootApplication
+@ComponentScan(basePackages = {"net.catenax.semantics", "org.openapitools.configuration"})
+public class SemanticHub {
 
-@Entity
-@Getter
-@Setter
-@Table(name = "model")
-public class ModelEntity {
-    @Id
-    private String id;
+    public static void main(String[] args) throws Exception {
+        new SpringApplication(SemanticHub.class).run(args);
+    }
 
-    private String publisher;
-
-    private String version;
-
-    private String name;
-
-    @Column(name = "private")
-    private Boolean _private;
-
-    private String type;
-
-    @Column(columnDefinition="text")
-    private String modelDefinition;
 }

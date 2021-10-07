@@ -1,0 +1,324 @@
+openapi: 3.0.3
+info:
+  title: Digital Twin Registry API
+  version: 0.0.1
+servers:
+  - url: /api/{api-version}
+    variables:
+      api-version:
+        default: v1
+paths:
+  '/twins':
+    get:
+      tags:
+        - DigitalTwinRegistry
+      summary: Get Twin By Query
+      operationId: getTwinByQuery
+      parameters:
+        - required: false
+          schema:
+            title: Key
+            type: string
+            minLength: 2
+            maxLength: 200
+          name: key
+          in: query
+        - required: false
+          schema:
+            title: Value
+            type: string
+            minLength: 2
+            maxLength: 200
+          name: value
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DigitalTwinCollection'
+    post:
+      tags:
+        - DigitalTwinRegistry
+      summary: Create Twin
+      operationId: createTwin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DigitalTwinCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DigitalTwin'
+        '400':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/twins/{twin_id}':
+    get:
+      tags:
+        - DigitalTwinRegistry
+      summary: Get Twin By Id
+      operationId: getTwinById
+      parameters:
+        - required: true
+          schema:
+            title: Twin Id
+            type: string
+          name: twin_id
+          in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DigitalTwin'
+        '404':
+          description: Twin not found
+    delete:
+      tags:
+        - DigitalTwinRegistry
+      summary: Delete Twin
+      operationId: deleteTwinById
+      parameters:
+        - required: true
+          schema:
+            title: Twin Id
+            type: string
+          name: twin_id
+          in: path
+      responses:
+        '204':
+          description: Successful Response
+        '404':
+          description: Twin not found
+components:
+  schemas:
+    Aspect:
+      title: Aspect
+      required:
+        - id
+        - modelReference
+        - httpEndpoints
+      type: object
+      properties:
+        id:
+          title: Id
+          type: string
+        modelReference:
+          $ref: '#/components/schemas/ModelReference'
+        httpEndpoints:
+          title: Httpendpoints
+          type: array
+          items:
+            $ref: '#/components/schemas/HttpEndpoint'
+    AspectCreate:
+      title: AspectCreate
+      required:
+        - modelReference
+        - httpEndpoints
+      type: object
+      properties:
+        modelReference:
+          $ref: '#/components/schemas/ModelReference'
+        httpEndpoints:
+          title: Httpendpoints
+          type: array
+          items:
+            $ref: '#/components/schemas/HttpEndpointCreate'
+    DigitalTwin:
+      title: DigitalTwin
+      required:
+        - id
+        - description
+        - manufacturer
+        - localIdentifiers
+        - aspects
+      type: object
+      properties:
+        id:
+          title: Id
+          type: string
+        description:
+          title: Description
+          type: string
+        manufacturer:
+          title: Manufacturer
+          type: string
+        localIdentifiers:
+          title: Localidentifiers
+          type: array
+          items:
+            $ref: '#/components/schemas/LocalIdentifier'
+        aspects:
+          title: Aspects
+          type: array
+          items:
+            $ref: '#/components/schemas/Aspect'
+    DigitalTwinCollection:
+      title: DigitalTwinCollection
+      required:
+        - items
+        - totalItems
+        - currentPage
+        - totalPages
+        - itemCount
+      type: object
+      properties:
+        items:
+          title: Items
+          type: array
+          items:
+            $ref: '#/components/schemas/DigitalTwin'
+        totalItems:
+          title: Totalitems
+          type: integer
+        currentPage:
+          title: Currentpage
+          type: integer
+        totalPages:
+          title: Totalpages
+          type: integer
+        itemCount:
+          title: Itemcount
+          type: integer
+    DigitalTwinCreate:
+      title: DigitalTwinCreate
+      required:
+        - description
+        - manufacturer
+        - localIdentifiers
+        - aspects
+      type: object
+      properties:
+        description:
+          title: Description
+          type: string
+        manufacturer:
+          title: Manufacturer
+          type: string
+          minLength: 3
+          maxLength: 30
+        localIdentifiers:
+          title: Localidentifiers
+          type: array
+          items:
+            $ref: '#/components/schemas/LocalIdentifierCreate'
+        aspects:
+          title: Aspects
+          type: array
+          items:
+            $ref: '#/components/schemas/AspectCreate'
+    HttpEndpoint:
+      title: HttpEndpoint
+      required:
+        - id
+        - url
+        - method
+      type: object
+      properties:
+        id:
+          title: Id
+          type: string
+        url:
+          title: Url
+          type: string
+        method:
+          $ref: '#/components/schemas/HttpMethod'
+    HttpEndpointCreate:
+      title: HttpEndpointCreate
+      required:
+        - url
+        - method
+      type: object
+      properties:
+        url:
+          title: Url
+          type: string
+          minLength: 5
+          maxLength: 1000
+        method:
+          $ref: '#/components/schemas/HttpMethod'
+    HttpMethod:
+      title: HttpMethod
+      enum:
+        - POST
+        - GET
+      type: string
+      description: An enumeration.
+    LocalIdentifier:
+      title: LocalIdentifier
+      required:
+        - key
+        - value
+      type: object
+      properties:
+        key:
+          title: Key
+          type: string
+        value:
+          title: Value
+          type: string
+    LocalIdentifierCreate:
+      title: LocalIdentifierCreate
+      required:
+        - key
+        - value
+      type: object
+      properties:
+        key:
+          title: Key
+          type: string
+          minLength: 2
+          maxLength: 60
+        value:
+          title: Value
+          type: string
+          minLength: 2
+          maxLength: 60
+    ModelReference:
+      title: ModelReference
+      required:
+        - urn
+      type: object
+      properties:
+        urn:
+          title: Urn
+          type: string
+          minLength: 5
+          maxLength: 100
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          $ref: '#/components/schemas/Error'
+    Error:
+      type: object
+      required:
+        - details
+      properties:
+        message:
+          type: string
+          example: size must be between {min} and {max}
+          description: The detailed error message for the exception which occurred.
+          minLength: 1
+        path:
+          type: string
+          description: The requested path.
+          minLength: 1
+        details:
+          type: object
+          additionalProperties:
+            type: object
+          description: An object with key/value pairs containing additional information about the error.

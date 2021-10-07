@@ -16,6 +16,8 @@ on:
 env:
   HELM_EXPERIMENTAL_OCI: 1
   ACR_NAME: catenaxacr.azurecr.io
+  version: 0.2.0
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -35,9 +37,9 @@ jobs:
        echo ${{ secrets.AZURE_REGISTRY_PASSWORD }} | helm registry login ${{ env.ACR_NAME }} --username ${{ secrets.AZURE_REGISTRY_USERNAME }} --password-stdin 
     - name: save helm chart to local registry
       run: |
-        helm chart save tractusx/connector/infrastructure/dataspaceconnector ${{ env.ACR_NAME }}/helm/connector:latest
+        helm chart save tractusx/connector/infrastructure/dataspaceconnector ${{ env.ACR_NAME }}/helm/connector:${{ env.version }}
       
     - name: publish chart to acr
       run: |
-       helm chart push ${{ env.ACR_NAME }}/helm/connector:latest
+       helm chart push ${{ env.ACR_NAME }}/helm/connector:${{ env.version }}
 

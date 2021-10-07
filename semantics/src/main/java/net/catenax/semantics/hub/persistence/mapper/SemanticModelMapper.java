@@ -22,6 +22,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import net.catenax.semantics.hub.model.Model;
+import net.catenax.semantics.hub.model.NewModel;
 import net.catenax.semantics.hub.persistence.model.ModelEntity;
 
 @Mapper(componentModel = "spring")
@@ -36,4 +37,9 @@ public interface SemanticModelMapper {
     @Mapping(source = "_private", target = "_private")
     @Mapping(source = "type", target = "type")
     List<Model> modelEntityListToModelDtoList(List<ModelEntity> model);
+
+    @Mapping(source = "private", target = "_private")
+    @Mapping(source = "type", target = "type")
+    @Mapping(source = "model", target = "modelDefinition")
+    ModelEntity newModelToModelEntity(NewModel model);
 }

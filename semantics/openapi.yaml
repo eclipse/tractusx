@@ -3,7 +3,7 @@ info:
   title: Semantic Hub
   version: v1
 servers:
-  - url: example.com/api/v1
+  - url: /api/{api-version}
     variables:
       api-version:
         default: v1
@@ -27,12 +27,10 @@ paths:
         - in: query
           name: isPrivate
           schema:
-            default: false
             type: boolean
         - in: query
           name: type
           schema:
-            default: "BAMM"
             type: string
             enum:
               - BAMM
@@ -182,7 +180,7 @@ paths:
     get:
       tags:
         - SemanticHub
-      operationId: getModelTree
+      operationId: getModelDiagram
       parameters:
         - in: path
           name: model-id
@@ -214,6 +212,28 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/ModelDocumentation'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  '/models/{model-id}/json-schema':
+    get:
+      tags:
+        - SemanticHub
+      operationId: getModelJsonSchema
+      parameters:
+        - in: path
+          name: model-id
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/ModelJsonSchema'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -269,6 +289,30 @@ components:
             property.
           type: string
   responses:
+    ModelJsonSchema:
+      description: OK
+      content:
+        'application/schema+json':
+          example: >
+            {
+              "$schema": "http://json-schema.org/draft-04/schema",
+              "type": "object",
+              "components": {
+                "schemas": {
+                  "urn_bamm_net.catenax_1.0.0_TestCharacteristic": {
+                    "type": "string"
+                  }
+                }
+              },
+              "properties": {
+                "testProperty": {
+                  "$ref": "#/components/schemas/urn_bamm_net.catenax_1.0.0_TestCharacteristic"
+                }
+              },
+              "required": [
+                "testProperty"
+              ]
+            }
     ModelDiagram:
       description: OK
       content:

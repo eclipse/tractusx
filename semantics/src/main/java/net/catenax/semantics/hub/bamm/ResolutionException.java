@@ -14,22 +14,10 @@
  * limitations under the License.
  */
 
-package net.catenax.semantics.hub.persistence;
+package net.catenax.semantics.hub.bamm;
 
-import java.util.List;
-import java.util.Optional;
-
-import javax.annotation.Nullable;
-
-import net.catenax.semantics.hub.model.Model;
-import net.catenax.semantics.hub.model.NewModel;
-
-public interface PersistenceLayer {
-    public List<Model> getModels(@Nullable Boolean isPrivate, String namespaceFilter, String nameFilter, @Nullable String type, int page, int pageSize);
-
-    public Model getModel(String modelId);
-
-    public Model insertNewModel(NewModel model, String id, String version, String name);
-
-    public Optional<String> getModelDefinition(String modelId);
+public class ResolutionException extends Throwable {
+    public ResolutionException(String message) {
+        super(message);
+    }
 }
