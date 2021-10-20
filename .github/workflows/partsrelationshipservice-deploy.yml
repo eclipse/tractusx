@@ -8,6 +8,11 @@ on:
       - coreservices/partsrelationshipservice/**
       - .github/workflows/partsrelationshipservice-deploy.yml
 
+  schedule:
+    # Schedule to run terraform destroy on, to destroy dev environment outside of working hours.
+    # Must be synchronized with if: condition below.
+    - cron:  '0 21 * * *'
+
   workflow_dispatch:
     inputs:
       environment:
@@ -31,6 +36,11 @@ jobs:
       - uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: "Configure workflow to destroy infrastructure"
+        if: ${{ github.event.schedule == '0 21 * * *'}}
+        run: |
+          echo "EXTRA_APPLY_ARGS=-destroy" >> $GITHUB_ENV
+          echo "DESTROY=-destroy" >> $GITHUB_ENV
       - name: "Configure environment to deploy (manual deployment only)"
         if: ${{ github.event_name == 'workflow_dispatch'}}
         run: |
@@ -40,6 +50,7 @@ jobs:
           echo "TERRAFORM_DEPLOY_VAR_FILE=environments/$ENVIRONMENT_TO_DEPLOY.tfvars" >> $GITHUB_ENV
           echo "TERRAFORM_STATE_KEY=prs.prs.$ENVIRONMENT_TO_DEPLOY.terraform.tfstate" >> $GITHUB_ENV
       - name: "Build and push PRS images to ACR"
+        if: ${{ ! env.DESTROY }}
         run: |
           source cd/$TERRAFORM_DEPLOY_VAR_FILE
           cd/build_and_push_docker.sh "$image_registry" "$TF_VAR_image_tag"
@@ -55,7 +66,7 @@ jobs:
 
           pushd terraform
             terraform init -backend-config=key=${TERRAFORM_STATE_KEY}
-            terraform apply --var-file "../cd/${TERRAFORM_DEPLOY_VAR_FILE}" -auto-approve
+            terraform apply $EXTRA_APPLY_ARGS --var-file "../cd/${TERRAFORM_DEPLOY_VAR_FILE}" -auto-approve
 
         env:
           AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
