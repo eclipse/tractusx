@@ -57,7 +57,7 @@ services:
   prs:
     build:
       context: .
-      target: prs
+      target: prs-api
     depends_on:
       - db
     profiles:
