@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: 'Environment to destroy PRS in'
+        description: 'Environment for resources'
         required: true
         default: 'dev'
 
@@ -21,7 +21,7 @@ jobs:
       ENVIRONMENT: dev
     steps:
       - uses: actions/checkout@v2
-      - name: "Configure environment (manual only)"
+      - name: "Configure environment (manual run only)"
         if: ${{ github.event_name == 'workflow_dispatch'}}
         run: |
           echo "ENVIRONMENT=${{ github.event.inputs.environment }}" >> $GITHUB_ENV
@@ -33,13 +33,15 @@ jobs:
     outputs:
       dataspace_partitions: ${{ steps.get-dataspace-partitions.outputs.dataspace_partitions }}
       environment: ${{ env.ENVIRONMENT }}
+      image_tag: ${{ github.run_id }}
 
   # Note that jobs are listed in reverse order, to make diffs with the
   # deploy pipeline easy to manage and improve maintainability.
-  destroy_common:
+  infra_common:
     needs:
     - configure
-    - destroy_partitions
+    - infra_partitions
+    - infra_connectors
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -49,7 +51,7 @@ jobs:
       - uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-      - name: "Run Terraform, destroying common infrastructure in Azure"
+      - name: Run Terraform
         id: terraform
         run: ../run-terraform.sh
         env:
@@ -59,7 +61,29 @@ jobs:
           # TF_CLI_ARGS variables are automatically applied to terraform commands
           TF_CLI_ARGS_apply: "-destroy"
 
-  destroy_partitions:
+  infra_connectors:
+    needs:
+      - configure
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: coreservices/partsrelationshipservice/cd/terraform-connector-consumer
+    steps:
+      - uses: actions/checkout@v2
+      - uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Run Terraform
+        run: ../run-terraform.sh
+        env:
+          AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+          TERRAFORM_STATE_BLOB: consumer.${{ needs.configure.outputs.environment }}.${{ matrix.partition.key }}.tfstate
+          TERRAFORM_VARS: ../environments/${{ needs.configure.outputs.environment }}.sh
+          TF_VAR_image_tag: ${{ needs.configure.outputs.image_tag }} # Image tag of connectors
+          # TF_CLI_ARGS variables are automatically applied to terraform commands
+          TF_CLI_ARGS_apply: "-destroy"
+
+  infra_partitions:
     needs:
     - configure
     strategy:
@@ -74,7 +98,7 @@ jobs:
     env:
       # Variables prefixed with TF_VAR_ are automatically picked up as Terraform inputs
       TF_VAR_dataspace_partition: ${{ matrix.partition.key }}
-      TF_VAR_image_tag: _irrelevant_value_
+      TF_VAR_image_tag: ${{ needs.configure.outputs.image_tag }}
       TF_VAR_application_insights_name: _irrelevant_value_
       # TF_CLI_ARGS variables are automatically applied to terraform commands
       # -refresh=false is needed to avoid having to inject App Insights resource name.
@@ -84,7 +108,7 @@ jobs:
       - uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-      - name: "Run Terraform, destroying infrastructure in Azure and application in AKS"
+      - name: Run Terraform
         run: ../run-terraform.sh
         working-directory: coreservices/partsrelationshipservice/cd/terraform-dataspace-partition
         env:
