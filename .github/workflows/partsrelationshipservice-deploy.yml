@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: 'Environment to deploy PRS to'
+        description: 'Environment for resources'
         required: true
         default: 'dev'
 
@@ -24,11 +24,11 @@ jobs:
       run:
         working-directory: coreservices/partsrelationshipservice
     env:
-      # Default environment to deploy (overridden when deploying manually)
+      # Default environment (overridden when selected manually)
       ENVIRONMENT: dev
     steps:
       - uses: actions/checkout@v2
-      - name: "Configure environment to deploy (manual deployment only)"
+      - name: "Configure environment (manual run only)"
         if: ${{ github.event_name == 'workflow_dispatch'}}
         run: |
           echo "ENVIRONMENT=${{ github.event.inputs.environment }}" >> $GITHUB_ENV
@@ -76,7 +76,7 @@ jobs:
           PRS_EDC_PKG_USERNAME: ${{ secrets.PRS_EDC_PKG_USERNAME }}
           PRS_EDC_PKG_PASSWORD: ${{ secrets.PRS_EDC_PKG_PASSWORD }}
 
-  deploy_common:
+  infra_common:
     needs:
     - configure
     runs-on: ubuntu-latest
@@ -88,7 +88,7 @@ jobs:
       - uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-      - name: "Run Terraform, deploying common infrastructure to Azure"
+      - name: Run Terraform
         id: terraform
         run: ../run-terraform.sh
         env:
@@ -98,7 +98,7 @@ jobs:
     outputs:
       application_insights_name: ${{ steps.terraform.outputs.application_insights_name }}
 
-  deploy_connectors:
+  infra_connectors:
     needs:
       - configure
       - build_images
@@ -111,7 +111,7 @@ jobs:
       - uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-      - name: "Run Terraform, deploying connectors."
+      - name: Run Terraform
         run: ../run-terraform.sh
         env:
           AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
@@ -119,11 +119,11 @@ jobs:
           TERRAFORM_VARS: ../environments/${{ needs.configure.outputs.environment }}.sh
           TF_VAR_image_tag: ${{ needs.configure.outputs.image_tag }} # Image tag of connectors
 
-  deploy_partitions:
+  infra_partitions:
     needs:
     - configure
     - build_images
-    - deploy_common
+    - infra_common
     strategy:
       # avoid stopping concurrent jobs (leaving Terraform state potentially corrupted/leased) on job failure
       fail-fast: false
@@ -137,13 +137,13 @@ jobs:
       # Variables prefixed with TF_VAR_ are automatically picked up as Terraform inputs
       TF_VAR_dataspace_partition: ${{ matrix.partition.key }}
       TF_VAR_image_tag: ${{ needs.configure.outputs.image_tag }}
-      TF_VAR_application_insights_name: ${{ needs.deploy_common.outputs.application_insights_name }}
+      TF_VAR_application_insights_name: ${{ needs.infra_common.outputs.application_insights_name }}
     steps:
       - uses: actions/checkout@v2
       - uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-      - name: "Run Terraform, deploying infrastructure to Azure and application to AKS"
+      - name: Run Terraform
         run: ../run-terraform.sh
         working-directory: coreservices/partsrelationshipservice/cd/terraform-dataspace-partition
         env:
@@ -188,7 +188,7 @@ jobs:
   system_test:
     needs:
     - configure
-    - deploy_partitions
+    - infra_partitions
     runs-on: ubuntu-latest
     defaults:
       run:
