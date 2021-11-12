@@ -1,0 +1,20 @@
+@startuml
+autonumber
+database Backend
+participant "Twin Data Service" as tds
+actor "Data Flow Agent" as dfa
+participant "ED Connector" as edc
+participant "Digital Twin Registry" as dtr
+dfa -> edc: Register Artifacts
+group Twin Initialization
+    dfa -> tds: Configure Twins & Aspect Implementations
+    activate tds
+    tds -> Backend: Find keys
+    tds -> dtr: Register Twins
+    tds -> Backend: Find keys
+    tds -> dtr: Register Aspect Implementations
+    deactivate tds
+end
+edc -> dfa: Data Negotiation
+dfa -> Backend: Data Access
+@enduml

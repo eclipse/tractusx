@@ -12,13 +12,12 @@
 import * as React from 'react';
 import BackLink from './navigation/BackLink';
 import { Dropdown, IDropdownOption, IDropdownStyles} from '@fluentui/react';
-import  Ajv from "ajv-draft-04";
+import  Ajv from "ajv";
+import jsonSchemaV4 from 'ajv/lib/refs/json-schema-draft-04.json';
 import Frame from 'react-frame-component';
 
-import material from './semantics/material.json';
-import traceability from './semantics/traceability.json';
-
-const ajv = new Ajv();
+const ajv = new Ajv({schemaId: 'id'});
+ajv.addMetaSchema(jsonSchemaV4);
 
 export default class Aspect extends React.Component<any, any> {
 
@@ -106,12 +105,12 @@ export default class Aspect extends React.Component<any, any> {
     if(aspect==='bom-aspect') {
       this.performGet(`${process.env.REACT_APP_SEMANTIC_SERVICE_LAYER_URL}/models/urn:bamm:com.catenaX:0.0.1%23Traceability/json-schema`,function(schema) {
         that.appendOutput(`$$$SCHEMA urn:bamm:com.catenaX:0.0.1#Traceability found ${schema}`);
-        that.setSchema(traceability);
+        that.setSchema(schema);
       });
     } else if(aspect==='material-aspect') {
       this.performGet(`${process.env.REACT_APP_SEMANTIC_SERVICE_LAYER_URL}/models/urn:bamm:com.catenaX:0.0.1%23Material/json-schema`,function(schema) {
         that.appendOutput(`$$$SCHEMA urn:bamm:com.catenaX:0.0.1#Material found ${schema}`);
-        that.setSchema(material);
+        that.setSchema(schema);
       });
     }
   }
@@ -373,7 +372,7 @@ export default class Aspect extends React.Component<any, any> {
             } else {
               compiledSchema.errors.forEach( (error,index) => {
                 console.log(error);
-                that.appendOutput(`!!!VALIDATION PROBLEM ${error.instancePath} ${error.message} ${error.params}`);
+                that.appendOutput(`!!!VALIDATION PROBLEM ${error.dataPath} ${error.message} ${error.params}`);
               });
               that.setStatus("red");
             }

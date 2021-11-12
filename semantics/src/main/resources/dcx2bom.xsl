@@ -46,18 +46,33 @@
        "partNameCustomer" : "</xsl:text><xsl:call-template name="escape"><xsl:with-param name="text" select="./dmc:attribute[@name='name']" /></xsl:call-template><xsl:text>"
 	},
     "qualityAlertData" : {
-      "qualityAlert" : false
+      "qualityAlert" : false,
+	  "qualityType" : "minor"
     },  
     "individualData" : {
       "productionCountryCode" : "</xsl:text><xsl:call-template name="escape"><xsl:with-param name="text" select="./dmc:attribute[@name='source']" /></xsl:call-template><xsl:text>",
-      "productionDateGMT" : "</xsl:text><xsl:call-template name="escape"><xsl:with-param name="text" select="./dmc:attribute[@name='thePersistInfo.modifyStamp']" /></xsl:call-template><xsl:text>"
+      "productionDateGMT" : "</xsl:text><xsl:call-template name="escape"><xsl:with-param name="text" select="substring-before(./dmc:attribute[@name='thePersistInfo.modifyStamp'],' ')" /></xsl:call-template><xsl:text>"
     },
     "partTree" : {
       "isParentOf" : [</xsl:text>
 
 	  <xsl:for-each select="./dmc:object/dmc:object/dmc:object/dmc:object">
 	    <xsl:text>
-		{ "value":"</xsl:text><xsl:call-template name="escape"><xsl:with-param name="text" select="./dmc:attribute[@name='obid']" /></xsl:call-template><xsl:text>"}</xsl:text>
+		{ "src":"", "value":"</xsl:text><xsl:call-template name="escape"><xsl:with-param name="text" select="./dmc:attribute[@name='obid']" /></xsl:call-template><xsl:text>"}</xsl:text>
+	    <xsl:if test="position() != last()">
+           <xsl:text>,</xsl:text>
+        </xsl:if>
+	  </xsl:for-each>
+
+	<xsl:text>
+	  ]
+    },
+	"supplierTree" : {
+      "isParentOf" : [</xsl:text>
+
+	  <xsl:for-each select="./dmc:object/dmc:object/dmc:object/dmc:object">
+	    <xsl:text>
+		{ "src":"", "value":"</xsl:text><xsl:call-template name="escape"><xsl:with-param name="text" select="./dmc:attribute[@name='obid']" /></xsl:call-template><xsl:text>"}</xsl:text>
 	    <xsl:if test="position() != last()">
            <xsl:text>,</xsl:text>
         </xsl:if>
@@ -66,6 +81,7 @@
 	<xsl:text>
 	  ]
     }
+
 }
 </xsl:text>
 	</xsl:template>

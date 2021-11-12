@@ -42,7 +42,8 @@
        "partNameCustomer" : "</xsl:text><xsl:value-of select="PARTSTATICDATA_PARTNAMECUSTOMER"/><xsl:text>"
 	},
     "qualityAlertData" : {
-      "qualityAlert" : false
+      "qualityAlert" : false,
+	    "qualityType" : "minor"
     },  
     "individualData" : {
       "productionCountryCode" : "</xsl:text><xsl:value-of select="PARTINDIVIDUALDATA_PRODUCTIONCOUNTRYCODE"/><xsl:text>",
@@ -59,7 +60,19 @@
     </xsl:for-each>
 <xsl:text>
 	    ]
+    },
+    "supplierTree" : {
+      "isParentOf" : [</xsl:text>
+    <xsl:for-each select="/DataSets/bom/Row[PARENTID=$parentid]"><xsl:text>
+         { "src":"</xsl:text><xsl:value-of select="$PORTAL_URL"/><xsl:text>/home/digitaltwin/</xsl:text><xsl:value-of select="./TWINDATA_UUID"/><xsl:text>", "value":"</xsl:text><xsl:value-of select="./PARTUNIQUEDATA_UNIQUEID"/><xsl:text>" }</xsl:text>
+         <xsl:if test="position() != last()">
+           <xsl:text>,</xsl:text>
+        </xsl:if>
+    </xsl:for-each>
+<xsl:text>
+	    ]
     }
+
 }
 </xsl:text>
 	</xsl:template>	
