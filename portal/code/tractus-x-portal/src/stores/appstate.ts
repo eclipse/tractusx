@@ -208,7 +208,7 @@ const O = {
   usage: 'Per month',
   purchase: 'OPEN APP',
   details: 'SEE DETAILS',
-  companyName: 'K.a.p.u.t.t GmbH', url:'https://catenax-dt-rec.iam-prw.cfapps.eu10.hana.ondemand.com', background: 'recom_image ase mt10 pl10 bgleaf'
+  companyName: 'K.a.p.u.t.t GmbH', url:'', background: 'recom_image ase mt10 pl10 bgleaf'
 }
 
 const P = {
@@ -241,7 +241,7 @@ const R = {
   usage: 'free for use',
   purchase: 'OPEN APP',
   details: 'SEE DETAILS',
-  companyName: 'SAP', url:'', background: 'recom_image ase mt10 pl10 bgleaf'
+  companyName: 'SAP', url:'https://catenax-dt-rec.iam-prw.cfapps.eu10.hana.ondemand.com', background: 'recom_image ase mt10 pl10 bgleaf'
 }
 
 

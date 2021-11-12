@@ -189,6 +189,7 @@ jobs:
     needs:
     - configure
     - deploy_partitions
+    - deploy_connectors
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -206,6 +207,18 @@ jobs:
       - name: "Build index of dataspace URLs for stub registry"
         run: |
           jq -s 'INDEX(.dataspace_partition.value)' terraform-outputs-*/terraform-outputs-safe.json > dataspace-deployments.json
+
+      - run: |
+          . cd/environments/$ENVIRONMENT.sh
+          echo "TF_VAR_aks_cluster_name=$TF_VAR_aks_cluster_name" >> $GITHUB_ENV
+          echo "TF_VAR_resource_group_name=$TF_VAR_resource_group_name" >> $GITHUB_ENV
+
+      # Set the target Azure Kubernetes Service (AKS) cluster. 
+      - uses: azure/aks-set-context@v1
+        with:
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+          cluster-name: ${{ env.TF_VAR_aks_cluster_name }}
+          resource-group: ${{ env.TF_VAR_resource_group_name }}
 
       - name: Cache maven packages
         uses: actions/cache@v2

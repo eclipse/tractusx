@@ -36,6 +36,4 @@ spec:
               mountPath: /tmp/copy/dest
       volumes:
         - name: copy-source
-          configMap:
-            name: provider-copy-source
         - name: copy-dest

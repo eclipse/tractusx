@@ -2,18 +2,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-    <parent>
+  <parent>
         <groupId>com.catenax.prs</groupId>
         <artifactId>prs-connector-parent</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>${revision}</version>
         <relativePath>../prs-connector-parent</relativePath>
     </parent>
 
   <groupId>net.catenax.prs</groupId>
   <artifactId>prs-connector-consumer</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+
   <name>PRS Connector Consumer</name>
   <description>Part Relationship Service Connector Consumer</description>
+
   <dependencies>
     <dependency>
       <groupId>org.projectlombok</groupId>

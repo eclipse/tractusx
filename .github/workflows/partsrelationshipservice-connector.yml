@@ -6,6 +6,9 @@ on:
       - main
     paths:
       - coreservices/partsrelationshipservice/connector/*
+      - coreservices/partsrelationshipservice/dev/*
+      - coreservices/partsrelationshipservice/Dockerfile
+      - coreservices/partsrelationshipservice/docker-compose.yml
       - .github/workflows/partsrelationshipservice-connector.yml
 
 jobs:

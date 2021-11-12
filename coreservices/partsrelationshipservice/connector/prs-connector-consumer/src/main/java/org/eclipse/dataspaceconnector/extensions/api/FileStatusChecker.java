@@ -9,6 +9,7 @@
 //
 package org.eclipse.dataspaceconnector.extensions.api;
 
+import org.eclipse.dataspaceconnector.extensions.annotations.ExcludeFromCodeCoverageGeneratedReport;
 import org.eclipse.dataspaceconnector.spi.monitor.Monitor;
 import org.eclipse.dataspaceconnector.spi.types.domain.transfer.ProvisionedResource;
 import org.eclipse.dataspaceconnector.spi.types.domain.transfer.StatusChecker;
@@ -22,6 +23,7 @@ import java.util.List;
  * Status checked responsible for providing a file transfer status.
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.GuardLogStatement"})
+@ExcludeFromCodeCoverageGeneratedReport
 public class FileStatusChecker implements StatusChecker {
 
     // Removed BeanMembersShouldSerialize rule because Monitor is final,

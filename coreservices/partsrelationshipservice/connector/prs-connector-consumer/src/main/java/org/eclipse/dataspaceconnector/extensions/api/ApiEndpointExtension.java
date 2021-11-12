@@ -9,6 +9,7 @@
 //
 package org.eclipse.dataspaceconnector.extensions.api;
 
+import org.eclipse.dataspaceconnector.extensions.annotations.ExcludeFromCodeCoverageGeneratedReport;
 import org.eclipse.dataspaceconnector.spi.protocol.web.WebService;
 import org.eclipse.dataspaceconnector.spi.system.ServiceExtension;
 import org.eclipse.dataspaceconnector.spi.system.ServiceExtensionContext;
@@ -21,6 +22,7 @@ import java.util.Set;
 /**
  * Extension providing extra consumer endpoints.
  */
+@ExcludeFromCodeCoverageGeneratedReport
 public class ApiEndpointExtension implements ServiceExtension {
 
     @Override

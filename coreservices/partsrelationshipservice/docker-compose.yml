@@ -26,6 +26,8 @@ services:
     ports:
       - 29092:29092
     environment:
+      KAFKA_LOG4J_ROOT_LOGLEVEL: WARN
+      KAFKA_TOOLS_LOG4J_LOGLEVEL: ERROR
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
@@ -41,10 +43,12 @@ services:
     build:
       context: .
       target: broker-proxy
+      args:
+        BUILD_TARGET: broker-proxy
     depends_on:
       - kafka
     profiles:
-      - prs
+      - broker-proxy
     container_name: broker-proxy
     ports:
       - 8081:8081
@@ -58,6 +62,8 @@ services:
     build:
       context: .
       target: prs-api
+      args:
+        BUILD_TARGET: prs-api
     depends_on:
       - db
     profiles:
@@ -71,6 +77,50 @@ services:
       APPLICATIONINSIGHTS_CONNECTION_STRING: "${APPLICATIONINSIGHTS_CONNECTION_STRING}"
       APPLICATIONINSIGHTS_ROLE_NAME: PRS
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+
+  connector-provider:
+    profiles:
+      - connector
+    container_name: provider
+    build:
+      context: .
+      target: prs-connector-provider
+      args:
+        BUILD_TARGET: prs-connector-provider
+    environment:
+      APPLICATIONINSIGHTS_CONNECTION_STRING: "${APPLICATIONINSIGHTS_CONNECTION_STRING}"
+    ports:
+      - 8181:8181
+    volumes:
+      - src-shared-volume:/tmp/copy/source
+      - dst-shared-volume:/tmp/copy/dest
+
+  connector-consumer:
+    profiles:
+      - connector
+    container_name: consumer
+    build:
+      context: .
+      target: prs-connector-consumer
+      args:
+        BUILD_TARGET: prs-connector-consumer
+    environment:
+      APPLICATIONINSIGHTS_CONNECTION_STRING: "${APPLICATIONINSIGHTS_CONNECTION_STRING}"
+    ports:
+      - 9191:9191
+    volumes:
+      - dst-shared-volume:/tmp/copy/dest
+
+  connector-integration-test:
+    profiles:
+      - connector
+    container_name: connector-test
+    image: adoptopenjdk:11-jre-hotspot
+    command: dev-files/connector-integration-test.sh
+    volumes:
+      - src-shared-volume:/tmp/copy/source
+      - dst-shared-volume:/tmp/copy/dest
+      - ./dev:/dev-files
 
   kafkacat:
     image: confluentinc/cp-kafkacat:latest
@@ -114,3 +164,13 @@ services:
       - debug
     ports:
       - 9091:9090
+
+volumes:
+  src-shared-volume:
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
+  dst-shared-volume:
+    driver_opts:
+      type: tmpfs
+      device: tmpfs

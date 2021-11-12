@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: provider-copy-source
-data:
-  test-document.txt: |
-    some file content.

@@ -56,14 +56,14 @@ public class PartRelationshipEntityListToDtoMapper {
      *                   to be mapped into {@link PartRelationshipsWithInfos#getRelationships()}.
      * @param allPartIds collection of {@link PartIdEntityPart}
      *                   to be mapped into {@link PartRelationshipsWithInfos#getPartInfos()}.
-     * @param typeNames  collection of {@link PartAttributeEntity}
+     * @param attributes collection of {@link PartAttributeEntity}
      *                   to be mapped into {@link PartInfo#getPartTypeName()}.
      * @param aspects    collection of {@link PartAspectEntity}
      *                   to be mapped into {@link PartInfo#getAspects()}.
      * @return DTO containing data from the entities. Guaranteed to be not {@literal null}.
      */
-    public PartRelationshipsWithInfos toPartRelationshipsWithInfos(final Collection<PartRelationshipEntity> source, final Collection<PartIdEntityPart> allPartIds, final Collection<PartAttributeEntity> typeNames, final Collection<PartAspectEntity> aspects) {
-        final var attributeIndex = typeNames.stream().collect(Collectors.groupingBy(t -> t.getKey().getPartId()));
+    public PartRelationshipsWithInfos toPartRelationshipsWithInfos(final Collection<PartRelationshipEntity> source, final Collection<PartIdEntityPart> allPartIds, final Collection<PartAttributeEntity> attributes, final Collection<PartAspectEntity> aspects) {
+        final var attributeIndex = attributes.stream().collect(Collectors.groupingBy(t -> t.getKey().getPartId()));
         final var aspectIndex = aspects.stream().collect(Collectors.groupingBy(t -> t.getKey().getPartId()));
 
         // Remove ids without any attribute information
