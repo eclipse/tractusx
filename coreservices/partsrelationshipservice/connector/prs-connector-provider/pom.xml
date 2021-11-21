@@ -31,10 +31,17 @@
       <artifactId>jakarta.ws.rs-api</artifactId>
       <version>${rsApi}</version>
     </dependency>
+    <!-- edc-patched-core needs to appear before any other edc dependency to allow overriding of EDC classes -->
     <dependency>
-      <groupId>org.eclipse.dataspaceconnector</groupId>
-      <artifactId>core</artifactId>
-      <version>${edcVersion}</version>
+      <groupId>net.catenax.prs</groupId>
+      <artifactId>edc-patched-core</artifactId>
+      <version>${revision}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.catenax.prs</groupId>
+      <artifactId>prs-connector-commons</artifactId>
+      <version>${revision}</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.dataspaceconnector</groupId>

@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
-namespace CatenaX.NetworkServices.Provisioning.Service
+namespace CatenaX.NetworkServices.Provisioning.ServiceTest
 {
     public class Program
     {

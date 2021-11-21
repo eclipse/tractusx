@@ -8,7 +8,7 @@ spec:
   type: ClusterIP
   ports:
     - port: 80
-      targetPort: 9191
+      targetPort: 8181
       protocol: TCP
   selector:
     app.kubernetes.io/name: prs-connector-consumer

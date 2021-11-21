@@ -70,6 +70,7 @@ class AdalContext {
       }
 
       const user = this.AuthContext.getCachedUser();
+      console.log(JSON.stringify(user))
       if (user) {
         this.authContext.config.extraQueryParameter = 'login_hint=' + (user.profile.upn || user.userName);
       }

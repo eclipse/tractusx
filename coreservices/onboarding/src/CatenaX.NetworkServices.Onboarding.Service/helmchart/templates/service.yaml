@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "onboarding-service.name" . }}-service
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8080
+    protocol: "TCP"
+    targetPort: 80
+  selector:
+    app: {{ template "onboarding-service.name" . }}

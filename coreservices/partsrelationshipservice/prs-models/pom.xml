@@ -35,5 +35,10 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>net.catenax.prs</groupId>
+            <artifactId>prs-common</artifactId>
+            <version>${revision}</version>
+        </dependency>
     </dependencies>
 </project>

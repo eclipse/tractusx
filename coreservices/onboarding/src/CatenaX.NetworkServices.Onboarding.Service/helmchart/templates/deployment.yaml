@@ -29,13 +29,22 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: http
+            - name: https
               containerPort: {{ .Values.deployment.containerPort }}
               protocol: TCP
           env:
           - name: "ASPNETCORE_ENVIRONMENT"
             value: "Kubernetes"
+          volumeMounts:
+          - name: secrets
+            mountPath: /app/secrets
+            readOnly: true
       imagePullSecrets:
       - name: {{ .Values.imagePullSecret }}
+      volumes:
+      - name: secrets
+        secret:
+          secretName: secret-{{.Release.Name}}-appsettings
+          
 
             

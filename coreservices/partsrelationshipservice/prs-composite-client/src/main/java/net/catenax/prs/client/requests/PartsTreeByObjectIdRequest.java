@@ -36,15 +36,15 @@ public class PartsTreeByObjectIdRequest {
     /**
      * PartsTree View to retrieve.
      */
-    protected final String view;
+    private final String view;
 
     /**
      * Aspect information to add to the returned tree.
      */
-    protected final String aspect;
+    private final String aspect;
 
     /**
      * Max depth of the returned tree, if empty max depth is returned.
      */
-    protected final Integer depth;
+    private final Integer depth;
 }

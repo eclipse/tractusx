@@ -9,6 +9,10 @@ inputs:
     description: 'name of the Image'
     required: true
 
+  serviceConfig:  
+    description: 'Service config'
+    required: true
+
   helmDeploymentName:
     description: 'Name of the Helm Deployment'
     required: true
@@ -31,6 +35,10 @@ inputs:
 
   AZURE_CREDENTIALS:
     description: 'Credentials for Azure'
+    required: true
+
+  CLUSTER_ISSUER: 
+    description: 'Name of the ClusterIssuer'
     required: true
 runs:
   using: "composite"
@@ -70,6 +78,26 @@ runs:
           container-registry-password: ${{ inputs.AZURE_REGISTRY_PASSWORD }}
           secret-name: pullsecretacr
 
+
+      - name: Init Helm
+        run: |
+          config=$(cat <<EOF
+          ${{inputs.serviceConfig}}
+          EOF
+          )
+          configChanged=${config//"{{env}}"/${{ inputs.environment }}}
+          
+          echo "$configChanged" > appsettings.json
+        shell: bash
+
+      - name: Create Secrets for Service
+        uses: azure/k8s-create-secret@v1.1
+        with:
+          namespace: 'coreservices'
+          secret-type: 'generic'
+          arguments:  --from-file=appsettings.json
+          secret-name: secret-${{inputs.helmDeploymentName}}-appsettings
+
       - name: Init Helm
         run: |
           curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 > get_helm.sh
@@ -79,7 +107,5 @@ runs:
 
       - name: Init Helm
         run: |
-          helm upgrade --install ${{inputs.helmDeploymentName}} -n coreservices --set image.repository=${{inputs.acrName}}.azurecr.io/tractusx/${{inputs.imageName}} --set image.tag=${{github.run_id}} --set imagePullSecret=pullsecretacr ./${{inputs.srcFolder}}/helmchart/
+          helm upgrade --install ${{inputs.helmDeploymentName}} -n coreservices --set image.repository=${{inputs.acrName}}.azurecr.io/${{inputs.imageName}} --set image.tag=${{github.run_id}} --set imagePullSecret=pullsecretacr --set ingress.serviceHost=catenax${{ inputs.environment }}akssrv.germanywestcentral.cloudapp.azure.com --set ingress.clusterIssuer=${{inputs.CLUSTER_ISSUER}} ./${{inputs.srcFolder}}/helmchart/
         shell: bash
-
-      

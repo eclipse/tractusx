@@ -13,6 +13,7 @@
     <modules>
         <module>prs-testing</module>
         <module>prs-api</module>
+        <module>prs-common</module>
         <module>prs-models</module>
         <module>broker-proxy</module>
         <module>prs-client</module>

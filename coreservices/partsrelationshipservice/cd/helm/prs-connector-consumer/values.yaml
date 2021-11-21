@@ -5,3 +5,15 @@ ingress:
   host: consumer.local
   className: nginx
   prefix: /prs-connector-consumer
+#edc:
+#  vault:
+#    clientId: <clientId>
+#    tenantId: <tenantId>
+#    name: <name>
+#  storage:
+#    account:
+#      name: <name>
+#identity:
+#  certificateBase64: <certificate base64-encoded>
+#applicationInsights:
+#  connectionString: <app-insights-connection-string>

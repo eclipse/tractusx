@@ -21,9 +21,24 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Configure certificate location
+        run: echo "edc_vault_certificate=$HOME/cert.pfx" >> $GITHUB_ENV
+
+      - name: Download certificate
+        run: az keyvault secret download --file $edc_vault_certificate --vault-name "cxmtpdc1-dev-prs-id" --name "prs-connector-consumer-certificate" --encoding base64
+
       - name: Run sample test
-        timeout-minutes: 5
+        timeout-minutes: 15
         run: ./run-integration-test.sh
         env:
           PRS_EDC_PKG_USERNAME: ${{ secrets.PRS_EDC_PKG_USERNAME }}
           PRS_EDC_PKG_PASSWORD: ${{ secrets.PRS_EDC_PKG_PASSWORD }}
+          edc_vault_clientid: 0dcdabb0-70db-4ada-8a6b-20cbb6519824
+          edc_vault_tenantid: 836f6094-147a-44cc-8064-3dd900228759
+          edc_vault_name: cxmtpdc1-dev-consumer
+          edc_storage_account_name: cxmtpdc1devconsumer

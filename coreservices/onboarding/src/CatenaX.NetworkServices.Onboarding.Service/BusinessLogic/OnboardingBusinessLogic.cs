@@ -32,7 +32,7 @@ namespace CatenaX.NetworkServices.Onboarding.Service.BusinessLogic
 
         public async Task CreateUsers(List<User> userList, string realm, string token)
         {
-            var manager = new KeycloakIdentityManager(new KeycloakClient(_configuration.GetValue<string>("KeyCloakConnectionString"), () => token));
+            var manager = new KeycloakIdentityManager(new KeycloakClient(_configuration.GetValue<string>("KeyCloakConnectionString"), () => token), "");
             foreach (User user in userList)
             {
                 var newUser = new CreateUser
@@ -57,7 +57,7 @@ namespace CatenaX.NetworkServices.Onboarding.Service.BusinessLogic
 
         public async Task FinishOnboarding(string token, string realm)
         {
-            var manager = new KeycloakIdentityManager(new KeycloakClient(_configuration.GetValue<string>("KeyCloakConnectionString"), () => token));
+            var manager = new KeycloakIdentityManager(new KeycloakClient(_configuration.GetValue<string>("KeyCloakConnectionString"), () => token),"");
             var group = new CreateGroup { Name = "Onboarding" };
             await manager.CreateGroup(realm, group);
         }

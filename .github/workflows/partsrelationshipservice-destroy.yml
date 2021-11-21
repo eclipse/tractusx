@@ -1,4 +1,4 @@
-name: PRS Destroy
+name: PRS Tear Down
 
 on:
   workflow_dispatch:

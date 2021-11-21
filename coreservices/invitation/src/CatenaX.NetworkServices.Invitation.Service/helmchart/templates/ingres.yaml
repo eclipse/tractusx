@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: "{{ template "invitation-service.fullname" . }}-ingress"
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-{{ .Values.ingress.clusterIssuer }}
+    acme.cert-manager.io/http01-ingress-class: service
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "PUT, GET, POST, OPTIONS"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "http://localhost:3000"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+spec:
+  ingressClassName: service
+  tls:
+  - hosts:
+    - {{ .Values.ingress.serviceHost }}
+    secretName: certificate{{ .Values.ingress.clusterIssuer }}-secret
+  rules:
+  - host: {{ .Values.ingress.serviceHost }}
+    http:
+      paths:
+      - path: /api/invitation(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ template "invitation-service.name" . }}-service
+            port:
+              number: 8080
+            

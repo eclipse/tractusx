@@ -110,11 +110,17 @@ services:
     environment:
       APPLICATIONINSIGHTS_CONNECTION_STRING: "${APPLICATIONINSIGHTS_CONNECTION_STRING}"
       APPLICATIONINSIGHTS_ROLE_NAME: connector-consumer
+      edc.vault.clientid: ${edc_vault_clientid}
+      edc.vault.tenantid: ${edc_vault_tenantid}
+      edc.vault.certificate: /cert.pfx
+      edc.vault.name: ${edc_vault_name}
+      edc.storage.account.name: ${edc_storage_account_name}
     ports:
-      - 9191:9191
+      - 9191:8181
       - 4007:4006
     volumes:
       - dst-shared-volume:/tmp/copy/dest
+      - ${edc_vault_certificate}:/cert.pfx
 
   connector-integration-test:
     profiles:

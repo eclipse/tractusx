@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Keycloak.Net.Models.RealmsAdmin;
 
-namespace CatenaX.NetworkServices.Provisioning.Service.Controllers
+namespace CatenaX.NetworkServices.Provisioning.ServiceTest.Controllers
 {
     [ApiController]
     [Route("api/provisioning")]

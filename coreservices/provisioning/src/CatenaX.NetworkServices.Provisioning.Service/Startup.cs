@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 
 using CatenaX.NetworkServices.Mailing.SendMail;
 using CatenaX.NetworkServices.Mailing.Template;
@@ -15,6 +16,8 @@ namespace CatenaX.NetworkServices.Provisioning.Service
 {
     public class Startup
     {
+        private static string TAG = typeof(Startup).Namespace;
+        private static string VERSION = "v1";
         public IConfiguration Configuration { get; }
         public Startup(IConfiguration configuration)
         {
@@ -24,6 +27,7 @@ namespace CatenaX.NetworkServices.Provisioning.Service
         {
             services.AddControllers();
             services.AddHttpClient()
+                    .AddSwaggerGen(c => c.SwaggerDoc(VERSION, new OpenApiInfo { Title = TAG, Version = VERSION }))
                     .AddSingleton<IClientToken, ClientToken>()
                     .AddTransient<IFederation, Federation>()
                     .AddTransient<IKeycloakFactory, KeycloakFactory>()
@@ -46,6 +50,8 @@ namespace CatenaX.NetworkServices.Provisioning.Service
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint(string.Format("/swagger/{0}/swagger.json",VERSION), string.Format("{0} {1}",TAG,VERSION)));
             }
 
             app.UseRouting();

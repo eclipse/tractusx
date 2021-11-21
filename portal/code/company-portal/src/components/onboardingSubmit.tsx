@@ -45,6 +45,10 @@ export default class OnboardingSubmit extends React.Component {
           });
         }
     
+        cancelClick() { 
+          this.alertRef?.show(false); 
+        }
+      
 
         onButtonClick() {
             console.log( this.alertRef);
@@ -55,7 +59,7 @@ export default class OnboardingSubmit extends React.Component {
     return (
         <div className='pb8 mt50 p24 pb20 brbt df fdc fdrr'>
                    <PrimaryButton text='SAVE' onClick={()=>this.onButtonClick()}/>
-                   <AlertDialog message='By clicking on submit, the onboarding process will get finished. You will receive an invite email with the respective user data, as soon as the onboarding is confirmend by Catena-X Cancel' ref={(ref)=>this.alertRef = ref} button1Text='SUBMIT' button1Action={()=>this.onSubmitClick()} />
+                   <AlertDialog message='By clicking on submit, the onboarding process will get finished. You will receive an invite email with the respective user data, as soon as the onboarding is confirmend by Catena-X' ref={(ref)=>this.alertRef = ref} button1Text='SUBMIT' button1Action={()=>this.onSubmitClick()} button2Text='CANCEL' button2Action={()=>this.cancelClick()} />
                 </div>
                 
     )} 

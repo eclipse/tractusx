@@ -30,6 +30,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -62,9 +63,9 @@ class PartsRelationshipServiceApiToFileFlowControllerTest {
 
     @ParameterizedTest
     @CsvSource({
-            "file,true",
-            "File,true",
-            "fil,false",
+            "AzureStorage,true",
+            "azurestorage,true",
+            "AzureStorag,false",
             "dummy,false"
     })
     void canHandle(String type, boolean expected) {
@@ -144,7 +145,9 @@ class PartsRelationshipServiceApiToFileFlowControllerTest {
 
     @Test
     void initiateFlow_WhenFileCantBeWritten_Fail() throws Exception {
-        assertThat(file.setReadOnly()).isTrue();
+        // create a directory with same name as destination file, to block file creation
+        assertThat(file.delete()).isTrue();
+        assertThat(file.mkdir()).isTrue();
 
         PartsTreeByObjectIdRequest request = generateApiRequest();
 
@@ -161,7 +164,7 @@ class PartsRelationshipServiceApiToFileFlowControllerTest {
                 .satisfies(c -> assertThat(c.getError()).startsWith("Error writing file "));
     }
 
-    private DataRequest generateDataRequest(File file, String value) {
+    private DataRequest generateDataRequest(File destinationFile, String requestParameters) {
         return DataRequest.Builder.newInstance()
                 .id(UUID.randomUUID().toString()) // This is not relevant, thus can be random.
                 .protocol("ids-rest") // Must be ids-rest.
@@ -171,11 +174,13 @@ class PartsRelationshipServiceApiToFileFlowControllerTest {
                         .policyId("use-eu")
                         .build())
                 .dataDestination(DataAddress.Builder.newInstance()
-                        .type("File") // The provider uses this to select the correct DataFlowController.
-                        .property("request", value)
-                        .property("path", file.getAbsolutePath())
+                        .type("AzureStorage") // The provider uses this to select the correct DataFlowController.
                         .build())
-                .managedResources(false) // We do not need any provisioning.
+                .properties(Map.of(
+                        "prs-request-parameters", requestParameters,
+                        "prs-destination-path", destinationFile.getAbsolutePath()
+                ))
+                .managedResources(true) // We do not need any provisioning.
                 .build();
     }
 

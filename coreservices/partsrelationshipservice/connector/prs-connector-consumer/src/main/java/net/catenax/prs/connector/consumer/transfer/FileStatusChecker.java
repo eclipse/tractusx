@@ -43,8 +43,8 @@ public class FileStatusChecker implements StatusChecker {
     }
 
     private File getDestinationFile(final TransferProcess transferProcess) {
-        final var destination = transferProcess.getDataRequest().getDataDestination();
-        final var destinationPath = Path.of(destination.getProperty("path"));
+        final var destination = transferProcess.getDataRequest().getProperties().get("prs-destination-path");
+        final var destinationPath = Path.of(destination);
 
         final File file = destinationPath.toFile();
         if (file.exists() && file.isDirectory()) {

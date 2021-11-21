@@ -10,7 +10,7 @@ using CatenaX.NetworkServices.Provisioning.ActiveDirectory.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace CatenaX.NetworkServices.Provisioning.Service.Controllers
+namespace CatenaX.NetworkServices.Provisioning.ServiceTest.Controllers
 {
     [ApiController]
     [Route("api/provisioning/token")]

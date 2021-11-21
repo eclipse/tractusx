@@ -41,3 +41,22 @@ spec:
               value: {{ .Values.applicationInsights.connectionString | quote }}
             - name: APPLICATIONINSIGHTS_ROLE_NAME
               value: connector-consumer
+            - name: edc.vault.clientid
+              value: {{ .Values.edc.vault.clientId | quote }}
+            - name: edc.vault.tenantid
+              value: {{ .Values.edc.vault.tenantId | quote }}
+            - name: edc.vault.name
+              value: {{ .Values.edc.vault.name | quote }}
+            - name: edc.storage.account.name
+              value: {{ .Values.edc.storage.account.name | quote }}
+            - name: edc.vault.certificate
+              value: /certificate/cert.pfx
+
+          volumeMounts:
+            - name: certificate
+              mountPath: "/certificate/"
+              readOnly: true
+      volumes:
+        - name: certificate
+          secret:
+            secretName: prs-connector-consumer-certificate

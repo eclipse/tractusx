@@ -12,7 +12,7 @@ terraform {
     storage_account_name = "catenaxterraformstate"
     container_name       = "tfstate"
     # Key will be overriden with "terraform init -backend-config=key=${TERRAFORM_STATE_KEY}"
-    key = "consumer.dev.tfstate"
+    key = "mtpdc.consumer.dev.tfstate"
   }
 
   required_version = "~> 1.0"

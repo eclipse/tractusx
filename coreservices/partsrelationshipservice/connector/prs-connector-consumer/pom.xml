@@ -33,9 +33,26 @@
       <artifactId>jakarta.ws.rs-api</artifactId>
       <version>${rsApi}</version>
     </dependency>
+    <!-- edc-patched-core needs to appear before any other edc dependency to allow overriding of EDC classes -->
+    <dependency>
+      <groupId>net.catenax.prs</groupId>
+      <artifactId>edc-patched-core</artifactId>
+      <version>${revision}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.catenax.prs</groupId>
+      <artifactId>prs-connector-commons</artifactId>
+      <version>${revision}</version>
+    </dependency>
     <dependency>
       <groupId>org.eclipse.dataspaceconnector</groupId>
-      <artifactId>core</artifactId>
+      <artifactId>azure.blob.provision</artifactId>
+      <version>${edcVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.dataspaceconnector</groupId>
+      <artifactId>azure.vault</artifactId>
       <version>${edcVersion}</version>
     </dependency>
     <dependency>
@@ -82,6 +99,17 @@
       <groupId>com.catenax.prs</groupId>
       <artifactId>prs-connector-models</artifactId>
       <version>${revision}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate.validator</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <version>${hibernate-validator.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.catenax.prs</groupId>
+      <artifactId>prs-connector-testing</artifactId>
+      <version>${revision}</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>

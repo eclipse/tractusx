@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using CatenaX.NetworkServices.Provisioning.Keycloak;
 using CatenaX.NetworkServices.Provisioning.Mail;
 
-namespace CatenaX.NetworkServices.Provisioning.Service.Controllers
+namespace CatenaX.NetworkServices.Provisioning.ServiceTest.Controllers
 {
     [ApiController]
     [Route("api/provisioning")]

@@ -28,12 +28,10 @@ const options: IChoiceGroupOption[] = [
 export default class Identity extends React.Component {
 
 private onChange(ev,option){
- 
   identitydata = option.key;
-  console.log(identitydata);
 }
 
-  private onSubmitClick(){
+private onSubmitClick(){
     if(identitydata){
     var OneID = UserService.oneid;
     var realm = UserService.realm;
@@ -43,7 +41,7 @@ private onChange(ev,option){
     const u= `${url}/${endpoint}/${realm}/idp`;
     const data = {
       'companyId': OneID,
-      'idp': 'Catena-X IDP'
+      'idp': identitydata
     }
     fetch(u, { method: 'PUT', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' } , body: JSON.stringify(data) })
       .then((response) => {
@@ -51,9 +49,7 @@ private onChange(ev,option){
           toast.success('Data Submitted');
         }
         else throw Error();
-      }
-
-      ).catch((error) => {
+      }).catch((error) => {
         toast.error('Unable submit data')
       });
     }else{

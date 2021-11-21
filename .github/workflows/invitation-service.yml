@@ -33,8 +33,8 @@ jobs:
               if [[ "${{github.ref}}" == refs/heads/main ]]; then
                 echo "Determined INTEGRATION"
                 echo "::set-output name=workspace::int"
-              elif [[ "${{github.ref}}" = refs/heads/feature/CAX-9-onboarding ]]; then
-                  echo "Determined Invitation"
+              elif [[ "${{github.ref}}" = refs/heads/feature/CAX-9-onboarding  || "${{github.ref}}" = refs/heads/feature/CAX-9-onboarding@CICD ]]; then
+                  echo "Determined Environment"
                   echo "::set-output name=workspace::dev003"
               else 
                   echo "Unsupported Branch on CATENAX. Leaving Workspace empty."
@@ -54,8 +54,10 @@ jobs:
           srcFolder: 'coreservices/invitation/src/CatenaX.NetworkServices.Invitation.Service'
           imageName: 'invitationservice'
           acrName: 'catenaxacr'
-          environment: ${{needs.environment.outputs.workspace}}
+          environment: 'int'
           AZURE_REGISTRY_PASSWORD: ${{secrets.AZURE_REGISTRY_PASSWORD}}
           AZURE_REGISTRY_USERNAME: ${{secrets.AZURE_REGISTRY_USERNAME}}
           AZURE_CREDENTIALS: ${{secrets.AZURE_CREDENTIALS}}
           helmDeploymentName: 'invitation'
+          serviceConfig: ${{secrets.INVITATION_SERVICE_SECRETS}}
+          CLUSTER_ISSUER: service

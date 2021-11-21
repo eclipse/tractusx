@@ -39,16 +39,15 @@ spec:
           env:
             - name: PRS_API_URL
               value: {{ .Values.prs.apiUrl }}
+            - name: APPLICATIONINSIGHTS_CONNECTION_STRING
+              value: {{ .Values.applicationInsights.connectionString | quote }}
+            - name: APPLICATIONINSIGHTS_ROLE_NAME
+              value: connector-provider
           volumeMounts:
             - name: copy-source
               mountPath: /tmp/copy/source
             - name: copy-dest
               mountPath: /tmp/copy/dest
-          env:
-            - name: APPLICATIONINSIGHTS_CONNECTION_STRING
-              value: {{ .Values.applicationInsights.connectionString | quote }}
-            - name: APPLICATIONINSIGHTS_ROLE_NAME
-              value: connector-provider
       volumes:
         - name: copy-source
         - name: copy-dest

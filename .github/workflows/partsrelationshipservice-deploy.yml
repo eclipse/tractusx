@@ -98,7 +98,7 @@ jobs:
     outputs:
       application_insights_name: ${{ steps.terraform.outputs.application_insights_name }}
 
-  deploy_connectors:
+  deploy_connector_consumer:
     needs:
       - configure
       - build_images
@@ -119,8 +119,6 @@ jobs:
           TERRAFORM_STATE_BLOB: mtpdc.consumer.${{ needs.configure.outputs.environment }}.tfstate
           TERRAFORM_VARS: ../environments/${{ needs.configure.outputs.environment }}.sh
           TF_VAR_image_tag: ${{ needs.configure.outputs.image_tag }} # Image tag of connectors
-          # Temporary fixed value, next up this will be parsed from Terraform outputs
-          TF_VAR_prs_api_url: "https://catenaxdev001akssrv.germanywestcentral.cloudapp.azure.com/bmw/mtpdc"
           TF_VAR_application_insights_name: ${{ needs.deploy_common.outputs.application_insights_name }}
 
   deploy_partitions:
@@ -193,7 +191,7 @@ jobs:
     needs:
     - configure
     - deploy_partitions
-    - deploy_connectors
+    - deploy_connector_consumer
     runs-on: ubuntu-latest
     defaults:
       run:

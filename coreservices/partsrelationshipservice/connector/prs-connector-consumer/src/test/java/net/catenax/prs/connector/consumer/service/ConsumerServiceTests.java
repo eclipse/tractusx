@@ -6,6 +6,7 @@ import com.github.javafaker.Faker;
 import net.catenax.prs.connector.requests.FileRequest;
 import net.catenax.prs.connector.requests.PartsTreeByObjectIdRequest;
 import org.eclipse.dataspaceconnector.monitor.ConsoleMonitor;
+import org.eclipse.dataspaceconnector.schema.azure.AzureBlobStoreSchema;
 import org.eclipse.dataspaceconnector.spi.monitor.Monitor;
 import org.eclipse.dataspaceconnector.spi.transfer.TransferInitiateResponse;
 import org.eclipse.dataspaceconnector.spi.transfer.TransferProcessManager;
@@ -16,26 +17,27 @@ import org.eclipse.dataspaceconnector.spi.types.domain.transfer.DataAddress;
 import org.eclipse.dataspaceconnector.spi.types.domain.transfer.DataRequest;
 import org.eclipse.dataspaceconnector.spi.types.domain.transfer.TransferProcess;
 import org.eclipse.dataspaceconnector.spi.types.domain.transfer.TransferProcessStates;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Map;
 import java.util.UUID;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ConsumerServiceTests {
+
+    public static final String STORAGE_ACCOUNT_NAME = "AzureStorageAccount";
 
     @Spy
     Monitor monitor = new ConsoleMonitor();
@@ -46,22 +48,28 @@ public class ConsumerServiceTests {
     @Mock
     TransferProcessManager transferProcessManager;
 
-    @InjectMocks
     ConsumerService service;
 
     String processId = UUID.randomUUID().toString();
 
     Faker faker = new Faker();
 
+    static final ObjectMapper MAPPER = new ObjectMapper();
+
     @Captor
     ArgumentCaptor<DataRequest> dataRequestCaptor;
+
+    @BeforeEach
+    public void before() {
+        service = new ConsumerService(monitor, transferProcessManager, processStore, STORAGE_ACCOUNT_NAME);
+    }
 
     @Test
     public void getStatus_WhenProcessNotInStore_ReturnsEmpty() {
         // Act
         var response = service.getStatus(processId);
         // Assert
-        assertThat(response.isEmpty());
+        assertThat(response).isEmpty();
     }
 
     @Test
@@ -79,20 +87,23 @@ public class ConsumerServiceTests {
     @Test
     public void initiateTransfer_WhenFileRequestValid_ReturnsProcessId() throws JsonProcessingException {
         // Arrange
+        PartsTreeByObjectIdRequest partsTreeRequest = PartsTreeByObjectIdRequest.builder()
+                .oneIDManufacturer(faker.company().name())
+                .objectIDManufacturer(faker.lorem().characters(10, 20))
+                .view("AS_BUILT")
+                .depth(faker.number().numberBetween(1, 5))
+                .build();
+
         FileRequest fileRequest = FileRequest.builder()
                 .connectorAddress(faker.internet().url())
                 .destinationPath(faker.file().fileName())
-                .partsTreeRequest(PartsTreeByObjectIdRequest.builder()
-                        .oneIDManufacturer(faker.company().name())
-                        .objectIDManufacturer(faker.lorem().characters(10, 20))
-                        .view("AS_BUILT")
-                        .depth(faker.number().numberBetween(1, 5))
-                        .build())
+                .partsTreeRequest(partsTreeRequest)
                 .build();
+
+        String serializedPartsTreeRequest = MAPPER.writeValueAsString(partsTreeRequest);
 
         when(transferProcessManager.initiateConsumerRequest(any(DataRequest.class)))
                 .thenReturn(okResponse());
-        ObjectMapper mapper = new ObjectMapper();
 
         // Act
         var response = service.initiateTransfer(fileRequest);
@@ -110,11 +121,14 @@ public class ConsumerServiceTests {
                         .policyId("use-eu")
                         .build())
                 .dataDestination(DataAddress.Builder.newInstance()
-                        .type("File")
-                        .property("request", mapper.writeValueAsString(fileRequest.getPartsTreeRequest()))
-                        .property("path", fileRequest.getDestinationPath())
+                        .type(AzureBlobStoreSchema.TYPE)
+                        .property("account", STORAGE_ACCOUNT_NAME)
                         .build())
-                .managedResources(false)
+                .properties(Map.of(
+                    "prs-request-parameters", serializedPartsTreeRequest,
+                    "prs-destination-path", fileRequest.getDestinationPath()
+                ))
+                .managedResources(true)
                 .build();
 
         assertThatJson(expectedDataRequest).isEqualTo(dataRequestCaptor.getValue());
