@@ -4,9 +4,14 @@ import Dashboard from './components/Dashboard/Dashboard';
 
 function App() {
   return (
-    <div>
-      <Dashboard />
-    </div>
+    <div className="App">
+      <header className="App-header">
+        Force Graph Example
+      </header>
+      <section className="Main">
+        <Dashboard />
+      </section>
+  </div>
   );
 }
 
