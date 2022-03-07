@@ -18,7 +18,7 @@
 
 ###  http://catena-x.net/bpdm#hasEndNode
 :hasEndNode rdf:type owl:ObjectProperty ;
-            rdfs:domain :BusinessPartner .
+            rdfs:range :BusinessPartner .
 
 
 ###  http://catena-x.net/bpdm#hasRole
@@ -28,7 +28,7 @@
 
 ###  http://catena-x.net/bpdm#hasStartNode
 :hasStartNode rdf:type owl:ObjectProperty ;
-              rdfs:domain :BusinessPartner .
+              rdfs:range :BusinessPartner .
 
 
 #################################################################
@@ -209,7 +209,7 @@
 :AdministrativeAreaType rdf:type owl:Class ;
                         owl:equivalentClass [ rdf:type owl:Class ;
                                               owl:oneOf ( :COUNTY
-                                                          :OTHER
+                                                          :OTHER_AAT
                                                           :REGION
                                                         )
                                             ] .
@@ -378,7 +378,7 @@
                                                        :LEGAL_ENTITY
                                                        :ORGANIZATIONAL_UNIT
                                                        :SITE
-                                                       :UNKNOWN
+                                                       :UNKNOWN_BPT
                                                      )
                                          ] .
 
@@ -469,7 +469,7 @@
                                       owl:oneOf ( :BRONZE
                                                   :GOLD
                                                   :SILVER
-                                                  :UNKNOWN
+                                                  :UNKNOWN_HG
                                                 )
                                     ] .
 
@@ -539,7 +539,7 @@
                                     owl:oneOf ( :BLOCK
                                                 :CITY
                                                 :DISTRICT
-                                                :OTHER
+                                                :OTHER_LT
                                                 :POST_OFFICE_CITY
                                                 :QUARTER
                                               )
@@ -567,7 +567,7 @@
                                             :ESTABLISHMENT
                                             :INTERNATIONAL
                                             :LOCAL
-                                            :OTHER
+                                            :OTHER_NT
                                             :REGISTERED
                                             :TRANSLITERATED
                                             :VAT_REGISTERED
@@ -603,7 +603,7 @@
               owl:equivalentClass [ rdf:type owl:Class ;
                                     owl:oneOf ( :CEDEX
                                                 :LARGE_MAIL_USER
-                                                :OTHER
+                                                :OTHER_PCT
                                                 :POST_BOX
                                                 :REGULAR
                                               )
@@ -629,7 +629,7 @@
                                                owl:oneOf ( :INTERURBAN_DELIVERY_POINT
                                                            :MAILBOX
                                                            :MAIL_STATION
-                                                           :OTHER
+                                                           :OTHER_PDPT
                                                            :POST_OFFICE_BOX
                                                          )
                                              ] .
@@ -654,7 +654,7 @@
                                    owl:oneOf ( :BUILDING
                                                :HARBOUR
                                                :LEVEL
-                                               :OTHER
+                                               :OTHER_PT
                                                :ROOM
                                                :SUITE
                                                :UNIT
@@ -770,7 +770,7 @@
 :ThoroughfareType rdf:type owl:Class ;
                   owl:equivalentClass [ rdf:type owl:Class ;
                                         owl:oneOf ( :INDUSTRIAL_ZONE
-                                                    :OTHER
+                                                    :OTHER_TFT
                                                     :RIVER
                                                     :SQUARE
                                                     :STREET
@@ -847,7 +847,6 @@
 
 ###  http://catena-x.net/bpdm#CDQ_TRANSITION
 :CDQ_TRANSITION rdf:type owl:NamedIndividual ,
-                         :ClassificationType ,
                          :RelationClass .
 
 
@@ -1223,16 +1222,46 @@
                      rdfs:comment "A business partner that has no legal standing in the eyes of law by its own, but is an organizational unit, division or subsidiary of a legal entity." .
 
 
-###  http://catena-x.net/bpdm#OTHER
-:OTHER rdf:type owl:NamedIndividual ,
-                :AdministrativeAreaType ,
-                :LocalityType ,
-                :NameType ,
-                :PostCodeType ,
-                :PostalDeliveryPointType ,
-                :PremiseType ,
-                :ThoroughfareType ;
-       rdfs:comment "Any other alternative name used for a company, such as a specific language variant." .
+###  http://catena-x.net/bpdm#OTHER_AAT
+:OTHER_AAT rdf:type owl:NamedIndividual ,
+                    :AdministrativeAreaType ;
+           rdfs:comment "Any other type of administrative area." .
+
+
+###  http://catena-x.net/bpdm#OTHER_LT
+:OTHER_LT rdf:type owl:NamedIndividual ,
+                   :LocalityType ;
+          rdfs:comment "Any other type of locality." .
+
+
+###  http://catena-x.net/bpdm#OTHER_NT
+:OTHER_NT rdf:type owl:NamedIndividual ,
+                   :NameType ;
+          rdfs:comment "Any other alternative name used for a company, such as a specific language variant." .
+
+
+###  http://catena-x.net/bpdm#OTHER_PCT
+:OTHER_PCT rdf:type owl:NamedIndividual ,
+                    :PostCodeType ;
+           rdfs:comment "Any other post code type." .
+
+
+###  http://catena-x.net/bpdm#OTHER_PDPT
+:OTHER_PDPT rdf:type owl:NamedIndividual ,
+                     :PostalDeliveryPointType ;
+            rdfs:comment "Any other type of postal delivery point." .
+
+
+###  http://catena-x.net/bpdm#OTHER_PT
+:OTHER_PT rdf:type owl:NamedIndividual ,
+                   :PremiseType ;
+          rdfs:comment "Any other premise type." .
+
+
+###  http://catena-x.net/bpdm#OTHER_TFT
+:OTHER_TFT rdf:type owl:NamedIndividual ,
+                    :ThoroughfareType ;
+           rdfs:comment "Any other thoroughfare type." .
 
 
 ###  http://catena-x.net/bpdm#POST_BOX
@@ -1379,11 +1408,16 @@
       rdfs:comment "Commercial units such as in shopping centers." .
 
 
-###  http://catena-x.net/bpdm#UNKNOWN
-:UNKNOWN rdf:type owl:NamedIndividual ,
-                  :BusinessPartnerType ,
-                  :HardeningGrade ;
-         rdfs:comment "This type is assigned if no specific type is known. In most cases, this causes (at least) a data defect warning if business rules are applied to validate the related business partner." .
+###  http://catena-x.net/bpdm#UNKNOWN_BPT
+:UNKNOWN_BPT rdf:type owl:NamedIndividual ,
+                      :BusinessPartnerType ;
+             rdfs:comment "This type is assigned if no specific type is known. In most cases, this causes (at least) a data defect warning if business rules are applied to validate the related business partner." .
+
+
+###  http://catena-x.net/bpdm#UNKNOWN_HG
+:UNKNOWN_HG rdf:type owl:NamedIndividual ,
+                     :HardeningGrade ;
+            rdfs:comment "Unknown hardening status." .
 
 
 ###  http://catena-x.net/bpdm#UNSPECIFIC
@@ -1422,68 +1456,37 @@
 
 [ rdf:type owl:AllDisjointClasses ;
   owl:members ( :Address
-                :AddressType
                 :AddressVersion
                 :AdministrativeArea
                 :AdministrativeAreaCode
-                :AdministrativeAreaType
                 :BankAccount
                 :BusinessPartner
                 :BusinessPartnerProfile
                 :BusinessPartnerRelation
-                :BusinessPartnerStatus
-                :BusinessPartnerType
-                :CharacterSet
-                :ClassificationType
                 :Currency
                 :DataElement
-                :GenericType
-                :HardeningGrade
-                :LocalityType
-                :NameType
-                :PostCodeType
-                :PostalDeliveryPointType
-                :PremiseType
-                :Registration
-                :RegistrationStatus
-                :RelationClass
-                :RelationType
-                :Role
-                :ThoroughfareType
                 :TrustScore
               )
 ] .
 
 
 [ rdf:type owl:AllDisjointClasses ;
-  owl:members ( :Address
-                :AddressType
-                :AddressVersion
-                :AdministrativeAreaType
-                :BankAccount
-                :BusinessPartner
-                :BusinessPartnerProfile
-                :BusinessPartnerRelation
-                :BusinessPartnerStatus
-                :BusinessPartnerType
-                :CharacterSet
-                :ClassificationType
-                :Currency
-                :DataElement
-                :GenericType
-                :HardeningGrade
-                :LocalityType
-                :NameType
-                :PostCodeType
-                :PostalDeliveryPointType
-                :PremiseType
-                :Registration
-                :RegistrationStatus
-                :RelationClass
-                :RelationType
-                :Role
-                :ThoroughfareType
-                :TrustScore
+  owl:members ( :BusinessPartnerClassification
+                :CareOf
+                :Country
+                :Identifier
+                :InternationalBankAccountIdentifier
+                :InternationalBankIdentifier
+                :IssuingAgency
+                :LegalForm
+                :Locality
+                :Name
+                :NationalBankAccountIdentifier
+                :NationalBankIdentifier
+                :PostCode
+                :PostalDeliveryPoint
+                :Premise
+                :Thoroughfare
               )
 ] .
 
@@ -1520,4 +1523,4 @@
 ] .
 
 
-###  Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi
+###  Generated by the OWL API (version 4.2.8.20170104-2310) https://github.com/owlcs/owlapi
