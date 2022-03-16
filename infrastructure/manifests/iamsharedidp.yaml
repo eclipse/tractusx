@@ -46,6 +46,7 @@ spec:
       containers:
       - name: iamsharedidp
         image: ${CONTAINER_IMAGE_SHAREDIDP}
+        imagePullPolicy: Always
         env:
         - name: KEYCLOAK_USER
           value: ${KEYCLOAK_ADMIN_USER}
