@@ -113,7 +113,8 @@
 		<module>framework/dsc</module>
 		<module>framework/edc</module>
 		<module>adapter</module>
-		<module>services</module>
+		<module>semantic-hub</module>
+		<module>registry</module>
     </modules>
 
 	<dependencyManagement>

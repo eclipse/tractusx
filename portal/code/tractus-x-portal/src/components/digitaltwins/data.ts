@@ -14,7 +14,7 @@
 import UserService from "../../helpers/UserService";
 
 // limitations under the License.
-const TWIN_URL = `${process.env.REACT_APP_SEMANTIC_SERVICE_LAYER_URL}registry/shell-descriptors`;
+const TWIN_URL = `${process.env.REACT_APP_SEMANTIC_SERVICE_LAYER_URL}twin-registry/registry/shell-descriptors`;
 
 function handleRequest(res: Response){
   if(res.status >= 400) {

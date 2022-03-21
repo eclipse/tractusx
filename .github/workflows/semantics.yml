@@ -132,7 +132,8 @@ jobs:
       VERSION: latest
       # User never in production?
       IMAGE_PULL_POLICY: Always
-      IMAGE_SERVICES: "catenaxacr.azurecr.io/semantics/services${{needs.environment.outputs.workspace}}:latest"
+      IMAGE_SEMANTIC_HUB: "catenaxacr.azurecr.io/semantics/hub${{needs.environment.outputs.workspace}}:latest"
+      IMAGE_REGISTRY: "catenaxacr.azurecr.io/semantics/registry${{needs.environment.outputs.workspace}}:latest"
       IMAGE_ADAPTER: "catenaxacr.azurecr.io/semantics/adapter${{needs.environment.outputs.workspace}}:latest"
       GRAPHDB_SHARE_NAME: catenax${{needs.environment.outputs.workspace}}graphdb
       IDP_ISSUER_URI: "https://catenax${{needs.environment.outputs.workspace}}akssrv.germanywestcentral.cloudapp.azure.com/iamcentralidp/auth/realms/CX-Central"
@@ -205,12 +206,14 @@ jobs:
     - name: Containerize the Layer (ServicesApp)
       working-directory: ./semantics
       run: |
-        docker build -f ./services/Dockerfile -t ${{ env.IMAGE_SERVICES }} .
+        docker build -f ./semantic-hub/Dockerfile -t ${{ env.IMAGE_SEMANTIC_HUB }} .
+        docker build -f ./registry/Dockerfile -t ${{ env.IMAGE_REGISTRY }} .
         
     - name: Publish the Layer (ServicesApp)
       working-directory: ./semantics
       run: |
-        docker push ${{ env.IMAGE_SERVICES }}
+        docker push ${{ env.IMAGE_SEMANTIC_HUB }}
+        docker push ${{ env.IMAGE_REGISTRY }}
 
     # TODO: uses npm as the server for debugging purposes
     - name: Containerize the Layer (AdapterApp)

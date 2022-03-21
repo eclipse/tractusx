@@ -1,0 +1,23 @@
+{
+    "description": "description",
+    "manufacturer": "manufacturer",
+    "localIdentifiers": [
+        {
+            "key": "key",
+            "value": "value"
+        }
+    ],
+    "aspects": [
+        {
+            "modelReference": {
+                "urn": "urn:catenax"
+            },
+            "httpEndpoints": [
+                {
+                    "url": "example.com",
+                    "method": "GET"
+                }
+            ]
+        }
+    ]
+}

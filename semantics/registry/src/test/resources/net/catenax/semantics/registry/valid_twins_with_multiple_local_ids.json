@@ -1,0 +1,742 @@
+[
+    {
+        "description": "test description",
+        "manufacturer": "Test",
+        "localIdentifiers": [
+            {
+                "key": "def1",
+                "value": "xyz1"
+            },
+            {
+                "key": "ghi1",
+                "value": "xyz1"
+            }
+        ],
+        "aspects": [
+            {
+                "modelReference": {
+                    "urn": "urn:catenax"
+                },
+                "httpEndpoints": [
+                    {
+                        "url": "example.com",
+                        "method": "GET"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "test duplicate 1",
+        "manufacturer": "Test",
+        "localIdentifiers": [
+            {
+                "key": "abc1",
+                "value": "xyz1"
+            }
+        ],
+        "aspects": [
+            {
+                "modelReference": {
+                    "urn": "urn:catenax"
+                },
+                "httpEndpoints": [
+                    {
+                        "url": "test.com",
+                        "method": "GET"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "test duplicate 2",
+        "manufacturer": "Test",
+        "localIdentifiers": [
+            {
+                "key": "abc1",
+                "value": "xyz1"
+            }
+        ],
+        "aspects": [
+            {
+                "modelReference": {
+                    "urn": "urn:catenax"
+                },
+                "httpEndpoints": [
+                    {
+                        "url": "test.com",
+                        "method": "GET"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "test description",
+        "manufacturer": "Test",
+        "localIdentifiers": [
+            {
+                "key": "abc2",
+                "value": "xyz2"
+            }
+        ],
+        "aspects": [
+            {
+                "modelReference": {
+                    "urn": "urn:catenax"
+                },
+                "httpEndpoints": [
+                    {
+                        "url": "test.com",
+                        "method": "GET"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "test description",
+        "manufacturer": "Test",
+        "localIdentifiers": [
+            {
+                "key": "abc3",
+                "value": "xyz3"
+            }
+        ],
+        "aspects": [
+            {
+                "modelReference": {
+                    "urn": "urn:catenax"
+                },
+                "httpEndpoints": [
+                    {
+                        "url": "test.com",
+                        "method": "GET"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "test description",
+        "manufacturer": "Test",
+        "localIdentifiers": [
+            {
+                "key": "abc4",
+                "value": "xyz4"
+            }
+        ],
+        "aspects": [
+            {
+                "modelReference": {
+                    "urn": "urn:catenax"
+                },
+                "httpEndpoints": [
+                    {
+                        "url": "test.com",
+                        "method": "GET"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "test description",
+        "manufacturer": "Test",
+        "localIdentifiers": [
+            {
+                "key": "abc5",
+                "value": "xyz5"
+            }
+        ],
+        "aspects": [
+            {
+                "modelReference": {
+                    "urn": "urn:catenax"
+                },
+                "httpEndpoints": [
+                    {
+                        "url": "test.com",
+                        "method": "GET"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "test description",
+        "manufacturer": "Test",
+        "localIdentifiers": [
+            {
+                "key": "abc6",
+                "value": "xyz6"
+            }
+        ],
+        "aspects": [
+            {
+                "modelReference": {
+                    "urn": "urn:catenax"
+                },
+                "httpEndpoints": [
+                    {
+                        "url": "test.com",
+                        "method": "GET"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "test description",
+        "manufacturer": "Test",
+        "localIdentifiers": [
+            {
+                "key": "abc7",
+                "value": "xyz7"
+            }
+        ],
+        "aspects": [
+            {
+                "modelReference": {
+                    "urn": "urn:catenax"
+                },
+                "httpEndpoints": [
+                    {
+                        "url": "test.com",
+                        "method": "GET"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "test description",
+        "manufacturer": "Test",
+        "localIdentifiers": [
+            {
+                "key": "abc8",
+                "value": "xyz8"
+            }
+        ],
+        "aspects": [
+            {
+                "modelReference": {
+                    "urn": "urn:catenax"
+                },
+                "httpEndpoints": [
+                    {
+                        "url": "test.com",
+                        "method": "GET"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "test description",
+        "manufacturer": "Test",
+        "localIdentifiers": [
+            {
+                "key": "abc9",
+                "value": "xyz9"
+            }
+        ],
+        "aspects": [
+            {
+                "modelReference": {
+                    "urn": "urn:catenax"
+                },
+                "httpEndpoints": [
+                    {
+                        "url": "test.com",
+                        "method": "GET"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "test description",
+        "manufacturer": "Test",
+        "localIdentifiers": [
+            {
+                "key": "abc10",
+                "value": "xyz10"
+            }
+        ],
+        "aspects": [
+            {
+                "modelReference": {
+                    "urn": "urn:catenax"
+                },
+                "httpEndpoints": [
+                    {
+                        "url": "test.com",
+                        "method": "GET"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "test description",
+        "manufacturer": "Test",
+        "localIdentifiers": [
+            {
+                "key": "abc11",
+                "value": "xyz11"
+            }
+        ],
+        "aspects": [
+            {
+                "modelReference": {
+                    "urn": "urn:catenax"
+                },
+                "httpEndpoints": [
+                    {
+                        "url": "test.com",
+                        "method": "GET"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "test description",
+        "manufacturer": "Test",
+        "localIdentifiers": [
+            {
+                "key": "abc12",
+                "value": "xyz12"
+            }
+        ],
+        "aspects": [
+            {
+                "modelReference": {
+                    "urn": "urn:catenax"
+                },
+                "httpEndpoints": [
+                    {
+                        "url": "test.com",
+                        "method": "GET"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "test description",
+        "manufacturer": "Test",
+        "localIdentifiers": [
+            {
+                "key": "abc13",
+                "value": "xyz13"
+            }
+        ],
+        "aspects": [
+            {
+                "modelReference": {
+                    "urn": "urn:catenax"
+                },
+                "httpEndpoints": [
+                    {
+                        "url": "test.com",
+                        "method": "GET"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "test description",
+        "manufacturer": "Test",
+        "localIdentifiers": [
+            {
+                "key": "abc14",
+                "value": "xyz14"
+            }
+        ],
+        "aspects": [
+            {
+                "modelReference": {
+                    "urn": "urn:catenax"
+                },
+                "httpEndpoints": [
+                    {
+                        "url": "test.com",
+                        "method": "GET"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "test description",
+        "manufacturer": "Test",
+        "localIdentifiers": [
+            {
+                "key": "abc15",
+                "value": "xyz15"
+            }
+        ],
+        "aspects": [
+            {
+                "modelReference": {
+                    "urn": "urn:catenax"
+                },
+                "httpEndpoints": [
+                    {
+                        "url": "test.com",
+                        "method": "GET"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "test description",
+        "manufacturer": "Test",
+        "localIdentifiers": [
+            {
+                "key": "abc16",
+                "value": "xyz16"
+            }
+        ],
+        "aspects": [
+            {
+                "modelReference": {
+                    "urn": "urn:catenax"
+                },
+                "httpEndpoints": [
+                    {
+                        "url": "test.com",
+                        "method": "GET"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "test description",
+        "manufacturer": "Test",
+        "localIdentifiers": [
+            {
+                "key": "abc17",
+                "value": "xyz17"
+            }
+        ],
+        "aspects": [
+            {
+                "modelReference": {
+                    "urn": "urn:catenax"
+                },
+                "httpEndpoints": [
+                    {
+                        "url": "test.com",
+                        "method": "GET"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "test description",
+        "manufacturer": "Test",
+        "localIdentifiers": [
+            {
+                "key": "abc18",
+                "value": "xyz18"
+            }
+        ],
+        "aspects": [
+            {
+                "modelReference": {
+                    "urn": "urn:catenax"
+                },
+                "httpEndpoints": [
+                    {
+                        "url": "test.com",
+                        "method": "GET"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "test description",
+        "manufacturer": "Test",
+        "localIdentifiers": [
+            {
+                "key": "abc19",
+                "value": "xyz19"
+            }
+        ],
+        "aspects": [
+            {
+                "modelReference": {
+                    "urn": "urn:catenax"
+                },
+                "httpEndpoints": [
+                    {
+                        "url": "test.com",
+                        "method": "GET"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "test description",
+        "manufacturer": "Test",
+        "localIdentifiers": [
+            {
+                "key": "abc20",
+                "value": "xyz20"
+            }
+        ],
+        "aspects": [
+            {
+                "modelReference": {
+                    "urn": "urn:catenax"
+                },
+                "httpEndpoints": [
+                    {
+                        "url": "test.com",
+                        "method": "GET"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "test description",
+        "manufacturer": "Test",
+        "localIdentifiers": [
+            {
+                "key": "abc21",
+                "value": "xyz21"
+            }
+        ],
+        "aspects": [
+            {
+                "modelReference": {
+                    "urn": "urn:catenax"
+                },
+                "httpEndpoints": [
+                    {
+                        "url": "test.com",
+                        "method": "GET"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "test description",
+        "manufacturer": "Test",
+        "localIdentifiers": [
+            {
+                "key": "abc22",
+                "value": "xyz22"
+            }
+        ],
+        "aspects": [
+            {
+                "modelReference": {
+                    "urn": "urn:catenax"
+                },
+                "httpEndpoints": [
+                    {
+                        "url": "test.com",
+                        "method": "GET"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "test description",
+        "manufacturer": "Test",
+        "localIdentifiers": [
+            {
+                "key": "abc23",
+                "value": "xyz23"
+            }
+        ],
+        "aspects": [
+            {
+                "modelReference": {
+                    "urn": "urn:catenax"
+                },
+                "httpEndpoints": [
+                    {
+                        "url": "test.com",
+                        "method": "GET"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "test description",
+        "manufacturer": "Test",
+        "localIdentifiers": [
+            {
+                "key": "abc24",
+                "value": "xyz24"
+            }
+        ],
+        "aspects": [
+            {
+                "modelReference": {
+                    "urn": "urn:catenax"
+                },
+                "httpEndpoints": [
+                    {
+                        "url": "test.com",
+                        "method": "GET"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "test description",
+        "manufacturer": "Test",
+        "localIdentifiers": [
+            {
+                "key": "abc25",
+                "value": "xyz25"
+            }
+        ],
+        "aspects": [
+            {
+                "modelReference": {
+                    "urn": "urn:catenax"
+                },
+                "httpEndpoints": [
+                    {
+                        "url": "test.com",
+                        "method": "GET"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "test description",
+        "manufacturer": "Test",
+        "localIdentifiers": [
+            {
+                "key": "abc26",
+                "value": "xyz26"
+            }
+        ],
+        "aspects": [
+            {
+                "modelReference": {
+                    "urn": "urn:catenax"
+                },
+                "httpEndpoints": [
+                    {
+                        "url": "test.com",
+                        "method": "GET"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "test description",
+        "manufacturer": "Test",
+        "localIdentifiers": [
+            {
+                "key": "abc27",
+                "value": "xyz27"
+            }
+        ],
+        "aspects": [
+            {
+                "modelReference": {
+                    "urn": "urn:catenax"
+                },
+                "httpEndpoints": [
+                    {
+                        "url": "test.com",
+                        "method": "GET"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "test description",
+        "manufacturer": "Test",
+        "localIdentifiers": [
+            {
+                "key": "abc28",
+                "value": "xyz28"
+            }
+        ],
+        "aspects": [
+            {
+                "modelReference": {
+                    "urn": "urn:catenax"
+                },
+                "httpEndpoints": [
+                    {
+                        "url": "test.com",
+                        "method": "GET"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "test description",
+        "manufacturer": "Test",
+        "localIdentifiers": [
+            {
+                "key": "abc29",
+                "value": "xyz29"
+            }
+        ],
+        "aspects": [
+            {
+                "modelReference": {
+                    "urn": "urn:catenax"
+                },
+                "httpEndpoints": [
+                    {
+                        "url": "test.com",
+                        "method": "GET"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "description": "test description",
+        "manufacturer": "Test",
+        "localIdentifiers": [
+            {
+                "key": "abc30",
+                "value": "xyz30"
+            }
+        ],
+        "aspects": [
+            {
+                "modelReference": {
+                    "urn": "urn:catenax"
+                },
+                "httpEndpoints": [
+                    {
+                        "url": "test.com",
+                        "method": "GET"
+                    }
+                ]
+            }
+        ]
+    }
+]

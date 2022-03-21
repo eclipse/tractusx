@@ -14,7 +14,7 @@
 import UserService from "../../helpers/UserService";
 
 // limitations under the License.
-const MODEL_URL = `${process.env.REACT_APP_SEMANTIC_SERVICE_LAYER_URL}api/v1/models`;
+const MODEL_URL = `${process.env.REACT_APP_SEMANTIC_SERVICE_LAYER_URL}hub/api/v1/models`;
 
 export enum Status {
   Draft = "DRAFT",

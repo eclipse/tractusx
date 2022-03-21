@@ -1,0 +1,20 @@
+{
+    "identifiers": [
+        {
+            "key": "def1",
+            "value": "xyz1"
+        },
+        {
+            "key": "ghi1",
+            "value": "xyz1"
+        },
+        {
+            "key": "abc1",
+            "value": "xyz1"
+        },
+        {
+            "key": "abc5",
+            "value": "xyz5"
+        }
+    ]
+}
