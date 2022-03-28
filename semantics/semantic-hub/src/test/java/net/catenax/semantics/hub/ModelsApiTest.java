@@ -16,6 +16,15 @@
 
 package net.catenax.semantics.hub;
 
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.is;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -28,10 +37,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-
-import static org.hamcrest.Matchers.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -351,6 +356,24 @@ public class ModelsApiTest {
          mvc.perform(delete( urnPrefix ))
                  .andDo( MockMvcResultHandlers.print() )
                  .andExpect(status().isNoContent());
+      }
+
+      @Test
+      public void testDependentModelTransition() throws Exception {
+        String urnPrefix = "urn:bamm:net.catenax.model.status.transitionWithDependency:1.0.0#";
+
+        mvc.perform(post( TestUtils.createModelDependency("DRAFT") ))
+            .andDo( MockMvcResultHandlers.print() )
+            .andExpect(status().isOk());
+
+        mvc.perform(post( TestUtils.createDependentModel(urnPrefix, "DRAFT") ))
+            .andDo( MockMvcResultHandlers.print() )
+            .andExpect(status().isOk());
+
+        mvc.perform(put( TestUtils.createDependentModel(urnPrefix, "RELEASED") ))
+            .andDo( MockMvcResultHandlers.print() )
+            .andExpect(jsonPath( "$.error.message", is(
+                "It is not allowed to release an aspect that has dependencies in DRAFT state." ) ) );
       }
    }
 

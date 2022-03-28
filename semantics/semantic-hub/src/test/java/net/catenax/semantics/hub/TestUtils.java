@@ -36,6 +36,10 @@ public class TestUtils {
 
    private static final String MODEL_FOR_API_TESTS = MODELS_ROOT_PATH + "ValidModelForApiTests.ttl";
 
+   private static final String MODEL_DEPENDENCY = MODELS_ROOT_PATH + "ModelDependency.ttl";
+   private static final String DEPENDENT_MODEL = MODELS_ROOT_PATH + "DependentModel.ttl";
+
+
    public static String loadModelFromResources( String resourceName ) throws IOException {
       return IOUtils.resourceToString( resourceName, StandardCharsets.UTF_8, TestUtils.class.getClassLoader() );
    }
@@ -52,6 +56,34 @@ public class TestUtils {
       String model;
       try {
          model = loadModelFromResources(MODEL_FOR_API_TESTS).replace("{{URN_PREFIX}}", urn);
+      } catch (IOException e) {
+         throw new RuntimeException("Failed to load file");
+      }
+      return String.format( "{\n"
+              + "  \"model\": \"%s\",\n"
+              + "  \"status\": \"%s\",\n"
+              + "  \"type\": \"BAMM\"\n"
+              + "}", StringEscapeUtils.escapeJava( model ), status );
+   }
+
+   public static String createDependentModel (String urn, String status) {
+      String model;
+      try {
+         model = loadModelFromResources(DEPENDENT_MODEL).replace("{{URN_PREFIX}}", urn);
+      } catch (IOException e) {
+         throw new RuntimeException("Failed to load file");
+      }
+      return String.format( "{\n"
+              + "  \"model\": \"%s\",\n"
+              + "  \"status\": \"%s\",\n"
+              + "  \"type\": \"BAMM\"\n"
+              + "}", StringEscapeUtils.escapeJava( model ), status );
+   }
+
+   public static String createModelDependency (String status) {
+      String model;
+      try {
+         model = loadModelFromResources(MODEL_DEPENDENCY);
       } catch (IOException e) {
          throw new RuntimeException("Failed to load file");
       }

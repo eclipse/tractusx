@@ -37,6 +37,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import net.catenax.semantics.hub.AspectModelNotFoundException;
 import net.catenax.semantics.hub.EntityNotFoundException;
 import net.catenax.semantics.hub.InvalidAspectModelException;
+import net.catenax.semantics.hub.InvalidStateTransitionException;
 import net.catenax.semantics.hub.ModelPackageNotFoundException;
 import net.catenax.semantics.hub.model.Error;
 import net.catenax.semantics.hub.model.ErrorResponse;
@@ -110,6 +111,15 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>( new ErrorResponse()
                 .error( new Error()
                         .message( String.format("The provided parameters are invalid. %s", URLDecoder.decode(queryString, StandardCharsets.UTF_8)) )
+                        .path( request.getRequestURI() ) ), HttpStatus.BAD_REQUEST );
+    }
+
+    @ExceptionHandler( {InvalidStateTransitionException.class})
+    public ResponseEntity<ErrorResponse> handleInvalidStateTransitionException( final HttpServletRequest request, final InvalidStateTransitionException exception ) {
+        String queryString = request.getQueryString();
+        return new ResponseEntity<>( new ErrorResponse()
+                .error( new Error()
+                        .message(exception.getMessage())
                         .path( request.getRequestURI() ) ), HttpStatus.BAD_REQUEST );
     }
 

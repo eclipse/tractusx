@@ -15,14 +15,16 @@
  */
 package net.catenax.semantics.hub.persistence.triplestore;
 
+import static net.catenax.semantics.hub.domain.ModelPackageStatus.DEPRECATED;
+import static net.catenax.semantics.hub.domain.ModelPackageStatus.RELEASED;
+
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
@@ -38,8 +40,10 @@ import org.apache.jena.rdfconnection.RDFConnection;
 import org.apache.jena.rdfconnection.RDFConnectionRemoteBuilder;
 import org.apache.jena.update.UpdateRequest;
 
+import io.openmanufacturing.sds.aspectmodel.resolver.AspectModelResolver;
 import io.openmanufacturing.sds.aspectmodel.urn.AspectModelUrn;
 import net.catenax.semantics.hub.AspectModelNotFoundException;
+import net.catenax.semantics.hub.InvalidStateTransitionException;
 import net.catenax.semantics.hub.ModelPackageNotFoundException;
 import net.catenax.semantics.hub.domain.ModelPackage;
 import net.catenax.semantics.hub.domain.ModelPackageStatus;
@@ -50,8 +54,6 @@ import net.catenax.semantics.hub.model.SemanticModelList;
 import net.catenax.semantics.hub.model.SemanticModelStatus;
 import net.catenax.semantics.hub.model.SemanticModelType;
 import net.catenax.semantics.hub.persistence.PersistenceLayer;
-
-import static net.catenax.semantics.hub.domain.ModelPackageStatus.DEPRECATED;
 
 public class TripleStorePersistence implements PersistenceLayer {
 
@@ -111,6 +113,9 @@ public class TripleStorePersistence implements PersistenceLayer {
          final ModelPackageStatus desiredModelStatus  = ModelPackageStatus.valueOf( model.getStatus().name() );
          switch ( persistedModelStatus ) {
             case DRAFT:
+               if(desiredModelStatus.equals(RELEASED) && !hasReferenceToDraftPackage(modelUrn, rdfModel)) {
+                  throw new InvalidStateTransitionException("It is not allowed to release an aspect that has dependencies in DRAFT state.");
+               }
                deleteByUrn( ModelPackageUrn.fromUrn( modelUrn ) );
                break;
             case RELEASED:
@@ -165,6 +170,27 @@ public class TripleStorePersistence implements PersistenceLayer {
                      urn.getUrn(), status.name() ) );
       }
       deleteByUrn( urn );
+   }
+
+   private boolean hasReferenceToDraftPackage(AspectModelUrn modelUrn, Model model) {
+      Pattern pattern = Pattern.compile(SparqlQueries.ALL_BAMM_ASPECT_URN_PREFIX);
+         
+      List<String> urns = AspectModelResolver.getAllUrnsInModel(model).stream().map((AspectModelUrn urn) -> {
+         return urn.getUrnPrefix();
+      })
+      .distinct()
+      .collect(Collectors.toList());
+
+      for(var entry : urns) {
+         Matcher matcher = pattern.matcher(entry);
+         if(!matcher.find() && !modelUrn.getUrnPrefix().equals(entry)) {
+            if(findByPackageByUrn(ModelPackageUrn.fromUrn(entry)).get().getStatus().equals(ModelPackageStatus.DRAFT)) {
+               return false;
+            }
+         }
+      }
+
+      return true;
    }
 
    private Integer getTotalItemsCount( @Nullable String namespaceFilter, @Nullable String nameFilter,

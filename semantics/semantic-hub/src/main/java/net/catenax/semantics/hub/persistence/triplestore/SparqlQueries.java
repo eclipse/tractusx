@@ -35,6 +35,7 @@ public class SparqlQueries {
    public static final String ASPECT = "aspect";
    public static final String STATUS_RESULT = "statusResult";
    public static final String BAMM_ASPECT_URN_REGEX = "urn:bamm:io.openmanufacturing:meta-model:\\d\\.\\d\\.\\d#Aspect";
+   public static final String ALL_BAMM_ASPECT_URN_PREFIX = "urn:bamm:io.openmanufacturing:([a-z]|-)+:\\d\\.\\d\\.\\d#";
    public static final String BAMM_ASPECT_URN_PREFIX = "urn:bamm:io.openmanufacturing:meta-model:\\d\\.\\d\\.\\d#";
    public static final String BAMM_PREFERRED_NAME = "urn:bamm:io.openmanufacturing:meta-model:1.0.0#preferredName";
    public static final String BAMM_DESCRIPTION = "urn:bamm:io.openmanufacturing:meta-model:1.0.0#description";

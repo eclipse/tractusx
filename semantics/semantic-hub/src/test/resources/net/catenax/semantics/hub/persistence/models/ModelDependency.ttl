@@ -1,0 +1,36 @@
+@prefix :       <urn:bamm:io.catenax.dependency:1.0.0#> .
+@prefix bamm:   <urn:bamm:io.openmanufacturing:meta-model:1.0.0#> .
+@prefix bamm-c: <urn:bamm:io.openmanufacturing:characteristic:1.0.0#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix unit: <urn:bamm:io.openmanufacturing:unit:1.0.0#> .
+
+:Dependency a bamm:Aspect ;
+    bamm:name "Dependency" ;
+    bamm:preferredName "Dependency"@en ;
+    bamm:description "Dependency Aspect"@en ;
+    bamm:properties ( :testProperty ) ;
+    bamm:operations ( ) .
+
+:testProperty a bamm:Property ;
+    bamm:name "testProperty" ;
+    bamm:preferredName "testProperty"@en ;
+    bamm:description "Test Property"@en ;
+    bamm:characteristic :TestCharacteristic .
+
+:TestCharacteristic a bamm:Characteristic ;
+    bamm:name "TestCharacteristic" ;
+    bamm:preferredName "TestCharacteristic"@en ;
+    bamm:description "Test Characteristic"@en ;
+    bamm:dataType :DependencyEntity .
+
+:DependencyEntity a bamm:Entity ;
+    bamm:name "DependencyEntity" ;
+    bamm:preferredName "DependencyEntity"@en ;
+    bamm:description "Dependency Entity"@en ;
+    bamm:properties ( :placeholder ) .
+
+:placeholder a bamm:Property ;
+    bamm:name "placeholder" ;
+    bamm:preferredName "placeholder"@en ;
+    bamm:description "Placeholder"@en ;
+    bamm:characteristic bamm-c:Boolean .

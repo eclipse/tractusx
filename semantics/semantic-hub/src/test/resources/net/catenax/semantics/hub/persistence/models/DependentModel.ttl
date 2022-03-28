@@ -1,0 +1,25 @@
+@prefix :       <{{URN_PREFIX}}> .
+@prefix dependency: <urn:bamm:io.catenax.dependency:1.0.0#> .
+@prefix bamm:   <urn:bamm:io.openmanufacturing:meta-model:1.0.0#> .
+@prefix bamm-c: <urn:bamm:io.openmanufacturing:characteristic:1.0.0#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix unit: <urn:bamm:io.openmanufacturing:unit:1.0.0#> .
+
+:TestAspect a bamm:Aspect ;
+    bamm:name "TestAspect" ;
+    bamm:preferredName "TestAspect"@en ;
+    bamm:description "Test Aspect"@en ;
+    bamm:properties ( :testProperty ) ;
+    bamm:operations ( ) .
+
+:testProperty a bamm:Property ;
+    bamm:name "testProperty" ;
+    bamm:preferredName "testProperty"@en ;
+    bamm:description "Test Property"@en ;
+    bamm:characteristic :TestCharacteristic .
+
+:TestCharacteristic a bamm:Characteristic ;
+    bamm:name "TestCharacteristic" ;
+    bamm:preferredName "TestCharacteristic"@en ;
+    bamm:description "Test Characteristic"@en ;
+    bamm:dataType dependency:DependencyEntity .
