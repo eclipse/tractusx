@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+
+  postgres:
+    image: postgres:13.6-alpine
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: example
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+
+  aas_registry:
+    image: catenaxacr.azurecr.io/semantics/registryint:latest
+    # build image locally with `docker build -f ./registry -t registry:latest .`
+    # and comment below in to test against local instance.
+    #image: registry:latest
+    container_name: aas_registry
+    ports:
+      - "4242:4242"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://host.docker.internal:5432/postgres
+      SPRING_DATASOURCE_DRIVERCLASSNAME: org.postgresql.Driver
+      SPRING_DATASOURCE_USERNAME: postgres 
+      SPRING_DATASOURCE_PASSWORD: example
+      SPRING_DATASOURCE_HIKARI_INITIALIZATION_FAIL_TIMEOUT: 0
+      # disable security
+      SPRING_PROFILES_ACTIVE: local
+      IDP_ISSUER_URI: ""
+      
+  locust_master:
+    image: locustio/locust:2.8.2
+    container_name: locust_master
+    ports:
+      - "8089:8089"
+    volumes:
+      - ./locust:/mnt/locust/
+    command: -f /mnt/locust/locustfile.py --master -H http://host.docker.internal:4242
+
+  locust_worker:
+    image: locustio/locust:2.8.2
+    container_name: locust_worker
+    volumes:
+      - ./locust:/mnt/locust/
+    command: -f /mnt/locust/locustfile.py --worker --master-host locust_master
+

@@ -268,5 +268,6 @@ jobs:
     - name: Rollout the Layer
       working-directory: ./infrastructure/manifests
       run: |
-        kubectl rollout restart deployment semantics -n semantics
+        kubectl rollout restart deployment registry -n semantics
+        kubectl rollout restart deployment semantic-hub -n semantics
         kubectl rollout restart deployment adapter -n semantics
