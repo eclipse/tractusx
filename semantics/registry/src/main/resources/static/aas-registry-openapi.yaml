@@ -118,6 +118,37 @@ paths:
                   $ref: '#/components/examples/asset-administration-shell-descriptor-batch-result'
       x-semanticIds:
         - https://admin-shell.io/aas/API/PostAssetAdministrationShellDescriptor/1/0/RC02
+  /registry/shell-descriptors/fetch:
+    post:
+      tags:
+        - Registry and Discovery Interface
+      summary: Returns shell descriptors for the given identifications.
+      operationId: PostFetchAssetAdministrationShellDescriptor
+      requestBody:
+        description: Asset Administration Shell Descriptor object
+        content:
+          application/json:
+            schema:
+              type: array
+              minLength: 1
+              items:
+                $ref: '#/components/schemas/Identifier'
+            examples:
+              complete:
+                $ref: '#/components/examples/asset-administration-shell-descriptor-fetch-request'
+        required: true
+      responses:
+        "201":
+          description: Asset Administration Shell Descriptors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetAdministrationShellDescriptorCollectionBase'
+              examples:
+                complete:
+                  $ref: '#/components/examples/asset-administration-shell-descriptor-fetch-result'
+      x-semanticIds:
+        - https://admin-shell.io/aas/API/PostAssetAdministrationShellDescriptor/1/0/RC02
   /registry/shell-descriptors/{aasIdentifier}:
     get:
       tags:
@@ -493,17 +524,38 @@ paths:
           description: Asset identifier key-value-pairs deleted successfully
       x-semanticIds:
       - https://admin-shell.io/aas/API/DeleteAllAssetLinksById/1/0/RC02
+  /lookup/shells/query:
+    post:
+      tags:
+        - Registry and Discovery Interface
+      summary: Returns a list of Asset Administration Shell ids based on Asset identifier key-value-pairs.
+      operationId: PostQueryAllAssetAdministrationShellIds
+      requestBody:
+        description: Asset Administration Shell Descriptor object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShellLookup'
+        required: true
+      responses:
+        "200":
+          description: Requested Asset Administration Shell ids
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Identifier'
+              examples:
+                complete:
+                  $ref: '#/components/examples/lookup-shells-by-aas-identifier-response'
 components:
   schemas:
     # The official spec does not support pagination right now. This is an addition.
-    AssetAdministrationShellDescriptorCollection:
-      title: AssetAdministrationShellDescriptorCollection
+    AssetAdministrationShellDescriptorCollectionBase:
+      title: AssetAdministrationShellDescriptorCollectionBase
       required:
         - items
-        - totalItems
-        - currentPage
-        - totalPages
-        - itemCount
       type: object
       properties:
         items:
@@ -511,6 +563,17 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AssetAdministrationShellDescriptor'
+    AssetAdministrationShellDescriptorCollection:
+      title: AssetAdministrationShellDescriptorCollection
+      allOf:
+        - $ref: '#/components/schemas/AssetAdministrationShellDescriptorCollectionBase'
+      required:
+        - totalItems
+        - currentPage
+        - totalPages
+        - itemCount
+      type: object
+      properties:
         totalItems:
           title: Totalitems
           type: integer
@@ -526,6 +589,7 @@ components:
     AssetAdministrationShellDescriptor:
       required:
       - identification
+      - idShort
       type: object
       properties:
         administration:
@@ -646,8 +710,9 @@ components:
       required:
       - keys
       properties:
-        referredSemanticId:
-          $ref: '#/components/schemas/Reference'
+      # not supported for Catena-X
+      #  referredSemanticId:
+       #   $ref: '#/components/schemas/Reference'
         keys:
           type: array
           items:
@@ -702,8 +767,9 @@ components:
             type: string
             minLength: 1
             maxLength: 200
-          subjectId:
-            $ref: '#/components/schemas/Reference'
+          # not supported for Catena-X
+          # subjectId:
+            # $ref: '#/components/schemas/Reference'
           value:
             type: string
             minLength: 1
@@ -780,6 +846,18 @@ components:
         status:
           type: integer
           description: The status code
+    ShellLookup:
+      type: object
+      required:
+        - query
+      properties:
+        query:
+          type: object
+          properties:
+            assetIds:
+              type: array
+              items:
+                $ref: '#/components/schemas/IdentifierKeyValuePair'
   securitySchemes:
     CatenaXOpenId:
       type: openIdConnect
@@ -803,15 +881,15 @@ components:
           ],
           "globalAssetId": {
             "value": [
-                "VIN1230941209423423"
+                "urn:twin:net.catenax#3c7556f7-6956-4360-8036-d03e5a79c3c8"
             ]
           },
           "idShort": "future concept x",
           "identification": "882fc530-b69b-4707-95f6-5dbc5e9baaa8",
           "specificAssetIds": [
             {
-              "key": "engineserialid",
-              "value": "12309481209312"
+              "key": "PartInstanceID",
+              "value": "24975539203421"
             }
           ],
           "submodelDescriptors": [
@@ -819,23 +897,23 @@ components:
               "description": [
                 {
                   "language": "en",
-                  "text": "Provides base vehicle information"
+                  "text": "Provides traceability information"
                 }
               ],
-              "idShort": "vehicle base details",
+              "idShort": "traceability-info",
               "identification": "4a738a24-b7d8-4989-9cd6-387772f40565",
               "semanticId": {
                 "value": [
-                    "urn:bamm:com.catenax.vehicle:0.1.1"
+                    "urn:bamm:com.catenax:0.0.1#Traceability"
                 ]
               },
               "endpoints": [
                 {
-                  "interface": "HTTP",
+                  "interface": "SUBMODEL-1.0RC02",
                   "protocolInformation": {
-                    "endpointAddress": "https://catena-x.net/vehicle/basedetails/",
-                    "endpointProtocol": "HTTPS",
-                    "endpointProtocolVersion": "1.0"
+                    "endpointAddress": "edc://provider.connector:9191/offer-windchill/shells/882fc530-b69b-4707-95f6-5dbc5e9baaa8/aas/4a738a24-b7d8-4989-9cd6-387772f40565/submodel",
+                    "endpointProtocol": "IDS/ECLIPSE DATASPACE CONNECTOR",
+                    "endpointProtocolVersion": "0.0.1"
                   }
                 }
               ]
@@ -856,11 +934,11 @@ components:
               },
               "endpoints": [
                 {
-                  "interface": "HTTP",
+                  "interface": "SUBMODEL-1.0RC02",
                   "protocolInformation": {
-                    "endpointAddress": "https://catena-x.net/vehicle/partdetails/",
-                    "endpointProtocol": "HTTPS",
-                    "endpointProtocolVersion": "1.0"
+                    "endpointAddress": "edc://provider.connector:9191/offer-details/shells/882fc530-b69b-4707-95f6-5dbc5e9baaa8/aas/dae4d249-6d66-4818-b576-bf52f3b9ae90/submodel",
+                    "endpointProtocol": "IDS/ECLIPSE DATASPACE CONNECTOR",
+                    "endpointProtocolVersion": "0.0.1"
                   }
                 }
               ]
@@ -880,15 +958,15 @@ components:
               ],
               "globalAssetId": {
                 "value": [
-                    "VIN1230941209423423"
+                    "urn:twin:net.catenax#3c7556f7-6956-4360-8036-d03e5a79c3c8"
                 ]
               },
               "idShort": "future concept x",
               "identification": "882fc530-b69b-4707-95f6-5dbc5e9baaa8",
               "specificAssetIds": [
                 {
-                  "key": "engineserialid",
-                  "value": "12309481209312"
+                  "key": "PartInstanceID",
+                  "value": "24975539203421"
                 }
               ],
               "submodelDescriptors": [
@@ -896,23 +974,23 @@ components:
                   "description": [
                     {
                       "language": "en",
-                      "text": "Provides base vehicle information"
+                      "text": "Provides traceability information"
                     }
                   ],
-                  "idShort": "vehicle base details",
+                  "idShort": "traceability-info",
                   "identification": "4a738a24-b7d8-4989-9cd6-387772f40565",
                   "semanticId": {
                     "value": [
-                        "urn:bamm:com.catenax.vehicle:0.1.1"
+                        "urn:bamm:com.catenax:0.0.1#Traceability"
                     ]
                   },
                   "endpoints": [
                     {
-                      "interface": "HTTP",
+                      "interface": "SUBMODEL-1.0RC02",
                       "protocolInformation": {
-                        "endpointAddress": "https://catena-x.net/vehicle/basedetails/",
-                        "endpointProtocol": "HTTPS",
-                        "endpointProtocolVersion": "1.0"
+                        "endpointAddress": "edc://provider.connector:9191/offer-windchill/shells/882fc530-b69b-4707-95f6-5dbc5e9baaa8/aas/4a738a24-b7d8-4989-9cd6-387772f40565/submodel",
+                        "endpointProtocol": "IDS/ECLIPSE DATASPACE CONNECTOR",
+                        "endpointProtocolVersion": "0.0.1"
                       }
                     }
                   ]
@@ -929,6 +1007,70 @@ components:
           "totalPages": 1,
           "itemCount": 2
         }
+    asset-administration-shell-descriptor-fetch-result:
+      value:
+        {
+          "items": [
+            {
+              "description": [
+                {
+                  "language": "en",
+                  "text": "The shell for a vehicle"
+                }
+              ],
+              "globalAssetId": {
+                "value": [
+                    "urn:twin:net.catenax#3c7556f7-6956-4360-8036-d03e5a79c3c8"
+                ]
+              },
+              "idShort": "future concept x",
+              "identification": "882fc530-b69b-4707-95f6-5dbc5e9baaa8",
+              "specificAssetIds": [
+                {
+                  "key": "PartInstanceID",
+                  "value": "24975539203421"
+                }
+              ],
+              "submodelDescriptors": [
+                {
+                  "description": [
+                    {
+                      "language": "en",
+                      "text": "Provides traceability information"
+                    }
+                  ],
+                  "idShort": "traceability-info",
+                  "identification": "4a738a24-b7d8-4989-9cd6-387772f40565",
+                  "semanticId": {
+                    "value": [
+                        "urn:bamm:com.catenax:0.0.1#Traceability"
+                    ]
+                  },
+                  "endpoints": [
+                    {
+                      "interface": "SUBMODEL-1.0RC02",
+                      "protocolInformation": {
+                        "endpointAddress": "edc://provider.connector:9191/offer-windchill/shells/882fc530-b69b-4707-95f6-5dbc5e9baaa8/aas/4a738a24-b7d8-4989-9cd6-387772f40565/submodel",
+                        "endpointProtocol": "IDS/ECLIPSE DATASPACE CONNECTOR",
+                        "endpointProtocolVersion": "0.0.1"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "idShort": "future concept x",
+              "identification": "459842bf-3466-4eb6-8d95-ef0557e64883"
+            }
+          ]
+        }
+    asset-administration-shell-descriptor-fetch-request:
+       value:
+         [
+          "882fc530-b69b-4707-95f6-5dbc5e9baaa8",
+          "459842bf-3466-4eb6-8d95-ef0557e64883"
+         ]
     asset-administration-shell-descriptor-batch:
        value:
         [
@@ -947,77 +1089,65 @@ components:
             ],
             "globalAssetId": {
               "value": [
-                  "exampleGlobalAssetId"
+                  "urn:twin:net.catenax#3c7556f7-6956-4360-8036-d03e5a79c3c8"
               ]
             },
             "specificAssetIds": [
               {
-                "key": "vin1",
-                "value": "valueforvin1"
-              },
-              {
-                "key": "enginenumber1",
-                "value": "enginenumber1"
+                "key": "VAN",
+                "value": "WEBFC102u30912"
               }
             ],
             "submodelDescriptors": [
               {
-                "identification": "submodel_external1_a088b555-7a6c-4092-aed2-1c0e6e752e87",
-                "idShort": "exampleSubModelShortId",
                 "description": [
                   {
                     "language": "en",
-                    "text": "this is an example submodel description"
-                  },
-                  {
-                    "language": "de",
-                    "text": "das ist ein Beispiel submodel"
+                    "text": "Provides traceability information"
                   }
                 ],
-                "endpoints": [
-                  {
-                    "interface": "interfaceName",
-                    "protocolInformation": {
-                      "endpointAddress": "https://catena-xsubmodel-vechile.net/path",
-                      "endpointProtocol": "HTTPS",
-                      "endpointProtocolVersion": "1.0"
-                    }
-                  }
-                ],
+                "idShort": "traceability-info",
+                "identification": "4a738a24-b7d8-4989-9cd6-387772f40565",
                 "semanticId": {
                   "value": [
-                      "urn:net.catenax.vehicle:1.0.0#Parts"
+                      "urn:bamm:com.catenax:0.0.1#Traceability"
                   ]
-                }
+                },
+                "endpoints": [
+                  {
+                    "interface": "SUBMODEL-1.0RC02",
+                    "protocolInformation": {
+                      "endpointAddress": "edc://provider.connector:9191/offer-windchill/shells/882fc530-b69b-4707-95f6-5dbc5e9baaa8/aas/4a738a24-b7d8-4989-9cd6-387772f40565/submodel",
+                      "endpointProtocol": "IDS/ECLIPSE DATASPACE CONNECTOR",
+                      "endpointProtocolVersion": "0.0.1"
+                    }
+                  }
+                ]
               },
               {
-                "identification": "submodel_external2_2b41b06a-ffe3-47d2-b599-979ec63e978f",
-                "idShort": "exampleSubModelShortId",
                 "description": [
                   {
                     "language": "en",
-                    "text": "this is an example submodel description"
-                  },
-                  {
-                    "language": "de",
-                    "text": "das ist ein Beispiel submodel"
+                    "text": "Provides traceability information"
                   }
                 ],
-                "endpoints": [
-                  {
-                    "interface": "interfaceName",
-                    "protocolInformation": {
-                      "endpointAddress": "https://catena-xsubmodel-vechile.net/path",
-                      "endpointProtocol": "HTTPS",
-                      "endpointProtocolVersion": "1.0"
-                    }
-                  }
-                ],
+                "idShort": "traceability-info",
+                "identification": "4a738a24-b7d8-4989-9cd6-387772f40565",
                 "semanticId": {
                   "value": [
-                      "urn:net.catenax.vehicle:1.0.0#Parts"
+                      "urn:bamm:com.catenax:0.0.1#Traceability"
                   ]
-                }
+                },
+                "endpoints": [
+                  {
+                    "interface": "SUBMODEL-1.0RC02",
+                    "protocolInformation": {
+                      "endpointAddress": "edc://provider.connector:9191/offer-windchill/shells/882fc530-b69b-4707-95f6-5dbc5e9baaa8/aas/4a738a24-b7d8-4989-9cd6-387772f40565/submodel",
+                      "endpointProtocol": "IDS/ECLIPSE DATASPACE CONNECTOR",
+                      "endpointProtocolVersion": "0.0.1"
+                    }
+                  }
+                ]
               }
             ]
           },
@@ -1043,20 +1173,20 @@ components:
     minimal-submodel-descriptor:
       value:
         {
-          "idShort": "vehicle base details",
+          "idShort": "traceability-info",
           "identification": "4a738a24-b7d8-4989-9cd6-387772f40565",
           "semanticId": {
             "value": [
-                "urn:bamm:com.catenax.vehicle:0.1.1"
+                "urn:bamm:com.catenax:0.0.1#Traceability"
             ]
           },
           "endpoints": [
             {
-              "interface": "HTTP",
+              "interface": "SUBMODEL-1.0RC02",
               "protocolInformation": {
-                "endpointAddress": "https://catena-x.net/vehicle/basedetails/",
-                "endpointProtocol": "HTTPS",
-                "endpointProtocolVersion": "1.0"
+                "endpointAddress": "edc://provider.connector:9191/offer-windchill/shells/882fc530-b69b-4707-95f6-5dbc5e9baaa8/aas/4a738a24-b7d8-4989-9cd6-387772f40565/submodel",
+                "endpointProtocol": "IDS/ECLIPSE DATASPACE CONNECTOR",
+                "endpointProtocolVersion": "0.0.1"
               }
             }
           ]
@@ -1067,62 +1197,70 @@ components:
           "description": [
             {
               "language": "en",
-              "text": "Provides base vehicle information"
+              "text": "Provides traceability information"
             }
           ],
-          "idShort": "vehicle base details",
+          "idShort": "traceability-info",
           "identification": "4a738a24-b7d8-4989-9cd6-387772f40565",
           "semanticId": {
             "value": [
-                "urn:bamm:com.catenax.vehicle:0.1.1"
+                "urn:bamm:com.catenax:0.0.1#Traceability"
             ]
           },
           "endpoints": [
             {
-              "interface": "HTTP",
+              "interface": "SUBMODEL-1.0RC02",
               "protocolInformation": {
-                "endpointAddress": "https://catena-x.net/vehicle/basedetails/",
-                "endpointProtocol": "HTTPS",
-                "endpointProtocolVersion": "1.0"
+                "endpointAddress": "edc://provider.connector:9191/offer-windchill/shells/882fc530-b69b-4707-95f6-5dbc5e9baaa8/aas/4a738a24-b7d8-4989-9cd6-387772f40565/submodel",
+                "endpointProtocol": "IDS/ECLIPSE DATASPACE CONNECTOR",
+                "endpointProtocolVersion": "0.0.1"
               }
             }
           ]
         }
     submodel-descriptor-collection:
       value:
+        [
         {
-          "idShort": "vehicle base details",
+          "description": [
+            {
+              "language": "en",
+              "text": "Provides traceability information"
+            }
+          ],
+          "idShort": "traceability-info",
           "identification": "4a738a24-b7d8-4989-9cd6-387772f40565",
           "semanticId": {
             "value": [
-                "urn:bamm:com.catenax.vehicle:0.1.1"
+                "urn:bamm:com.catenax:0.0.1#Traceability"
             ]
           },
           "endpoints": [
             {
-              "interface": "HTTP",
+              "interface": "SUBMODEL-1.0RC02",
               "protocolInformation": {
-                "endpointAddress": "https://catena-x.net/vehicle/basedetails/",
-                "endpointProtocol": "HTTPS",
-                "endpointProtocolVersion": "1.0"
+                "endpointAddress": "edc://provider.connector:9191/offer-windchill/shells/882fc530-b69b-4707-95f6-5dbc5e9baaa8/aas/4a738a24-b7d8-4989-9cd6-387772f40565/submodel",
+                "endpointProtocol": "IDS/ECLIPSE DATASPACE CONNECTOR",
+                "endpointProtocolVersion": "0.0.1"
               }
             }
           ]
         }
+        ]
     lookup-shells-by-aas-identifier-query:
       value:
         [
             {
               "key" :   "globalAssetId",
-              "value" : "VIN1230941209423423"
+              "value" :  "urn:twin:net.catenax#3c7556f7-6956-4360-8036-d03e5a79c3c8"
             },
             {
-              "key": "engineserialid",
-              "value": "1239472980298312"
+              "key": "PartInstanceID",
+              "value": "24975539203421"
             },
             {
-              "key": "brakenumber",
-              "value": "123092"
+              "key": "VAN",
+              "value": "WEBFC102u30912"
             }
         ]
     lookup-shells-by-aas-identifier-response:
@@ -1134,11 +1272,7 @@ components:
       value:
         [
           {
-            "key": "engineserialid",
-            "value": "1239472980298312"
-          },
-          {
-            "key": "brakenumber",
-            "value": "123092"
+            "key": "PartInstanceID",
+            "value": "24975539203421"
           }
         ]

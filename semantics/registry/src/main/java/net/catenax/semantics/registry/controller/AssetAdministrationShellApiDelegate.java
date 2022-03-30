@@ -17,7 +17,13 @@ package net.catenax.semantics.registry.controller;
 
 import net.catenax.semantics.aas.registry.api.LookupApiDelegate;
 import net.catenax.semantics.aas.registry.api.RegistryApiDelegate;
-import net.catenax.semantics.aas.registry.model.*;
+import net.catenax.semantics.aas.registry.model.AssetAdministrationShellDescriptor;
+import net.catenax.semantics.aas.registry.model.AssetAdministrationShellDescriptorCollection;
+import net.catenax.semantics.aas.registry.model.AssetAdministrationShellDescriptorCollectionBase;
+import net.catenax.semantics.aas.registry.model.BatchResult;
+import net.catenax.semantics.aas.registry.model.IdentifierKeyValuePair;
+import net.catenax.semantics.aas.registry.model.ShellLookup;
+import net.catenax.semantics.aas.registry.model.SubmodelDescriptor;
 import net.catenax.semantics.registry.dto.BatchResultDto;
 import net.catenax.semantics.registry.mapper.ShellMapper;
 import net.catenax.semantics.registry.mapper.SubmodelMapper;
@@ -31,6 +37,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.NativeWebRequest;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -57,6 +64,13 @@ public class AssetAdministrationShellApiDelegate implements RegistryApiDelegate,
     @Override
     public ResponseEntity<AssetAdministrationShellDescriptorCollection> getAllAssetAdministrationShellDescriptors(Integer page, Integer pageSize) {
         return new ResponseEntity<>(shellMapper.toApiDto(shellService.findAllShells(page, pageSize)), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<AssetAdministrationShellDescriptorCollectionBase> postFetchAssetAdministrationShellDescriptor(List<String> shellIdentifications) {
+        List<Shell> shellsByExternalShellIds = shellService.findShellsByExternalShellIds(new HashSet<>(shellIdentifications));
+        return new ResponseEntity<>(new AssetAdministrationShellDescriptorCollectionBase()
+                        .items(shellMapper.toApiDto(shellsByExternalShellIds)), HttpStatus.OK);
     }
 
     @Override
@@ -128,7 +142,7 @@ public class AssetAdministrationShellApiDelegate implements RegistryApiDelegate,
         if( assetIds == null || assetIds.isEmpty()){
             return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
         }
-        List<String> externalIds = shellService.findExternalShellIdsByIdentifiers(shellMapper.fromApiDto(assetIds));
+        List<String> externalIds = shellService.findExternalShellIdsByIdentifiersByExactMatch(shellMapper.fromApiDto(assetIds));
         return new ResponseEntity<>(externalIds, HttpStatus.OK);
     }
 
@@ -150,4 +164,12 @@ public class AssetAdministrationShellApiDelegate implements RegistryApiDelegate,
         List<BatchResultDto> batchResults = shellService.saveBatch(shells);
         return new ResponseEntity<>(shellMapper.toListApiDto(batchResults), HttpStatus.CREATED);
     }
+
+    @Override
+    public ResponseEntity<List<String>> postQueryAllAssetAdministrationShellIds(ShellLookup shellLookup) {
+        List<IdentifierKeyValuePair> assetIds = shellLookup.getQuery().getAssetIds();
+        List<String> externalIds = shellService.findExternalShellIdsByIdentifiersByAnyMatch(shellMapper.fromApiDto(assetIds));
+        return new ResponseEntity<>(externalIds, HttpStatus.OK);
+    }
 }
+
