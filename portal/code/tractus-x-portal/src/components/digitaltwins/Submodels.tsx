@@ -7,7 +7,9 @@ function Submodels(props){
       {props.models.map(submodel => (
         <div key={submodel.identification} className='m5 p20 bgpanel flex40 br4'>
           <h3 className="fs18 bold mb10">{submodel.idShort}</h3>
-          <DescriptionList title="Description" description={submodel.description[0].text}/>
+          {submodel.description[0] &&
+            <DescriptionList title="Description" description={submodel.description[0].text}/>
+          }
           <dl className="df mb8">
             <dt className='dib minw150 fs14 fggrey'>Semantic ID</dt>
             <dd className='fs14 fg5a dib'>
