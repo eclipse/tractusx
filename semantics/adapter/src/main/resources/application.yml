@@ -251,7 +251,7 @@ idsadapter:
               description: Sample Material Database.
               protocol: SQL
               command: material-sql
-        bom-aspect:
+        traceability-aspect:
           description: Catena-X Traceability Aspect.
           mediaType: application/json
           model: urn:bamm:com.catenaX:0.0.1#Traceability
