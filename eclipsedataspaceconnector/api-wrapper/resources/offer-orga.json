@@ -7,6 +7,8 @@
   },
   "dataAddress": {
     "endpoint": "http://provider-aas-service:4243/offer-orga",
+    "authKey": "Authorization",
+    "authCode": "Basic dXNlci1vcmdhOnNlY3JldA==",
     "type": "HttpData"
   }
 }

@@ -7,6 +7,8 @@
   },
   "dataAddress": {
     "endpoint": "http://provider-aas-service:4243/offer-tdm",
+    "authKey": "Authorization",
+    "authCode": "Basic dXNlci10ZG06c2VjcmV0",
     "type": "HttpData"
   }
 }
