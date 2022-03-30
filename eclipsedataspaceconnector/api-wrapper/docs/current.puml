@@ -1,0 +1,117 @@
+@startuml
+
+skinParam NoteBackgroundColor WhiteSmoke
+skinParam NoteFontColor Black
+skinParam ParticipantBackgroundColor WhiteSmoke
+skinParam ActorBackgroundColor WhiteSmoke
+skinParam AgentBackgroundColor White
+skinParam AgentBorderColor SkyBlue
+skinparam shadowing false
+
+!define ConsumerColor f8f2ff
+!define ProviderColor d9edff
+!define WarningColor Business
+!define LeadColor Technology
+
+autonumber
+
+box "Consumer controlled zone" #ConsumerColor
+participant AASClient as "AAS-Client\n(Consumer / Dismantler)"
+participant AASAPIWrapper as "AAS-APIs-Wrapper\n(Proxy)"
+end box
+
+box "Consumer EDC" #ConsumerColor
+participant ConsumerControl as "Connector\n(control plane)" #Business
+participant ConsumerData as "Connector\n(data plane)" #Business
+end box
+
+box "Submodel Provider EDC" #ProviderColor
+participant ProviderData as "Connector\n(data plane)" #Business
+participant ProviderControl as "Connector\n(control plane)" #Business
+end box
+
+box "Submodel Provider controlled zone" #ProviderColor
+participant AASAPIWrapperProvider as "AAS-API-Provisioner"
+participant SubmodelBackendServer as "Submodel-API-Endoint\n(Provider-X)"
+end box
+
+box "Registry (central)"
+participant AASRegistryService as "AAS-Registry-API-Endpoint"
+end box
+
+box "AAS Provider"
+participant AASServer as "AAS-API-Endpoint\n(Provider-OEM)"
+end box
+
+
+
+title
+ **AAS (Current implementation)**
+ <sub>Assumption: The connection is already established between the AAS-API-Wrapper and the AASRegistryConnector.</sub>
+end title
+
+
+
+== Asset Administration Shell registry lookup v1 (Twin) ==
+AASClient -> AASRegistryService ++: get digital twin address (uuid)
+return address of AAS-Server @ AAS Provider
+
+AASClient -> AASServer ++: get shell with addresses of aspects
+return shell with addresses
+
+
+
+== access submodel (aspect implementation) ==
+AASClient -> AASClient: rewrite shell URI to AAS-API-Wrapper
+
+AASClient -> AASAPIWrapper: GET /submodel/{submodelId}
+activate AASClient
+    activate AASAPIWrapper
+'        alt contractId not already known
+            AASAPIWrapper -> ConsumerControl++: Get catalog from provider\nGET /api/control/catalog?provider=...
+            ConsumerControl <-> ProviderControl: fetch catalog magic
+            return Catalog
+            AASAPIWrapper -> AASAPIWrapper: find and select relevant contract in Catalog
+            AASAPIWrapper -> ConsumerControl: init negotiation with selected contract offer\nPOST /api/control/negotiate
+            activate ConsumerControl
+                AASAPIWrapper <-- ConsumerControl: negotiationId
+                ConsumerControl <<->> ProviderControl: negotiate agreement magic
+            deactivate ConsumerControl
+
+            loop negotiationState != CONFIRMED
+                AASAPIWrapper -> ConsumerControl ++: check negotiation state
+                return {state: ..., agreementId: ...}
+            end
+'        end
+        AASAPIWrapper -> ConsumerControl: initiate transfer process\nPOST /api/control/transfer
+        activate ConsumerControl
+            AASAPIWrapper <-- ConsumerControl: transferProcessId
+
+            ConsumerControl <<->> ProviderControl: establish channel magic
+
+            AASAPIWrapper <- ConsumerControl++: POST /proxy-callback\n(EndpointDataReference)
+                AASAPIWrapper -> AASAPIWrapper: Write EndpointDataReference\nin memory with agreementId as key
+            return response 200
+        deactivate ConsumerControl
+
+        loop endpointDataReference == null
+            AASAPIWrapper -> AASAPIWrapper: sleep 1s
+        end
+        AASAPIWrapper -> AASAPIWrapper: Get EndpointDataReference\nfrom memory
+
+        AASAPIWrapper -> ConsumerData ++: GET/POST/... /public\nwith Token in Header
+            ConsumerData -> ConsumerControl ++: Validate call\nPOST /validate (Token)
+            return true/false
+
+            ConsumerData -> ProviderData ++: GET/POST/... /public
+
+                ProviderData -> ProviderControl ++: Validate call\nPOST /validate (Token)
+                return true/false
+
+                ProviderData -> SubmodelBackendServer ++: GET/POST/... /service/data/{assetId}\n(Must be configured at the DataAddress of Asset)
+                return data
+            return data
+        return data
+    return data
+deactivate AASClient
+@enduml

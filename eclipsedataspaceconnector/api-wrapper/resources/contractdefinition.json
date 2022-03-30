@@ -1,0 +1,128 @@
+{
+  "id": "1",
+  "accessPolicy": {
+    "uid": "AP_0",
+    "permissions": [
+      {
+        "edctype": "dataspaceconnector:permission",
+        "uid": null,
+        "target": "asset-1",
+        "action": {
+          "type": "USE"
+        },
+        "constraints": [],
+        "duties": []
+      },
+      {
+        "edctype": "dataspaceconnector:permission",
+        "uid": null,
+        "target": "asset-2",
+        "action": {
+          "type": "USE"
+        },
+        "constraints": [],
+        "duties": []
+      },
+      {
+        "edctype": "dataspaceconnector:permission",
+        "uid": null,
+        "target": "offer-windchill",
+        "action": {
+          "type": "USE"
+        },
+        "constraints": [],
+        "duties": []
+      },
+      {
+        "edctype": "dataspaceconnector:permission",
+        "uid": null,
+        "target": "offer-tdm",
+        "action": {
+          "type": "USE"
+        },
+        "constraints": [],
+        "duties": []
+      },
+      {
+        "edctype": "dataspaceconnector:permission",
+        "uid": null,
+        "target": "offer-orga",
+        "action": {
+          "type": "USE"
+        },
+        "constraints": [],
+        "duties": []
+      }
+    ],
+    "prohibitions": [],
+    "obligations": [],
+    "extensibleProperties": {},
+    "@type": {
+      "@policytype": "set"
+    }
+  },
+  "contractPolicy": {
+    "uid": "CP_0",
+    "permissions": [
+      {
+        "edctype": "dataspaceconnector:permission",
+        "uid": null,
+        "target": "asset-1",
+        "action": {
+          "type": "USE"
+        },
+        "constraints": [],
+        "duties": []
+      },
+      {
+        "edctype": "dataspaceconnector:permission",
+        "uid": null,
+        "target": "asset-2",
+        "action": {
+          "type": "USE"
+        },
+        "constraints": [],
+        "duties": []
+      },
+      {
+        "edctype": "dataspaceconnector:permission",
+        "uid": null,
+        "target": "offer-orga",
+        "action": {
+          "type": "USE"
+        },
+        "constraints": [],
+        "duties": []
+      },
+      {
+        "edctype": "dataspaceconnector:permission",
+        "uid": null,
+        "target": "offer-windchill",
+        "action": {
+          "type": "USE"
+        },
+        "constraints": [],
+        "duties": []
+      },
+      {
+        "edctype": "dataspaceconnector:permission",
+        "uid": null,
+        "target": "offer-tdm",
+        "action": {
+          "type": "USE"
+        },
+        "constraints": [],
+        "duties": []
+      }
+    ],
+    "prohibitions": [],
+    "obligations": [],
+    "extensibleProperties": {},
+    "@type": {
+      "@policytype": "set"
+    }
+  },
+  "selectorExpression": {
+    "criteria": []
+  }
+}

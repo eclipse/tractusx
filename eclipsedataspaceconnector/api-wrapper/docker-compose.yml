@@ -1,0 +1,139 @@
+version: "3.9"
+
+services:
+  consumer-control-plane:
+    build:
+      context: .
+      args:
+        JAR: launchers/control-plane/build/libs/edc.jar
+        HTTP_PROXY: ${HTTP_PROXY}
+    image: cxtsiacr.azurecr.io/edc/consumer-control-plane:catenax-at-home-latest
+    ports:
+      - "8191:9191" # default
+      - "5005:8090"
+    environment:
+      EDC_VAULT: vault.properties
+      EDC_KEYSTORE: cert.pfx
+      EDC_KEYSTORE_PASSWORD: 123456
+    volumes:
+      - ${PWD}/config/consumer-control-plane.properties:/app/configuration.properties
+      - ${PWD}/config/consumer-control-plane-vault.properties:/app/vault.properties
+      - ${PWD}/certs/cert.pfx:/app/cert.pfx
+
+  consumer-data-plane:
+    build:
+      context: .
+      args:
+        JAR: launchers/data-plane/build/libs/edc.jar
+        HTTP_PROXY: ${HTTP_PROXY}
+    image: cxtsiacr.azurecr.io/edc/consumer-data-plane:catenax-at-home-latest
+    ports:
+      - "8192:9191" # default
+      - "5006:8090"
+    volumes:
+     - ${PWD}/config/consumer-data-plane.properties:/app/configuration.properties
+
+  api-wrapper:
+    build:
+      context: .
+      args:
+        JAR: launchers/api-wrapper/build/libs/edc.jar
+        HTTP_PROXY: ${HTTP_PROXY}
+    image: cxtsiacr.azurecr.io/edc/consumer-api-wrapper:catenax-at-home-latest
+    ports:
+      - "8193:9191" # default
+#      - "9192" # callback
+      - "5007:8090"
+    volumes:
+      - ${PWD}/config/api-wrapper.properties:/app/configuration.properties
+
+  provider-control-plane:
+    build:
+      context: .
+      args:
+        JAR: launchers/control-plane/build/libs/edc.jar
+        HTTP_PROXY: ${HTTP_PROXY}
+    image: cxtsiacr.azurecr.io/edc/provider-control-plane:catenax-at-home-latest
+    ports:
+      - "8181:9191" # default
+      - "8184:9192" # validation
+      - "5008:8090"
+    environment:
+      EDC_VAULT: vault.properties
+      EDC_KEYSTORE: cert.pfx
+      EDC_KEYSTORE_PASSWORD: 123456
+    volumes:
+      - ${PWD}/config/provider-control-plane.properties:/app/configuration.properties
+      - ${PWD}/config/provider-control-plane-vault.properties:/app/vault.properties
+      - ${PWD}/certs/cert.pfx:/app/cert.pfx
+
+  provider-data-plane:
+    build:
+      context: .
+      args:
+        JAR: launchers/data-plane/build/libs/edc.jar
+        HTTP_PROXY: ${HTTP_PROXY}
+    image: cxtsiacr.azurecr.io/edc/provider-data-plane:catenax-at-home-latest
+    ports:
+      - "8182:9191" # default
+      - "8183:9192" # public
+      - "5009:8090"
+    volumes:
+      - ${PWD}/config/provider-data-plane.properties:/app/configuration.properties
+
+  provider-backend-service:
+    build:
+      context: .
+      args:
+        JAR: launchers/provider-backend-service/build/libs/edc.jar
+        HTTP_PROXY: ${HTTP_PROXY}
+    image: cxtsiacr.azurecr.io/edc/provider-api-wrapper:catenax-at-home-latest
+    ports:
+      - "8194:9191" # default
+      - "5010:8090"
+    volumes:
+      - ${PWD}/config/provider-backend-service.properties:/app/configuration.properties
+
+  provider-aas-service:
+    build:
+      context: .
+      args:
+        JAR: launchers/adapter/target/adapter-1.3.0-SNAPSHOT.jar
+        HTTP_PROXY: ${HTTP_PROXY}
+    image: cxtsiacr.azurecr.io/backend/simple-aas-adapter:catenax-at-home-latest
+    ports:
+      - "4244:4244" # default
+      - "5011:8090"
+
+  hub-service:
+    build:
+      context: .
+      args:
+        JAR: launchers/semantic-hub/target/semantic-hub-1.3.0-SNAPSHOT.jar
+        HTTP_PROXY: ${HTTP_PROXY}
+    image: cxtsiacr.azurecr.io/semantics/hub:catenax-at-home-latest
+    ports:
+      - "4242:4242" # default
+      - "5012:8090"
+
+  registry-service:
+    build:
+      context: .
+      args:
+        JAR: launchers/registry/target/registry-1.3.0-SNAPSHOT.jar
+        HTTP_PROXY: ${HTTP_PROXY}
+    image: cxtsiacr.azurecr.io/semantics/registry:catenax-at-home-latest
+    ports:
+      - "4243:4243" # default
+      - "5013:8090"
+
+  consumer-aas-proxy-service:
+    build:
+      context: .
+      args:
+        JAR: launchers/aasproxy/target/aasproxy-1.0.0-SNAPSHOT.jar
+        HTTP_PROXY: ${HTTP_PROXY}
+    image: cxtsiacr.azurecr.io/edc/consumer-aas-proxy:catenax-at-home-latest
+    ports:
+      - "4245:4245" # default
+      - "5014:8090"

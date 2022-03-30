@@ -1,0 +1,42 @@
+#
+# Copyright (c) 2021-2022 T-Systems International GmbH (Catena-X Consortium)
+#
+# See the AUTHORS file(s) distributed with this work for additional
+# information regarding authorship.
+#
+# See the LICENSE file(s) distributed with this work for
+# additional information regarding license terms.
+#
+
+###########################################################
+# Configuration of the AAS Proxy
+###########################################################
+
+# Exposed Web Server (Incoming)
+server:
+  protocol: http
+  host: localhost
+  port: 4245
+openapi:
+  dotAASPart2HTTPRESTRegistryAndDiscovery:
+    base-path:
+# Delegated Web Server (Outgoing)
+aasproxy:
+  proxyUrl: ${server.protocol}://${server.host}:${server.port}
+  registryUrl: http://localhost:4243/
+  wrapperUrl: http://localhost:8193/api/service
+  idConversions:
+    "[urn:standard:org\\.iso:9721#(WMA|WBS|WBW|WBY|WB1|X4X|4US|5UX).+]":
+      conversionSubmodel: idconversion-aspect
+      conversionSubmodelEntry: convert
+      targetDomain: 'urn:VAN:com.bmw:1.0.0#'
+      orgaIdentifiers:
+      -
+        key: 'urn:twin:com.catenax#'
+        value: '398c047f-c14c-47b9-9c27-d9511afc90d3'
+spring:
+  # How to deal with REST representation problems
+  jackson:
+    default-property-inclusion: non_null
+    deserialization:
+      fail-on-unknown-properties: true

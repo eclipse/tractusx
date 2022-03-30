@@ -1,0 +1,82 @@
+@startuml
+autonumber
+box "Consumer"
+participant AASClient as "AAS-Client\n(Consumer / Dismantler)"
+participant AASAPIWrapper as "AAS-APIs-Wrapper\n(Proxy)"
+participant ConsumerConnector as "Connector\n(data and control plane)"
+end box
+
+box "Submodel Provider"
+participant SubmodelProviderConnector as "Connector\n(data and control plane)"
+participant AASAPIWrapperProvider as "AAS-API-Provisioner"
+participant SubmodelBackendServer as "Submodel-API-Endoint\n(Provider-X)"
+end box
+
+box "Registry (central)"
+participant AASRegistryService as "AAS-Registry-API-Endpoint"
+end box
+
+box "AAS Provider"
+participant AASServer as "AAS-API-Endpoint\n(Provider-OEM)"
+end box
+
+
+
+title
+ **AAS**
+ <sub>Assumption: The connection is already established between the AAS-API-Wrapper and the AASRegistryConnector.</sub>
+end title
+
+
+== Asset Administration Shell registry lookup v1 (Twin) ==
+AASClient -> AASRegistryService ++: get digital twin address (uuid)
+return address of AAS-Server @ AAS Provider
+
+AASClient -> AASServer ++: get shell with addresses of aspects
+return  shell with addresses
+
+
+== access submodel (aspect implementation) ==
+AASClient -> AASClient: rewrite shell URI to AAS-API-Wrapper
+
+AASClient -> AASAPIWrapper ++: GET .../submodel (e.g. /shells/{aas-identifier}/aas/submodels/{submodel-identifier}/submodel)
+activate  AASClient
+
+alt if connector address unknown
+AASAPIWrapper -> SubmodelBackendServer ++: GET /.well-known/connector.txt
+return connector address
+AASAPIWrapper ->> ConsumerConnector: register connector
+else
+AASAPIWrapper -> AASAPIWrapper: connector address from URI
+AASAPIWrapper ->> ConsumerConnector: register connector
+else
+AASAPIWrapper -> AASAPIWrapper:
+note left: other options:\n* address from registry\n* ?
+end
+
+
+alt if channel not ready
+AASAPIWrapper ->> ConsumerConnector: find (frame-)contract
+note left: contracts presigned in v1?
+ConsumerConnector <<->> SubmodelProviderConnector: negotiate agreement
+AASAPIWrapper <<- ConsumerConnector: agreement signed
+AASAPIWrapper ->> ConsumerConnector: start 'data transfer'
+ConsumerConnector <<->> SubmodelProviderConnector: establish channel
+SubmodelProviderConnector ->> AASAPIWrapperProvider: contract agreement\nasset info
+AASAPIWrapperProvider ->> SubmodelBackendServer: provision AAS account
+AASAPIWrapperProvider <<- SubmodelBackendServer: AAS account info
+SubmodelProviderConnector <<- AASAPIWrapperProvider: AAS account info
+ConsumerConnector <<- SubmodelProviderConnector: AAS@ProvDataPlane account info
+AASAPIWrapper <<- ConsumerConnector: AAS@ConsDataPlane account info
+
+
+end
+
+AASAPIWrapper -> ConsumerConnector ++: GET .../submodel
+ConsumerConnector -> SubmodelProviderConnector ++: GET .../submodel
+SubmodelProviderConnector -> SubmodelBackendServer ++: GET .../submodel
+return Response (json)
+return Response (json)
+return Response (json)
+return Response (json)
+@enduml

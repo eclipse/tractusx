@@ -1,0 +1,12 @@
+{
+  "asset": {
+    "asset:prop:id": "offer-orga",
+    "asset:prop:name": "asset name",
+    "asset:prop:contenttype": "application/json",
+    "asset:prop:policy-id": "use-eu"
+  },
+  "dataAddress": {
+    "endpoint": "http://provider-aas-service:4243/offer-orga",
+    "type": "HttpData"
+  }
+}
