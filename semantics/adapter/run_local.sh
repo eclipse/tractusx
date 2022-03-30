@@ -15,7 +15,7 @@
 #   Windows, (git)-bash shell, java 11 (java) and maven (mvn) in the $PATH.
 #
 # Synposis: 
-#   ./run_local.sh (-build)? (-clean)? (-suspend)? (-debug)? (-proxy)?
+#   ./build_run_local.sh (-build)? (-clean)? (-suspend)? (-debug)? (-proxy)?
 #
 # Comments: 
 #
@@ -59,8 +59,14 @@ if [ "$CLEAN_DB" == "y" ]; then
   rm -f ${DB_FILE}*
 fi
 
-CALL_ARGS="-classpath ./src/main/resources;target/adapter-1.3.0-SNAPSHOT.jar \
-           -Dspring.datasource.url=$H2_URL\
+PATH_SEPARATOR=":"
+if [ "${OSTYPE}" == "msys" ]; then
+  PATH_SEPARATOR=";"
+fi
+
+CALL_ARGS="-classpath ./src/main/resources${PATH_SEPARATOR}target/adapter-1.3.0-SNAPSHOT.jar \
+           -Dspring.profiles.active=$PROFILE \
+           -Dspring.datasource.url=$H2_URL \
            -Dserver.ssl.enabled=false $PROXY $DEBUG_OPTIONS\
            org.springframework.boot.loader.JarLauncher" 
 

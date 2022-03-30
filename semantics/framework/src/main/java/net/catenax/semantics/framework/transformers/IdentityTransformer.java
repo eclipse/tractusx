@@ -9,12 +9,16 @@ additional information regarding license terms.
 
 package net.catenax.semantics.framework.transformers;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.catenax.semantics.framework.IdsMessage;
 import net.catenax.semantics.framework.IdsRequest;
 import net.catenax.semantics.framework.StatusException;
 import net.catenax.semantics.framework.Transformer;
 import org.springframework.stereotype.Service;
+import net.catenax.semantics.framework.config.*;
+import net.catenax.semantics.framework.*;
+import java.util.Map;
 
 /**
  * a default transformer that does not do anything
@@ -22,7 +26,13 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Slf4j
-public class IdentityTransformer implements Transformer {
+@RequiredArgsConstructor
+public class IdentityTransformer<Cmd extends Command, O extends Offer, Ct extends Catalog, Co extends Contract, T extends Transformation> implements Transformer {
+
+    /**
+     * needs a configuration
+     */
+    protected final Config<Cmd, O, Ct, Co,T> configuration;
 
     @Override
     public boolean canHandle(IdsMessage incoming, IdsRequest request, String targetModel) {
@@ -34,7 +44,14 @@ public class IdentityTransformer implements Transformer {
 
     @Override
     public IdsMessage transform(IdsMessage incoming, IdsRequest request, String targetModel) throws StatusException {
-        log.info("using message "+incoming+" as is");
-        return incoming;
+        BaseIdsMessage result=new BaseIdsMessage();
+        result.setMediaType(incoming.getMediaType());
+        result.setModel(incoming.getModel());
+        String oldPayload=incoming.getPayload();
+        for (Map.Entry<String, String> params : configuration.getTransformationParameters().entrySet()) {
+            oldPayload=oldPayload.replace("${"+params.getKey()+"}",params.getValue());
+        }
+        result.setPayload(oldPayload);
+        return result;
     }
 }

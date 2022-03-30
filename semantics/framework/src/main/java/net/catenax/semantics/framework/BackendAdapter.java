@@ -22,7 +22,9 @@ public interface BackendAdapter extends IdsAdapter {
 
     /**
      * performs a (synchronous) request
-     * @return a message response
+     * @params request the input request
+     * @params model target model
+     * @return a message response which may not take the model into account (in which case a transformation may need to be done)
      */
-    public IdsMessage perform(IdsRequest request) throws StatusException;
+    public IdsMessage perform(IdsRequest request, String model) throws StatusException;
 }

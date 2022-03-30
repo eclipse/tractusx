@@ -18,11 +18,11 @@ If you are looking for semantic models (hosted or processed by this code), pleas
 ## Submodules of the Catena-X Digitial Twin & Semantic Layer
 
 The Semantic layer is structured into the following packages/submodules:
-- [Catena-X Semantic Framework](framework) A library for building your own semantic-enabled Catena-X components.
-- [Catena-X Semantic Adapter](adapter) A sample adapter demonstrating how to build a semantically-enabled twin & data provider.
-- [Catena-X Semantic Framework](services) Reference implementations of relevant semantic services:
-  - Digital Twin Registry (implementing and federating [Asset Administration Shell APIs]()) and 
-  - Semantic Hub (based on the [BAMM Aspect Meta Model]())
+- [Catena-X Semantic Framework](framework): A library for building your own semantic-enabled Catena-X components.
+- [Catena-X Semantic Adapter](adapter): A sample adapter demonstrating how to build a semantically-enabled twin & data provider.
+- Catena-X Semantic Services: Reference implementations of relevant semantic services:
+  - [Digital Twin Registry](registry): implementing and federating [Asset Administration Shell APIs](http://idtwin.org)
+  - [Semantic Hub](semantic-hub): based on the [BAMM Aspect Meta Model](https://openmanufacturingplatform.github.io/)
 
 ### Devops & Deployment:
 

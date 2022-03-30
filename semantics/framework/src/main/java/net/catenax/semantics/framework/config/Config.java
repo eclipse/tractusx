@@ -16,6 +16,7 @@ import java.util.Map;
  * represents a (part) of a configuration file, such as a spring boot yml.
  */
 public interface Config<Cmd extends Command, O extends Offer, Ct extends Catalog, Co extends Contract, T extends Transformation> {
+    Security getSecurity();
     String getConnectorType();
     String getConnectorUrl();
     String getConnectorId();

@@ -26,6 +26,12 @@ import java.net.URL;
 public class FileAdapter<Cmd extends Command, O extends Offer, Ct extends Catalog, Co extends Contract, T extends Transformation>
     extends BaseAdapter<Cmd,O,Ct,Co,T> implements BackendAdapter {
 
+    public static byte[] UTF8_BOM = new byte[] {(byte)0xEF, (byte)0xBB, (byte)0xBF};
+    public static byte[] UTF16BE_BOM = new byte[] {(byte)0xFE, (byte)0xFF};
+    public static byte[] UTF16LE_BOM = new byte[] {(byte)0xFE, (byte)0xFE};
+    public static byte[] UTF32BE_BOM = new byte[] {(byte)0x00, (byte)0x00, (byte)0xFE, (byte)0xFF};
+    public static byte[] UTF32LE_BOM = new byte[] {(byte)0xFF, (byte)0xFE, (byte)0x00, (byte)0x00};
+
     @Override
     public String getProtocol() {
         return "FILE";
@@ -36,9 +42,8 @@ public class FileAdapter<Cmd extends Command, O extends Offer, Ct extends Catalo
     }
 
     @Override
-    public IdsMessage perform(IdsRequest request) throws StatusException {
+    public IdsMessage perform(IdsRequest request, String model) throws StatusException {
         String file = request.getParameters().get("file");
-        String model = request.getParameters().get("model");
         String command = request.getCommand();
         if(configurationData.getCommands().containsKey(command)) {
             Command co = configurationData.getCommands().get(command);
@@ -75,8 +80,22 @@ public class FileAdapter<Cmd extends Command, O extends Offer, Ct extends Catalo
             } else {
                 inputStream = new URL(file).openStream();
             }
+            byte[] firstBytes=new byte[6];
+            int bom_index=0;
+            firstBytes[bom_index]=(byte) inputStream.read();
+            while(bom_index<UTF8_BOM.length && firstBytes[bom_index]==UTF8_BOM[bom_index]) {
+                firstBytes[++bom_index]=(byte) inputStream.read();
+            }
+            String prePend="";
+            // was the BOM met? NO, then read until we have enough bytes
+            if(bom_index<UTF8_BOM.length) {
+                if(bom_index%2==0) {
+                    firstBytes[++bom_index]=(byte) inputStream.read();
+                    prePend=new String(firstBytes,0,bom_index+1);
+                }
+            }
             try (BufferedReader resourceStream = new BufferedReader(new InputStreamReader(inputStream))) {
-                StringBuilder contentBuilder = new StringBuilder();
+                StringBuilder contentBuilder = new StringBuilder(prePend);
                 String sCurrentLine;
                 while ((sCurrentLine = resourceStream.readLine()) != null) {
                     contentBuilder.append(sCurrentLine).append("\n");

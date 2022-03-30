@@ -11,6 +11,7 @@ package net.catenax.semantics.framework;
 import lombok.Data;
 
 import java.util.Map;
+import java.util.Collection;
 
 /**
  * a request that is internalized into the connector plane
@@ -32,7 +33,7 @@ public class IdsRequest extends BaseIdsMessage implements IdsMessage {
     /**
      * an agreement/security token
      */
-    String securityToken;
+    Collection<String> securityToken;
     /**
      * the chain of calling connectors
      */

@@ -35,7 +35,7 @@ RUN mkdir persistence
 
 COPY ./registry/target/registry*.jar app.jar
 
-ENV SERVER_PORT 4242
+ENV SERVER_PORT 4243
 ENV SPRING_DATASOURCE_URL "jdbc:h2:file:/services/persistence/persistence"
 ENV SPRING_DATASOURCE_DRIVERCLASSNAME "org.h2.Driver"
 ENV SPRING_DATASOURCE_USERNAME "sa"
@@ -50,6 +50,6 @@ ENV IDSADAPTER_CONNECTORPASSWORD "password"
 ENV IDP_ISSUER_URI "http://localhost:8080/auth/realms/catenax"
 ENV JAVA_TOOL_OPTIONS "-Xms512m -Xmx2048m"
 
-EXPOSE 4242
+EXPOSE 4243
 
 ENTRYPOINT [ "java","-Dspring.jpa.hibernate.ddl-auto=${SPRING_JPA_HIBERNATE_DDL-AUTO}","-Dspring.sql.init.platform=${SPRING_SQL_INIT_PLATFORM}","-Didsadapter.portalUrl=${IDSADAPTER_PORTALURL}","-Didsadapter.serviceUrl=${IDSADAPTER_SERVICEURL}", "-Didsadapter.connectorUrl=${IDSADAPTER_CONNECTORURL}", "-Didsadapter.connectorUser=${IDSADAPTER_CONNECTORUSER}", "-Didsadapter.connectorPassword=${IDSADAPTER_CONNECTORPASSWORD}" ,"-Dspring.datasource.url=${SPRING_DATASOURCE_URL}","-Dspring.datasource.driverClassName=${SPRING_DATASOURCE_DRIVERCLASSNAME}","-Dspring.datasource.username=${SPRING_DATASOURCE_USERNAME}","-Dspring.datasource.password=${SPRING_DATASOURCE_PASSWORD}","-Dspring.security.oauth2.resourceserver.jwt.issuer-uri=${IDP_ISSUER_URI}","-jar","/services/app.jar" ]

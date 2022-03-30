@@ -39,13 +39,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ContextConfiguration(classes = { AdapterConfiguration.class })
 class AdapterConfigurationTest {
 
-	/**
-	 * initialize EDC
-	 */
-	@BeforeAll
-	public static void bootstrap() {
-		EdcService.bootstrap();
-	}
 
 	/**
 	 * the actual test code is rather small ;-)

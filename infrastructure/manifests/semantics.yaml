@@ -138,7 +138,7 @@ spec:
   type: ClusterIP
   ports:
   - port: 8080
-    targetPort: 4242
+    targetPort: 4243
   selector:
     app: registry
 ---
@@ -287,7 +287,7 @@ spec:
   type: ClusterIP
   ports:
   - port: 8080
-    targetPort: 4243
+    targetPort: 4244
   selector:
     app: adapter
 ---

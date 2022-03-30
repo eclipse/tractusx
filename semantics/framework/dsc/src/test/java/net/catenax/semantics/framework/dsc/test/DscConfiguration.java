@@ -8,14 +8,16 @@ additional information regarding license terms.
 */
 package net.catenax.semantics.framework.dsc.test;
 
-import net.catenax.semantics.framework.IdsConnector;
-import net.catenax.semantics.framework.auth.BearerTokenOutgoingInterceptor;
+import net.catenax.semantics.framework.*;
 import net.catenax.semantics.framework.config.*;
+import net.catenax.semantics.framework.auth.TokenOutgoingInterceptor;
 import net.catenax.semantics.framework.test.MockConfiguration;
 import net.catenax.semantics.framework.test.MockConnector;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.FilterType;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.sql.DataSource;
 
@@ -23,7 +25,7 @@ import javax.sql.DataSource;
  * spring configuration of the framework tests
  */
 @Configuration
-@ComponentScan(basePackages = {"net.catenax.semantics.framework", "net.catenax.semantics.framework.dsc"})
+@ComponentScan(basePackages = {"net.catenax.semantics.framework", "net.catenax.semantics.framework.dsc"}, excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern="net\\.catenax\\.semantics\\.framework.aas.*"))
 public class DscConfiguration extends MockConfiguration {
 
     @Bean
@@ -38,7 +40,13 @@ public class DscConfiguration extends MockConfiguration {
 
     @Bean
     @Override
-    public BearerTokenOutgoingInterceptor getInterceptor() {
+    public TokenOutgoingInterceptor getInterceptor() {
         return super.getInterceptor();
     }
+
+    @Bean
+    public ObjectMapper getObjectMapper() {
+        return super.getObjectMapper();
+    }
+
 }

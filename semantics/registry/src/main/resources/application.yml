@@ -13,7 +13,7 @@
 
 #  Endpoint configuration for service provisioning and data pull
 server:
-  port: 4242
+  port: 4243
   ssl:
     key-store-password: __KEYSTOREPASSWORD__
     key-store: classpath:conf/__KEYSTOREFILENAME__.p12

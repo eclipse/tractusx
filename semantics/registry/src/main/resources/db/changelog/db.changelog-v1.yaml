@@ -312,3 +312,16 @@ databaseChangeLog:
             tableName: SHELL_IDENTIFIER
             constraintName: SHELL_IDENTIFIER_AK_01
             uniqueColumns: KEY, FK_SHELL_ID
+  - changeSet:
+      id: 10032022-01
+      author: cjung7
+      changes:
+        -  modifyDataType:
+             tableName: SUBMODEL_ENDPOINT
+             columnName:  INTERFACE_NAME
+             newDataType:  NVARCHAR(512)
+        -  modifyDataType:
+             tableName: SUBMODEL_ENDPOINT
+             columnName:  ENDPOINT_PROTOCOL_VERSION
+             newDataType:  nvarchar(24)
+

@@ -20,6 +20,7 @@ import lombok.Data;
  */
 @Data
 public class ConfigurationData<Cmd extends Command, O extends Offer, Ct extends Catalog, Co extends Contract, T extends Transformation> implements Config<Cmd,O,Ct,Co,T> {
+    private Security security;
     private String connectorType;
     private String connectorUrl;
     private String connectorId;

@@ -15,6 +15,7 @@ import net.catenax.semantics.framework.IdsConnector;
 import net.catenax.semantics.framework.StatusException;
 import net.catenax.semantics.framework.adapters.DownloadAdapter;
 import net.catenax.semantics.framework.adapters.TwinRegistryAdapter;
+import net.catenax.semantics.framework.config.Contract;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,7 +41,7 @@ import io.swagger.annotations.*;
  * It uses the IDS connector directly for exposing some debugging endpoints.
  */
 @Controller
-@RequestMapping("${openapi.semanticHub.base-path:/adapter}")
+@RequestMapping("${openapi.semantics.base-path:/adapter}")
 @AllArgsConstructor
 @Slf4j
 @Api(tags="Adapter", value = "adapter", description = "Simple Semantic Adapter API")
@@ -57,7 +58,6 @@ public class AdapterController {
      */
     @GetMapping(value = "/hello", produces = "text/plain")
     public ResponseEntity<String> hello() {
-        log.info("getting hello");
         return ResponseEntity.ok("hello");
     }
 
@@ -102,7 +102,11 @@ public class AdapterController {
      */
     @GetMapping(value = "/idsinfo", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> idsInfo() {
-        return ResponseEntity.ok(idsConnector.getSelfDescription());
+        try {
+            return ResponseEntity.ok(idsConnector.getSelfDescription());
+        } catch(StatusException e) {
+            return ResponseEntity.status(e.getStatus()).build();
+        }
     }
 
     /**
@@ -112,7 +116,25 @@ public class AdapterController {
      */
     @PostMapping(value = "/offer/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Offer> offerResource(@PathVariable("name") String name) {
-        return ResponseEntity.ok(idsConnector.getOrCreateOffer(name));
+        try {
+            return ResponseEntity.ok(idsConnector.getOrCreateOffer(name));
+        } catch(StatusException e) {
+            return ResponseEntity.status(e.getStatus()).build();
+        }
+    }
+
+    /**
+     * publish a preconfigured contract for debugging purposes
+     * @param name  source specification
+     * @return register response
+     */
+    @PostMapping(value = "/contract/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Contract> offerContract(@PathVariable("name") String name) {
+        try {
+            return ResponseEntity.ok(idsConnector.getOrCreateContract(name));
+        } catch(StatusException e) {
+            return ResponseEntity.status(e.getStatus()).build();
+        }
     }
 
 }

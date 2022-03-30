@@ -47,35 +47,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.eclipse.dataspaceconnector</groupId>
-            <artifactId>core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.dataspaceconnector</groupId>
-            <artifactId>ids-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.dataspaceconnector</groupId>
-            <artifactId>transfer-process-store-memory</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.dataspaceconnector</groupId>
-            <artifactId>contractdefinition-store-memory</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.dataspaceconnector</groupId>
-            <artifactId>assetindex-memory</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.dataspaceconnector</groupId>
-            <artifactId>iam-mock</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.dataspaceconnector</groupId>
-            <artifactId>contractnegotiation-store-memory</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <scope>test</scope>

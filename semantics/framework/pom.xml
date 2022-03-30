@@ -46,6 +46,11 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>1.6</version>
+        </dependency>
 
         <!-- Annotations -->
         <dependency>
@@ -57,12 +62,20 @@
             <artifactId>swagger-annotations</artifactId>
         </dependency>
         <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
         <dependency>
             <groupId>org.openapitools</groupId>
             <artifactId>jackson-databind-nullable</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
         </dependency>
 
         <!-- Framework -->
@@ -138,6 +151,47 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>io.swagger.codegen.v3</groupId>
+                <artifactId>swagger-codegen-maven-plugin</artifactId>
+                <version>3.0.33</version>
+                <executions>
+                    <!--<execution>
+                        <id>generate-shell-skeletons</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>
+                                ${project.basedir}/../framework/src/main/resources/static/aas-proxy-openapi.yaml
+                            </inputSpec>
+                            <language>spring</language>
+                            <generateSupportingFiles>true</generateSupportingFiles>
+                            <invokerPackage>net.catenax.semantics.framework.aas</invokerPackage>
+                            <modelPackage>net.catenax.semantics.framework.aas.model</modelPackage>
+                            <apiPackage>net.catenax.semantics.framework.aas.api.proxy</apiPackage>
+                            <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
+                            <configOptions>
+                                <oas3>true</oas3>
+                                <delegatePattern>true</delegatePattern>
+                                <groupId>${project.groupId}</groupId>
+                                <artifactId>${project.artifactId}</artifactId>
+                                <artifactVersion>${project.version}</artifactVersion>
+                                <library>spring-boot</library>
+                                <java8>true</java8>
+                                <dateLibrary>java8</dateLibrary>
+                                <licenseName>Proprietary</licenseName>
+                                <licenseUrl>https://www.t-systems.com</licenseUrl>
+                                <packageName>net.catenax</packageName>
+                                <useSpringfox>false</useSpringfox>
+                                <basePackage>net.catenax.semantics.framework.aas</basePackage>
+                                <configPackage>net.catenax.semantics.framework.aas.config</configPackage>
+                            </configOptions>
+                        </configuration>
+                    </execution>-->
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

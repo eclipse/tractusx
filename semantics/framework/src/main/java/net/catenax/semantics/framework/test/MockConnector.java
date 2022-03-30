@@ -11,12 +11,18 @@ package net.catenax.semantics.framework.test;
 import net.catenax.semantics.framework.IdsConnector;
 import net.catenax.semantics.framework.IdsRequest;
 import net.catenax.semantics.framework.IdsResponse;
+import net.catenax.semantics.framework.config.Contract;
 import net.catenax.semantics.framework.config.Offer;
 
 /**
  * mock ids connector for testing purposes
  */
 public class MockConnector implements IdsConnector {
+    @Override
+    public Contract getOrCreateContract(String title) {
+        return null;
+    }
+
     @Override
     public Offer getOrCreateOffer(String title) {
         return null;

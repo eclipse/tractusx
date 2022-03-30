@@ -19,7 +19,7 @@
 ---
 #  Endpoint configuration for service provisioning and data pull
 server:
-  port: 4243
+  port: 4244
   ssl:
     key-store-password: __KEYSTOREPASSWORD__
     key-store: classpath:conf/__KEYSTOREFILENAME__.p12
@@ -42,12 +42,8 @@ spring:
     name: semantics-adapter
   banner:
     location: "classpath:banner.txt"
-  # configuring the semantic services as a resource server and defining the corresponding IdP
   security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: https://catenaxdev042akssrv.germanywestcentral.cloudapp.azure.com/iamcentralidp/auth/realms/CX-Central
+    debug: true
   # Builtin persistence for hosting models, twins & data
   sql:
     init:
@@ -77,6 +73,7 @@ spring:
         web-allow-others: true
 # How to deal with REST representation problems
   jackson:
+    default-property-inclusion: non_null
     deserialization:
       fail-on-unknown-properties: true
 title: '@project.name@'
@@ -108,23 +105,72 @@ management:
 idsadapter:
   #
   # Part 1 - Connection to IDS/Catena-X
-  # with catalogs and contracts
+  # with catalogs and contracts as well
+  # as security
   #
-  connectorType: DSC
+
+  # type could be DSC or EDC
+  connectorType: dsc
+  # deprecated
   connectorId: https://w3id.org/idsa/autogen/connectorEndpoint/a73d2202-cb77-41db-a3a6-05ed251c0b
-  connectorUrl: http://localhost:8080
+  # how to access connector
+  connectorHost: localhost:8080
+  connectorProtocol: http
+  connectorUrl: ${idsadapter.connectorProtocol}://${idsadapter.connectorHost}
+  # use X-Api-Key as username if authorizing via api-key, else its basic auth
   connectorUser: admin
+  # put in api key for api-key authorization
   connectorPassword: password
   publisher: http://t-systems.com
+  # the digitial twin registry to interface for twin registrations
+  serviceUrl: http://localhost:4243
   # our callback address exposed
-  serviceUrl: http://localhost:4242
-  adapterUrl: http://localhost:4243/api/v1
+  adapterUrl: http://localhost:4244
+  # for DSC purposes, the callback pattern needs to be registered
   callbackPattern: "%1$s/%2$s/download?offer=%3$s&representation=%4$s&artifact=%5$s"
+  # deprecated no callback needed anymore
   portalUrl: http://localhost:3000
+  # determines whether offers, contracts and twins will be registered at startup
+  registerOnStart: false
+
+  # Define users, roles and access paths
+  security:
+    debug: true
+    users:
+      user-windchill:
+        password: secret
+        roles:
+          - role-windchill
+      user-tdm:
+        password: secret
+        roles:
+          - role-tdm
+      user-orga:
+        password: secret
+        roles:
+          - role-orga
+      admin:
+        password: secret
+        roles:
+          - ADMIN
+    filters:
+      "[.*/adapter/.*]":
+        - ADMIN
+      "[.*/offer-windchill/shells/.*]":
+        - ADMIN
+        - role-windchill
+      "[.*/offer-tdm/shells/.*]":
+        - ADMIN
+        - role-tdm
+      "[.*/offer-orga/shells/.*]":
+        - ADMIN
+        - role-orga
+
   # Under which catalogs do we publish our data offerings?
   catalogs:
     "[urn:catalog:catenax]":
       description: Catena-X Data Offering Catalog
+
   # Under which conditions and to whom do we publish our data offerings
   contracts:
     contract-readall:
@@ -140,6 +186,7 @@ idsadapter:
              Sample read all permission.
              Due to a connector ?bug?, action field must stay empty.
           value: "{ \"@type\":\"ids:Permission\", \"ids:action\":[] }"
+
   #
   # Part 2 - IDS Offer/Representation/Artifact Provisioning + Aspect Implementation
   #
@@ -153,28 +200,30 @@ idsadapter:
       contract: contract-readall
       # reference to the catalogue
       catalog: "urn:catalog:catenax"
+      # the user with which the IDS callback should be done
+      user: user-windchill
       paymentMethod: free
       # The representations correspond to aspects/semantic models supported
       representations:
-        material-aspect:
+        brake-material:
           description: Sample Static Material Aspect.
           mediaType: application/json
           model: urn:bamm:com.catenaX:0.0.1#Material
           language: EN
           # The various artifacts of material
           artifacts:
-            brake:
+            default:
               description: Sample File Source
               protocol: FILE
               command: brake-file
-        bom-aspect:
+        brake-traceability:
           description: Sample BOM Aspect.
           mediaType: application/json
           model: urn:bamm:com.catenaX:0.0.1#Traceability
           language: EN
           # The sources/artifacts of BOM
           artifacts:
-            brake:
+            default:
               description: Sample File Source
               protocol: FILE
               command: brake-file
@@ -187,6 +236,8 @@ idsadapter:
       contract: contract-readall
       # reference to the catalog
       catalog: "urn:catalog:catenax"
+      # the user with which the IDS callback should be done
+      user: user-tdm
       paymentMethod: free
       # The representations correspond to all Speedboat aspects/semantic models
       representations:
@@ -210,6 +261,31 @@ idsadapter:
               description: Test Traceability Database.
               protocol: SQL
               command: bom-sql
+
+    # A third operation offer
+    offer-orga:
+      description: Test Operation from Catena-X Organisation.
+      license: https://www.apache.org/licenses/LICENSE-2.0.html
+      language: EN
+      # reference to the contract
+      contract: contract-readall
+      # reference to the catalog
+      catalog: "urn:catalog:catenax"
+      # the user with which the IDS callback should be done
+      user: user-orga
+      paymentMethod: free
+      # The representations correspond to all Speedboat aspects/semantic models
+      representations:
+        idconversion-aspect:
+          description: Catena-X ID Conversion Aspect.
+          mediaType: application/json
+          model: urn:bamm:com.catenaX:1.0.0#IdConversion
+          language: EN
+          artifacts:
+            convert:
+              description: Anonymize Identifiers.
+              protocol: FUNCTION
+              command: net.catenax.semantics.framework.idconversion.Pseudonymizer#convert
   #
   # Part 3 - Define Transformations from Backend data to Aspect data
   #
@@ -229,11 +305,11 @@ idsadapter:
       sourceModel: http://pwc.t-systems.com/datamodel/common
       targetMediaType: application/json
       targetModel: urn:bamm:com.catenaX:0.0.1#Material
-    dcx2twin:
-      file: classpath:dcx2twin.xsl
+    dcx2aas:
+      file: classpath:dcx2aas.xsl
       sourceModel: http://pwc.t-systems.com/datamodel/common
       targetMediaType: application/json
-      targetModel: urn:com.catenaX.semantics:1.2.0-SNAPSHOT#DigitialTwins
+      targetModel: https://admin-shell.io/aas/API/AssetAdministrationShellDescriptor/1/0/RC02
     sql2bom:
       file: classpath:sql2bom.xsl
       sourceModel: urn:com:tsystems:DataSet
@@ -244,16 +320,19 @@ idsadapter:
       sourceModel: urn:com:tsystems:DataSet
       targetMediaType: application/json
       targetModel: urn:bamm:com.catenaX:0.0.1#Material
-    sql2twins:
-      file: classpath:sql2twins.xsl
+    sql2aas:
+      file: classpath:sql2aas.xsl
       sourceModel: urn:com:tsystems:DataSet
       targetMediaType: application/json
-      targetModel: urn:com.catenaX.semantics:1.2.0-SNAPSHOT#DigitialTwins
+      targetModel: https://admin-shell.io/aas/API/AssetAdministrationShellDescriptor/1/0/RC02
   transformationParameters:
     "[SERVICE_URL]": ${idsadapter.serviceUrl}
     "[ADAPTER_URL]": ${idsadapter.adapterUrl}
     "[CONNECTOR_ID]": ${idsadapter.connectorId}
-    "[PORTAL_URL]": ${idsadapter.portalUrl}
+    "[CONNECTOR_URL]": ${idsadapter.connectorUrl}
+    "[CONNECTOR_HOST]": ${idsadapter.connectorHost}
+    "[CONNECTOR_PORT]": ${idsadapter.connectorPort}
+    "[CONNECTOR_PROTOCOL]": ${idsadapter.connectorType}
   #
   # Part 4 - Configure Backend Protocol/Commands
   #
@@ -261,6 +340,9 @@ idsadapter:
     brake-file:
       file: classpath:Bremse_Windchill.xml
       model: http://pwc.t-systems.com/datamodel/common
+    orga-file:
+      file: classpath:orga_aas.json
+      model: https://admin-shell.io/aas/API/AssetAdministrationShellDescriptor/1/0/RC02
     material-sql:
       aliases:
         material: |
@@ -373,4 +455,8 @@ twinSources:
   -
     protocol: SQL
     command: twin-sql
+    parameters:
+  -
+    protocol: FILE
+    command: orga-file
     parameters:

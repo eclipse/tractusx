@@ -34,6 +34,8 @@ The SLDT framework provides the following abstractions:
 - IDS Connector Bus/Plane
   - Fraunhofer Data-Space Connector (DSC) as a remote service
   - Eclipse Dataspace Connector (EDC) as an embedded service
+- Skeletons for AAS Shell/Submodel Implementations
+- Stubs for (Remote) AAS Registry Access
 
 SLDT framework is based on Spring.
 Applications using SLDT will most likely apply Spring Boot.

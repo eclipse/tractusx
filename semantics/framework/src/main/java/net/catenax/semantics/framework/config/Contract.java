@@ -30,4 +30,5 @@ public class Contract {
     private OffsetDateTime start = OffsetDateTime.now();
     private OffsetDateTime end = OffsetDateTime.of(LocalDateTime.of(2999, 1, 1, 0, 0, 0), ZoneOffset.UTC);
     private Map<String, ContractRule> rules = new HashMap<>();
+    private String payload;
 }

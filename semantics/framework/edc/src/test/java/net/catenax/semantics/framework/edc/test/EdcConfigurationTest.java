@@ -9,6 +9,7 @@ additional information regarding license terms.
 package net.catenax.semantics.framework.edc.test;
 
 import net.catenax.semantics.framework.IdsConnector;
+import net.catenax.semantics.framework.StatusException;
 import net.catenax.semantics.framework.edc.EdcService;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -29,20 +30,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestPropertySource("classpath:application.properties")
 class EdcConfigurationTest {
 
-	/**
-	 * make sure the bootstrapping has been done
-	 */
-	@BeforeAll
-	public static void bootstrap() {
-		EdcService.bootstrap();
-	}
 
 	/**
 	 * the actual test code is rather small ;-)
 	 * @param context created spring context
 	 */
 	@Test
-	public void contextLoads(ApplicationContext context) {
+	public void contextLoads(ApplicationContext context) throws StatusException {
 		assertThat(context).isNotNull();
 		IdsConnector connector=context.getBean(IdsConnector.class);
 		assertThat(connector).isNotNull();
@@ -51,11 +45,4 @@ class EdcConfigurationTest {
 
 	}
 
-	/**
-	 * teardown edc after tests
-	 */
-	@AfterAll
-	public static void tearDown() {
-		EdcService.tearDown();
-	}
 }

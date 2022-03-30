@@ -1,0 +1,104 @@
+#
+# Copyright (c) 2021-2022 T-Systems International GmbH
+#
+# See the AUTHORS file(s) distributed with this work for additional
+# information regarding authorship.
+#
+# See the LICENSE file(s) distributed with this work for
+# additional information regarding license terms.
+#
+
+#####################################################################
+# Minimal Configuration of the Simple Semantic Adapter Service
+#    Connecting Backend Systems (Protocols/Commands)
+#    Linking Backends to Aspects/Submodels -> IDS Data Offers
+#    Transforming Backend Data to Aspect Data
+#    Registering Owned Digital Twins
+####################################################################
+
+---
+idsadapter:
+
+  #
+  # Part 1 - Configure Available Backend Protocols/Commands
+  #
+  commands:
+    brake-file:
+      file: classpath:Bremse_Windchill.xml
+      model: http://pwc.t-systems.com/datamodel/common
+
+  #
+  # Part 2 - Link Backend Commands to IDS Data Offers
+  #
+  offers:
+    # A first data offer represented by static files dumped out of a PLM system
+    offer-windchill:
+      # reference to the contract(s) under which it is published
+      contract: contract-readall
+      # reference to the catalog under which it is published
+      catalog: "urn:catalog:catenax"
+      # All these properties can be part of the contract constraint check at runtime
+      description: Sample PLM offering representing by static files.
+      license: https://www.apache.org/licenses/LICENSE-2.0.html
+      language: EN
+      paymentMethod: free
+      roles:
+        - Recycler
+        - Traceability
+      # The representations correspond to aspects/semantic submodel templates supported
+      representations:
+        brake-material:
+          description: Sample Static Material Aspect.
+          mediaType: application/json
+          model: urn:bamm:com.catenaX:0.0.1#Material
+          language: EN
+          # Artifacts are the different files/partitions which comprise the representations
+          artifacts:
+            default:
+              description: Sample File Source
+              protocol: FILE
+              command: brake-file
+        brake-traceability:
+          description: Sample BOM Aspect.
+          mediaType: application/json
+          model: urn:bamm:com.catenaX:0.0.1#Traceability
+          language: EN
+          # The sources/artifacts of BOM -> same source is rendered differently
+          artifacts:
+            default:
+              description: Sample File Source
+              protocol: FILE
+              command: brake-file
+
+  #
+  # Part 3 - Define Transformations from Backend data to Aspect data
+  #
+  transformations:
+    dcx2bom:
+      file: classpath:dcx2bom.xsl
+      sourceModel: http://pwc.t-systems.com/datamodel/common
+      targetMediaType: application/json
+      targetModel: urn:bamm:com.catenaX:0.0.1#Traceability
+    dxc2material:
+      file: classpath:dcx2material.xsl
+      sourceModel: http://pwc.t-systems.com/datamodel/common
+  targetMediaType: application/json
+    targetModel:
+      urn:bamm:com.catenaX:0.0.1#Material
+    dcx2aas:
+      file: classpath:dcx2aas.xsl
+      sourceModel: http://pwc.t-systems.com/datamodel/common
+      targetMediaType: application/json
+      targetModel: https://admin-shell.io/aas/API/AssetAdministrationShellDescriptor/1/0/RC02
+  transformationParameters:
+    "[CONNECTOR_ID]": ${idsadapter.connectorId}
+    "[CONNECTOR_URL]": ${idsadapter.connectorUrl}
+
+  #
+  # Part 4 - Register Twins
+  #
+twinSources:
+  -
+    protocol: FILE
+    command: brake-file
+    parameters:

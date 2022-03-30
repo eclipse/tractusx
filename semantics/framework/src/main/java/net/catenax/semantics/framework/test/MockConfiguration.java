@@ -8,11 +8,11 @@ additional information regarding license terms.
 */
 package net.catenax.semantics.framework.test;
 
-import net.catenax.semantics.framework.IdsConnector;
-import net.catenax.semantics.framework.auth.BearerTokenOutgoingInterceptor;
-import net.catenax.semantics.framework.auth.BearerTokenWrapper;
+import net.catenax.semantics.framework.*;
 import net.catenax.semantics.framework.config.*;
-import org.springframework.context.annotation.Bean;
+import net.catenax.semantics.framework.auth.TokenOutgoingInterceptor;
+import net.catenax.semantics.framework.auth.TokenWrapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * helper to build mock configurations
@@ -22,9 +22,9 @@ public class MockConfiguration {
     /**
      * @return a mock token wrapper and interceptor
      */
-    public BearerTokenOutgoingInterceptor getInterceptor() {
-        BearerTokenWrapper wrapper=new BearerTokenWrapper();
-        return new BearerTokenOutgoingInterceptor(new BearerTokenWrapper());
+    public TokenOutgoingInterceptor getInterceptor() {
+        TokenWrapper wrapper=new TokenWrapper();
+        return new TokenOutgoingInterceptor(new TokenWrapper());
     }
 
     /**
@@ -88,5 +88,12 @@ public class MockConfiguration {
         return new MockConnector();
     }
 
+    /**
+     * return mock object mapper
+     * @return
+     */
+    public ObjectMapper getObjectMapper() {
+        return new ObjectMapper();
+    }
 
 }

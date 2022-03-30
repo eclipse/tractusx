@@ -1,0 +1,48 @@
+{
+    "description": [
+      {
+        "language": "en",
+        "text": "The shell for the Catena-X Organisation"
+      }
+    ],
+    "globalAssetId": {
+      "value": [
+        "urn:twin:com.catenax#398c047f-c14c-47b9-9c27-d9511afc90d3"
+      ]
+    },
+    "idShort": "Catena-X",
+    "identification": "398c047f-c14c-47b9-9c27-d9511afc90d3",
+    "specificAssetIds": [
+      {
+        "key": "urn:orga:com.catenax#",
+        "value": "Catena-X"
+      }
+    ],
+    "submodelDescriptors": [
+      {
+        "description": [
+          {
+            "language": "en",
+            "text": "Catena-X ID-Conversion Aspect Implementation"
+          }
+        ],
+        "idShort": "default-idconversion",
+        "identification": "idconversion-aspect",
+        "semanticId": {
+          "value": [
+            "urn:bamm:com.catenaX:1.0.0#IdConversion"
+          ]
+        },
+        "endpoints": [
+          {
+            "interface": "SUBMODEL-1.0RC02",
+            "protocolInformation": {
+              "endpointAddress": "${CONNECTOR_PROTOCOL}://${CONNECTOR_HOST}/offer-orga/shells/398c047f-c14c-47b9-9c27-d9511afc90d3/aas/idconversion-aspect/submodel?async=false&content=value",
+              "endpointProtocol": "IDS/ECLIPSE DATASPACE CONNECTOR",
+              "endpointProtocolVersion": "0.0.1-SNAPSHOT"
+            }
+          }
+        ]
+      }
+    ]
+  }

@@ -10,6 +10,7 @@ package net.catenax.semantics.framework.adapters;
 
 import java.io.*;
 import java.util.Map;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import net.catenax.semantics.framework.*;
@@ -25,8 +26,8 @@ public class DownloadAdapter<Cmd extends Command, O extends Offer, Ct extends Ca
 
     /**
      * delegate to super
-     * @param configurationData
-     * @param connector
+     * @param configurationData to start with
+     * @param connector to start with
      */
     public DownloadAdapter(Config<Cmd,O,Ct,Co,T> configurationData, IdsConnector connector) {
         super(configurationData);
@@ -35,7 +36,7 @@ public class DownloadAdapter<Cmd extends Command, O extends Offer, Ct extends Ca
 
     /**
      * downloads an xml-based source (file, statement, whatever)
-     * @param method
+     * @param method user to process download
      * @param response the outputstream to put the resource into
      * @param mediaType media type requested
      * @param params request parameters
@@ -61,7 +62,9 @@ public class DownloadAdapter<Cmd extends Command, O extends Offer, Ct extends Ca
         request.setOffer(params.get("offer"));
         request.setRepresentation(params.get("representation"));
         request.setArtifact(params.get("artifact"));
-        request.setSecurityToken(params.get("catenax-agreement-token"));
+        if(params.containsKey("catenax-agreement-token")) {
+            request.setSecurityToken(List.of(params.get("catenax-agreement-token")));
+        }
         request.setCallingConnectors(params.get("catenax-calling-connectors"));
         IdsResponse idsResponse= idsConnector.perform(request);
 

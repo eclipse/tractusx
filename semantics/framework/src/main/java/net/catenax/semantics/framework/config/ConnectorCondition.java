@@ -16,7 +16,7 @@ import org.springframework.context.annotation.ConditionContext;
  */
 public class ConnectorCondition {
 
-    public static String DEFAULT_IDS_CONNECTOR_TYPE = "DSC";
+    public static String DEFAULT_IDS_CONNECTOR_TYPE = "dsc";
     public static String CONNECTOR_TYPE_PROPERTY = "idsadapter.connectorType";
 
     public static String getConnectorType(ConditionContext context) {

@@ -69,9 +69,10 @@
 		<guava.version>31.0.1-jre</guava.version>
 		<vavr.version>0.10.3</vavr.version>
 		<commons-io.version>2.11.0</commons-io.version>
-
+		<google.findbugs.version>3.0.2</google.findbugs.version>
 		<!-- logging -->
-		<slf4j.version>2.0.0-alpha1</slf4j.version>
+		<slf4j.version>1.7.32</slf4j.version>
+		<logback.version>1.2.11</logback.version>
 
 		<!-- communication -->
 		<httpcomponents.version>4.5.13</httpcomponents.version>
@@ -151,7 +152,11 @@
 				<artifactId>javax.servlet-api</artifactId>
 				<version>${javax.servlet}</version>
 			</dependency>
-
+			<dependency>
+				<groupId>com.google.code.findbugs</groupId>
+				<artifactId>jsr305</artifactId>
+				<version>${google.findbugs.version}</version>
+			</dependency>
 			<!-- Framework -->
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
@@ -195,6 +200,11 @@
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-simple</artifactId>
 				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+				<version>${logback.version}</version>
 			</dependency>
 
 			<!-- spring -->
@@ -316,49 +326,6 @@
 				<artifactId>httpclient</artifactId>
 				<version>${httpcomponents.version}</version>
 			</dependency>
-
-			<dependency>
-				<groupId>org.eclipse.dataspaceconnector</groupId>
-				<artifactId>core</artifactId>
-				<version>${edc.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.dataspaceconnector</groupId>
-				<artifactId>ids-core</artifactId>
-				<version>${edc.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.dataspaceconnector</groupId>
-				<artifactId>transfer-process-store-memory</artifactId>
-				<version>${edc.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.dataspaceconnector</groupId>
-				<artifactId>contractdefinition-store-memory</artifactId>
-				<version>${edc.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.dataspaceconnector</groupId>
-				<artifactId>assetindex-memory</artifactId>
-				<version>${edc.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.dataspaceconnector</groupId>
-				<artifactId>iam-mock</artifactId>
-				<version>${edc.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.dataspaceconnector</groupId>
-				<artifactId>contractnegotiation-store-memory</artifactId>
-				<version>${edc.version}</version>
-			</dependency>
-
-			<!-- International Dataspaces interop
-			<dependency>
-				<groupId>de.fraunhofer.isst.ids.framework</groupId>
-				<artifactId>messaging</artifactId>
-				<version>${ids-framework.version}</version>
-			</dependency>-->
 
 			<!-- Persistence -->
 			<dependency>
@@ -511,14 +478,6 @@
 			<id>Maven Central</id>
 			<name>maven-central</name>
 			<url>https://repo1.maven.org/maven2/</url>
-		</repository>
-		<repository>
-			<id>edc-github</id>
-			<name>Catena-X Maven Repository on Github</name>
-			<url>https://maven.pkg.github.com/eclipse-dataspaceconnector/DataSpaceConnector</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
 		</repository>
 		<repository>
 			<id>ids-fraunhofer</id>

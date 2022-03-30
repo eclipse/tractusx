@@ -8,28 +8,20 @@ additional information regarding license terms.
 */
 package net.catenax.semantics.framework.adapters;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
-import java.util.regex.Pattern;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
+import net.catenax.semantics.framework.*;
+import net.catenax.semantics.framework.config.*;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import net.catenax.semantics.framework.*;
-import net.catenax.semantics.framework.auth.BearerTokenOutgoingInterceptor;
-import net.catenax.semantics.framework.auth.BearerTokenWrapper;
-import net.catenax.semantics.framework.config.*;
+import net.catenax.semantics.framework.auth.TokenOutgoingInterceptor;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -38,7 +30,6 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -57,7 +48,7 @@ public class TwinRegistryAdapter<Cmd extends Command, O extends Offer, Ct extend
     /**
      * we need an interceptor that pushes tokens into the request
      */
-    private final BearerTokenOutgoingInterceptor interceptor;
+    private final TokenOutgoingInterceptor interceptor;
 
     /**
      * creates a new adapter
@@ -65,7 +56,7 @@ public class TwinRegistryAdapter<Cmd extends Command, O extends Offer, Ct extend
      * @param connector attached connector
      * @param interceptor token interceptor that pushes tokens to the requests
      */
-    public TwinRegistryAdapter(Config<Cmd, O, Ct, Co, T> configurationData, IdsConnector connector, BearerTokenOutgoingInterceptor interceptor) {
+    public TwinRegistryAdapter(Config<Cmd, O, Ct, Co, T> configurationData, IdsConnector connector, TokenOutgoingInterceptor interceptor) {
         super(configurationData);
         setIdsConnector(connector);
         this.interceptor = interceptor;
@@ -89,6 +80,35 @@ public class TwinRegistryAdapter<Cmd extends Command, O extends Offer, Ct extend
     }
 
     /**
+     * create a new http client for interfacing the registry
+     * @return
+     */
+    public HttpClient getHttpClient() {
+        String proxyHost=System.getProperty("http.proxyHost");
+        HttpClient httpclient = null;
+        if (proxyHost != null && !proxyHost.isEmpty()) {
+            boolean noProxy = false;
+            for (String noProxyHost : System.getProperty("http.nonProxyHosts","localhost").split("\\|")) {
+                noProxy = noProxy || configurationData.getServiceUrl().contains(noProxyHost.replace("*",""));
+            }
+            if (!noProxy) {
+                HttpHost httpProxyHost = new HttpHost(proxyHost, Integer.parseInt(System.getProperty("http.proxyPort","80")));
+                DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(httpProxyHost);
+                HttpClientBuilder clientBuilder = HttpClients.custom();
+                clientBuilder = clientBuilder.setRoutePlanner(routePlanner);
+                clientBuilder = clientBuilder.addInterceptorFirst(interceptor);
+                httpclient = clientBuilder.build();
+            }
+        }
+        if (httpclient == null) {
+            HttpClientBuilder clientBuilder = HttpClients.custom();
+            clientBuilder.addInterceptorFirst(interceptor);
+            httpclient = clientBuilder.build();
+        }
+        return httpclient;
+    }
+
+    /**
      * registers new twins. This is a two-step process.
      * First, the given command is issues for the given protocol in the associated connector.
      * Secondly, the result is interpreted as a set of asset descriptors which
@@ -105,7 +125,7 @@ public class TwinRegistryAdapter<Cmd extends Command, O extends Offer, Ct extend
         request.setProtocol(protocol);
         request.setCommand(command);
         request.setParameters(parameters);
-        request.setModel("urn:com.catenaX.semantics:1.2.0-SNAPSHOT#DigitialTwins");
+        request.setModel("https://admin-shell.io/aas/API/AssetAdministrationShellDescriptor/1/0/RC02");
         request.setAccepts("application/json");
         // perform the connector request
         IdsResponse response = idsConnector.perform(request);
@@ -114,29 +134,6 @@ public class TwinRegistryAdapter<Cmd extends Command, O extends Offer, Ct extend
             // here we are
             // TODO check for error status codes
             // Step 2 make outgoing calls to the registry
-
-            String proxyHost=System.getProperty("http.proxyHost");
-
-            HttpClient httpclient = null;
-            if (proxyHost != null && !proxyHost.isEmpty()) {
-                boolean noProxy = false;
-                for (String noProxyHost : System.getProperty("http.nonProxyHosts","localhost").split("\\|")) {
-                    noProxy = noProxy || configurationData.getServiceUrl().contains(noProxyHost.replace("*",""));
-                }
-                if (!noProxy) {
-                    HttpHost httpProxyHost = new HttpHost(proxyHost, Integer.parseInt(System.getProperty("http.proxyPort","80")));
-                    DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(httpProxyHost);
-                    HttpClientBuilder clientBuilder = HttpClients.custom();
-                    clientBuilder = clientBuilder.setRoutePlanner(routePlanner);
-                    clientBuilder = clientBuilder.addInterceptorFirst(interceptor);
-                    httpclient = clientBuilder.build();
-                }
-            }
-            if (httpclient == null) {
-                HttpClientBuilder clientBuilder = HttpClients.custom();
-                clientBuilder.addInterceptorFirst(interceptor);
-                httpclient = clientBuilder.build();
-            }
 
             // parse the twin recipe as asset descriptors
             ObjectMapper om = new ObjectMapper();
@@ -158,18 +155,14 @@ public class TwinRegistryAdapter<Cmd extends Command, O extends Offer, Ct extend
                 String thatPayLoad=om.writeValueAsString(nodes[count]);
                 httppost.setEntity(new StringEntity(thatPayLoad));
                 log.info("Accessing Twin Registry via " + httppost.getRequestLine());
-                HttpResponse twinResponse = httpclient.execute(httppost);
+                HttpResponse twinResponse = getHttpClient().execute(httppost);
                 log.info("Received Twin Registry response " + twinResponse.getStatusLine());
                 int statusCode = twinResponse.getStatusLine().getStatusCode();
                 if (statusCode < 200 || statusCode >= 300) {
-                    if (nodes.length == 1) {
-                        finalResult.append("\"");
-                        finalResult.append(twinResponse.getStatusLine().getReasonPhrase());
-                        finalResult.append("\"]");
-                        throw new StatusException(finalResult.toString(), twinResponse.getStatusLine().getStatusCode());
-                    } else {
-                        log.warn("Got a status of " + statusCode + " for intermediate twin " + count + " Ignoring.");
+                    if (count > 0) {
+                        finalResult.append(",");
                     }
+                    finalResult.append("{ \"error\":\"Most likely the twin did already exist.\",\"status\":"+statusCode+"}");
                 } else {
                     if (count > 0) {
                         finalResult.append(",");

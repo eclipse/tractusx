@@ -21,7 +21,7 @@ import org.springframework.core.type.AnnotatedTypeMetadata;
 @Configuration
 public class EdcConfigurationCondition implements Condition {
 
-    public static String EDC_IDS_CONNECTOR_TYPE = "EDC";
+    public static String EDC_IDS_CONNECTOR_TYPE = "edc";
 
     @Override
     public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {

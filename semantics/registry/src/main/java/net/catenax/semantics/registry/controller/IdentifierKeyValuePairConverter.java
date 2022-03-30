@@ -26,7 +26,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * This converter is required so that Spring is able to convert query parameters to custom objects.
+ * This converter is required so that Spring is able to convert single query parameters to custom objects.
  */
 @Component
 public class IdentifierKeyValuePairConverter implements Converter<String, List<IdentifierKeyValuePair>> {
@@ -41,7 +41,12 @@ public class IdentifierKeyValuePairConverter implements Converter<String, List<I
     public List<IdentifierKeyValuePair> convert(String source) {
         try {
             String processedSource = removeLineBreaks(source);
-            return objectMapper.readValue(processedSource, new TypeReference<>() {});
+            if(processedSource.startsWith("{")) {
+                return List.of(objectMapper.readValue(processedSource,IdentifierKeyValuePair.class));
+            } else {
+                return objectMapper.readValue(processedSource, new TypeReference<>() {
+                });
+            }
         } catch (JsonProcessingException e) {
             throw new IllegalArgumentException(e);
         }

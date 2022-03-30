@@ -8,13 +8,14 @@ additional information regarding license terms.
 */
 package net.catenax.semantics.framework.test;
 
-import net.catenax.semantics.framework.IdsConnector;
-import net.catenax.semantics.framework.auth.BearerTokenOutgoingInterceptor;
-import net.catenax.semantics.framework.auth.BearerTokenWrapper;
+import net.catenax.semantics.framework.*;
 import net.catenax.semantics.framework.config.*;
+import net.catenax.semantics.framework.auth.TokenOutgoingInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.FilterType;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.sql.DataSource;
 
@@ -22,7 +23,7 @@ import javax.sql.DataSource;
  * spring configuration of the framework tests
  */
 @Configuration
-@ComponentScan(basePackages = {"net.catenax.semantics.framework"})
+@ComponentScan(basePackages = {"net.catenax.semantics.framework"}, excludeFilters = { @ComponentScan.Filter(type = FilterType.REGEX, pattern="net\\.catenax\\.semantics\\.framework\\.aas\\..*") })
 public class FrameworkConfiguration extends MockConfiguration {
 
     @Bean
@@ -33,7 +34,7 @@ public class FrameworkConfiguration extends MockConfiguration {
 
     @Bean
     @Override
-    public BearerTokenOutgoingInterceptor getInterceptor() {
+    public TokenOutgoingInterceptor getInterceptor() {
         return super.getInterceptor();
     }
 
@@ -48,4 +49,8 @@ public class FrameworkConfiguration extends MockConfiguration {
         return super.getConnector();
     }
 
+    @Bean
+    public ObjectMapper getObjectMapper() {
+        return super.getObjectMapper();
+    }
 }

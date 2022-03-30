@@ -39,7 +39,7 @@ public class DatabaseAdapter<Cmd extends Command, O extends Offer, Ct extends Ca
     }
 
     @Override
-    public IdsMessage perform(IdsRequest request) throws StatusException {
+    public IdsMessage perform(IdsRequest request, String model) throws StatusException {
         BaseIdsMessage responseMessage=new BaseIdsMessage();
         responseMessage.setMediaType("text/xml");
         responseMessage.setModel("urn:com:tsystems:DataSet");

@@ -31,4 +31,6 @@ public class Offer {
     private String catalog;
     private String contract;
     private Map<String, Representation> representations = new HashMap<>();
+    private String payload;
+    private String user;
 }

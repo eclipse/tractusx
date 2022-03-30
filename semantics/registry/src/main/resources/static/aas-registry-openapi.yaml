@@ -586,7 +586,7 @@ components:
         endpointProtocolVersion:
           type: string
           minLength: 1
-          maxLength: 10
+          maxLength: 24
         subprotocol:
           type: string
           minLength: 1

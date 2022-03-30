@@ -18,7 +18,8 @@ import org.springframework.context.annotation.*;
  * test configuration
  */
 @Configuration
-@ComponentScan(basePackages = {"net.catenax.semantics.adapter", "net.catenax.semantics.framework"})
+@ComponentScan(basePackages = {"net.catenax.semantics.adapter", "net.catenax.semantics.framework"}, excludeFilters = { @ComponentScan.Filter(type = FilterType.REGEX, pattern="net\\.catenax\\.semantics\\.framework\\.aas\\.api\\.proxy\\.AssetIdentifierApiController.*") })
 public class AdapterConfiguration extends MockConfiguration {
+
 
 }

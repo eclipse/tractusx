@@ -8,6 +8,7 @@ additional information regarding license terms.
 */
 package net.catenax.semantics.framework;
 
+import net.catenax.semantics.framework.config.Contract;
 import net.catenax.semantics.framework.config.Offer;
 
 /**
@@ -16,20 +17,28 @@ import net.catenax.semantics.framework.config.Offer;
  * backend (Internal API) controllers.
  */
 public interface IdsConnector {
+
+    /**
+     * gets or creates a particular contract
+     * @param title of the contract
+     * @return contract as created/found
+     */
+    Contract getOrCreateContract(String title) throws StatusException;
+
     /**
      * Gets or creates a particular offer
      * in the attached ids connector
      * @param title name of the offer
      * @return offer as created/found
      */
-    Offer getOrCreateOffer(String title);
+    Offer getOrCreateOffer(String title) throws StatusException;
 
     /**
      * presents a self-description of the associated ids
      * connector
      * @return an object describing the associated connector
      */
-    Object getSelfDescription();
+    Object getSelfDescription() throws StatusException;
 
     /**
      * performs an internalized request

@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package net.catenax.semantics.adapter;
 
 import org.springframework.context.annotation.Configuration;
@@ -22,20 +23,17 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-/**
- * real security config using oauth2/openid only when
- * not in test mode
- */
-@Configuration
+@Profile("deploy")
 @EnableWebSecurity
-@Profile("!test")
+@Configuration
 public class OAuthSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
           .authorizeRequests(auth -> auth
             .antMatchers(HttpMethod.OPTIONS).permitAll()
-            .antMatchers("/**/adapter/**").authenticated())
+            .antMatchers("/**/adapter/**").authenticated()
+            .antMatchers("/**/shells/**").authenticated())
           .oauth2ResourceServer()
           .jwt();
     }

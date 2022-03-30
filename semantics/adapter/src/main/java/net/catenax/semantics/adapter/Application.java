@@ -9,9 +9,9 @@ additional information regarding license terms.
 
 package net.catenax.semantics.adapter;
 
-import net.catenax.semantics.framework.auth.BearerTokenIncomingInterceptor;
-import net.catenax.semantics.framework.auth.BearerTokenOutgoingInterceptor;
-import net.catenax.semantics.framework.auth.BearerTokenWrapper;
+import net.catenax.semantics.framework.auth.TokenIncomingInterceptor;
+import net.catenax.semantics.framework.auth.TokenOutgoingInterceptor;
+import net.catenax.semantics.framework.auth.TokenWrapper;
 import net.catenax.semantics.framework.edc.EdcService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,12 +20,11 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import javax.annotation.PostConstruct;
 
 /**
  * Main Adapter Application
@@ -33,7 +32,8 @@ import javax.annotation.PostConstruct;
  */
 @SpringBootApplication
 @EnableConfigurationProperties({ConfigurationData.class})
-@ComponentScan(basePackages = {"net.catenax.semantics.adapter", "net.catenax.semantics.framework", "org.openapitools.configuration"})
+@ComponentScan(basePackages = {"net.catenax.semantics.framework.aas.api.proxy", "net.catenax.semantics.adapter", "net.catenax.semantics.framework", "org.openapitools.configuration"},
+		excludeFilters = @ComponentScan.Filter(type= FilterType.REGEX,pattern="net\\.catenax\\.semantics\\.framework\\.aas\\.api\\.proxy\\.AssetIdentifierApiController"))
 public class Application {
 
 	private static final String OPEN_ID_CONNECT_DISCOVERY_PATH = "/.well-known/openid-configuration";
@@ -44,7 +44,7 @@ public class Application {
 	 */
 	@Bean
 	public WebMvcConfigurer configurer(ApplicationContext context) {
-		BearerTokenIncomingInterceptor interceptor=context.getBean(BearerTokenIncomingInterceptor.class);
+		TokenIncomingInterceptor interceptor=context.getBean(TokenIncomingInterceptor.class);
 		OAuth2ResourceServerProperties securityProperties=context.getBean(OAuth2ResourceServerProperties.class);
 
 		return new WebMvcConfigurer(){
@@ -54,25 +54,29 @@ public class Application {
 			}
 			@Override
 			public void addInterceptors(InterceptorRegistry registry) {
-				registry.addInterceptor(interceptor);
+				if(securityProperties.getJwt().getIssuerUri()!=null) {
+					registry.addInterceptor(interceptor);
+				}
 			}
 			@Override
 			public void addViewControllers(ViewControllerRegistry registry){
 				// this redirect ensures that the SwaggerUI can get the open id discovery data
-				String fullDiscoveryPath = securityProperties.getJwt().getIssuerUri() + OPEN_ID_CONNECT_DISCOVERY_PATH;
-				registry.addRedirectViewController(OPEN_ID_CONNECT_DISCOVERY_PATH, fullDiscoveryPath);
+				if(securityProperties.getJwt().getIssuerUri()!=null) {
+					String fullDiscoveryPath = securityProperties.getJwt().getIssuerUri() + OPEN_ID_CONNECT_DISCOVERY_PATH;
+					registry.addRedirectViewController(OPEN_ID_CONNECT_DISCOVERY_PATH, fullDiscoveryPath);
+				}
 			}
 		};
 	 }
 
 	@Bean
-	public BearerTokenIncomingInterceptor bearerTokenIncomingInterceptor(ApplicationContext context) {
-		return new BearerTokenIncomingInterceptor(context.getBean(BearerTokenWrapper.class));
+	public TokenIncomingInterceptor bearerTokenIncomingInterceptor(ApplicationContext context) {
+		return new TokenIncomingInterceptor(context.getBean(TokenWrapper.class));
 	}
 
 	@Bean
-	public BearerTokenOutgoingInterceptor bearerTokenOutgoingInterceptor(ApplicationContext context) {
-		return new BearerTokenOutgoingInterceptor(context.getBean(BearerTokenWrapper.class));
+	public TokenOutgoingInterceptor bearerTokenOutgoingInterceptor(ApplicationContext context) {
+		return new TokenOutgoingInterceptor(context.getBean(TokenWrapper.class));
 	}
 
 	/**
@@ -80,8 +84,6 @@ public class Application {
 	 * @param args command line
 	 */
 	public static void main(String[] args) {
-		// bootstrap EDC
-		EdcService.bootstrap();
 		new SpringApplication(Application.class).run(args);
 	}
 

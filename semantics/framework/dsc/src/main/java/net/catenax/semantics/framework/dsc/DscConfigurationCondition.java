@@ -24,7 +24,7 @@ import org.springframework.core.type.AnnotatedTypeMetadata;
 @Import({HttpClientConfiguration.class})
 public class DscConfigurationCondition implements Condition {
 
-    public static String FH_IDS_CONNECTOR_TYPE = "DSC";
+    public static String FH_IDS_CONNECTOR_TYPE = "dsc";
 
     @Override
     public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
