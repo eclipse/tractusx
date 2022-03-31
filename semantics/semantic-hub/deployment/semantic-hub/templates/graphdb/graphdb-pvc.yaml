@@ -1,0 +1,25 @@
+{{- if and (.Values.graphdb.enabled) (not .Values.hub.embeddedTripleStore) }}
+# Copyright (c) 2021-2022 Robert Bosch Manufacturing Solutions GmbH
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#     http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+
+{{- $deployment_name := printf "cx-%s-graphdb" .Release.Name }}
+{{- $pvc_name := printf "%s-pvc" $deployment_name }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $pvc_name }}
+spec:
+  storageClassName: {{ .Values.graphdb.storageClassName }}
+  accessModes:
+{{ .Values.graphdb.pvcAccessModes | toYaml | indent 4 }}
+  resources:
+    requests:
+      storage: {{ .Values.graphdb.storageSize }}
+{{- end -}}

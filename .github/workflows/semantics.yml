@@ -206,7 +206,7 @@ jobs:
     - name: Containerize the Layer (ServicesApp)
       working-directory: ./semantics
       run: |
-        docker build -f ./semantic-hub/Dockerfile -t ${{ env.IMAGE_SEMANTIC_HUB }} .
+        docker build -t ${{ env.IMAGE_SEMANTIC_HUB }} ./semantic-hub
         docker build -f ./registry/Dockerfile -t ${{ env.IMAGE_REGISTRY }} .
         
     - name: Publish the Layer (ServicesApp)

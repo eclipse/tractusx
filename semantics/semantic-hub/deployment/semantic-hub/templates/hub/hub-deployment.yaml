@@ -1,0 +1,66 @@
+# Copyright (c) 2021-2022 Robert Bosch Manufacturing Solutions GmbH
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#     http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+{{- $deployment_name := printf "cx-%s-hub" .Release.Name }}
+{{- $sec_name := printf "%s-sec" $deployment_name }}
+{{- $svc_name := printf "%s-svc" $deployment_name }}
+{{- $graphdb_svc_name := printf "cx-%s-graphdb-svc" .Release.Name }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $deployment_name }}
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+spec:
+  selector:
+    matchLabels:
+      app: {{ $deployment_name }}
+  replicas: {{ default 1 .Values.hub.replicaCount | int }}
+  template:
+    metadata:
+      labels:
+        app: {{ $deployment_name }}
+    spec:
+      containers:
+        - name: {{ $deployment_name }}
+          image: {{ .Values.hub.image }}
+          imagePullPolicy: {{ .Values.hub.imagePullPolicy }}
+          {{- if not .Values.hub.authentication }}
+          args: ["--spring.profiles.active=local"]
+          {{- end }}
+          ports:
+            - containerPort: {{ .Values.hub.containerPort | int }}
+          env:
+            - name: HUB_TRIPLE_STORE_EMBEDDED_ENABLED
+              value: "{{ .Values.hub.embeddedTripleStore }}"
+            - name: HUB_TRIPLE_STORE_BASE_URL
+              {{- if .Values.graphdb.enabled }}
+              value: {{ printf "http://%s:%v" $graphdb_svc_name .Values.graphdb.service.port }}
+              {{- else }}
+              value: {{ .Values.hub.graphdbBaseUrl }}
+              {{- end }}
+            - name: HUB_TRIPLE_STORE_QUERY_ENDPOINT
+              value: {{ .Values.graphdb.queryEndpoint }}
+            - name: HUB_TRIPLE_STORE_UPDATE_ENDPOINT
+              value: {{ .Values.graphdb.updateEndpoint }}
+            # the fuseki instance does not require authentication yet
+            # this variables need to be provided because they are mandatory in the application
+            - name: HUB_TRIPLE_STORE_USERNAME
+              value: {{ .Values.graphdb.username }}
+            - name: HUB_TRIPLE_STORE_PASSWORD
+              value: {{ .Values.graphdb.password }}
+            - name: IDP_ISSUER_URI
+              valueFrom:
+                secretKeyRef:
+                  key: idp_issuer_uri
+                  name: {{ $sec_name }}
+          resources:
+{{ .Values.hub.resources | toYaml | indent 12 }}

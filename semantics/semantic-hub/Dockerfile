@@ -33,7 +33,7 @@ WORKDIR /services
 
 RUN mkdir persistence
 
-COPY ./semantic-hub/target/semantic-hub*.jar app.jar
+COPY ./target/semantic-hub*.jar app.jar
 
 ENV SERVER_PORT 4242
 ENV IDSADAPTER_CONNECTORURL "http://localhost:8080"
