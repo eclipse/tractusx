@@ -33,7 +33,7 @@ WORKDIR /services
 
 RUN mkdir persistence
 
-COPY ./registry/target/registry*.jar app.jar
+COPY ./target/registry*.jar app.jar
 
 ENV SERVER_PORT 4243
 ENV SPRING_DATASOURCE_URL "jdbc:h2:file:/services/persistence/persistence"

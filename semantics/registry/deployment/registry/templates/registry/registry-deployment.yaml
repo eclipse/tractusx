@@ -1,0 +1,64 @@
+# Copyright (c) 2021-2022 Robert Bosch Manufacturing Solutions GmbH
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#     http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+{{- $deployment_name := printf "cx-%s-registry" .Release.Name }}
+{{- $sec_name := printf "%s-sec" $deployment_name }}
+{{- $svc_name := printf "%s-svc" $deployment_name }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $deployment_name }}
+spec:
+  replicas: {{ .Values.registry.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ $deployment_name }}
+  template:
+    metadata:
+      labels:
+        app: {{ $deployment_name }}
+    spec:
+      containers:
+        - name: {{ $deployment_name }}
+          image: {{ .Values.registry.image }}
+          imagePullPolicy: {{ .Values.registry.imagePullPolicy }}
+          {{- if not .Values.registry.authentication }}
+          args: ["--spring.profiles.active=local"]
+          {{- end }}
+          ports:
+            - containerPort: {{ .Values.registry.containerPort }}
+          env:
+            - name: SPRING_DATASOURCE_DRIVERCLASSNAME
+              value: {{ .Values.registry.dataSource.driverClassName }}
+            - name: SPRING_SQL_INIT_PLATFORM
+              value: {{ .Values.registry.dataSource.sqlInitPlatform }}
+            - name: SPRING_DATASOURCE_URL          
+              valueFrom:
+                secretKeyRef:
+                  key: database_url
+                  name: {{ $sec_name }}
+            - name: SPRING_DATASOURCE_USERNAME          
+              valueFrom:
+                secretKeyRef:
+                  key: database_user
+                  name: {{ $sec_name }}
+            - name: SPRING_DATASOURCE_PASSWORD          
+              valueFrom:
+                secretKeyRef:
+                  key: database_password
+                  name: {{ $sec_name }}
+            - name: IDP_ISSUER_URI
+              valueFrom:
+                secretKeyRef:
+                  key: idp_issuer_uri
+                  name: {{ $sec_name }}
+          resources:
+{{ .Values.registry.resources | toYaml | indent 12 }}

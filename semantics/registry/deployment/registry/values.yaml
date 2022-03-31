@@ -1,0 +1,63 @@
+# Copyright (c) 2021-2022 Robert Bosch Manufacturing Solutions GmbH
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#     http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+enablePostgres: true
+
+registry:
+  image: registry:latest
+  replicaCount: 1
+  imagePullPolicy: IfNotPresent
+  containerPort: 4242
+  host: minikube
+  ## If 'authentication' is set to false, no OAuth authentication is enforced
+  authentication: false
+  idpIssuerUri: https://catenaxdev042akssrv.germanywestcentral.cloudapp.azure.com/iamcentralidp/auth/realms/CX-Central
+  service:
+    port: 8080
+    type: ClusterIP
+  dataSource:
+    driverClassName: org.postgresql.Driver
+    sqlInitPlatform: pg
+    ## The url, user, and password parameter will be ignored if 'enablePostgres' is set to true.
+    ## In that case the postgresql auth parameters are used.
+    url: jdbc:postgresql://database:5432
+    user: user
+    password: password
+  ingress:
+    enabled: true
+    tls: true
+    urlPrefix: /semantics/registry
+    className: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: selfsigned-cluster-issuer
+      nginx.ingress.kubernetes.io/rewrite-target: /$2
+      nginx.ingress.kubernetes.io/use-regex: "true"
+      nginx.ingress.kubernetes.io/enable-cors: "true"
+      nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+      nginx.ingress.kubernetes.io/x-forwarded-prefix: /semantics/registry
+  resources:
+    limits:
+      memory: "1024Mi"
+    requests:
+      memory: "512Mi"
+
+postgresql:
+  primary:
+    persistence:
+      enabled: true
+      size: 50Gi
+  service:
+    ports:
+      postgresql: 5432
+  auth:
+    username: catenax
+    password: TFLIykCd4rUvSjbs
+    database: registry

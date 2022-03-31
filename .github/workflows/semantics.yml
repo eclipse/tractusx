@@ -207,7 +207,7 @@ jobs:
       working-directory: ./semantics
       run: |
         docker build -t ${{ env.IMAGE_SEMANTIC_HUB }} ./semantic-hub
-        docker build -f ./registry/Dockerfile -t ${{ env.IMAGE_REGISTRY }} .
+        docker build -t ${{ env.IMAGE_REGISTRY }} ./registry
         
     - name: Publish the Layer (ServicesApp)
       working-directory: ./semantics
