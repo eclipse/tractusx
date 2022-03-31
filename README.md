@@ -24,14 +24,20 @@ digital transformation and to make better use of the opportunities offered by di
 
 ## Build & Deploy It
 
-You can build and run Catena-X@Home using this [Walkthrough](eclipsedataspaceconnector/api-wrapper/README.md) and the [Docker Compose Manifest](eclipsedataspaceconnector/api-wrapper/docker-compose.yml) 
-(which will be complemented with an [Argo-CD](https://argoproj.github.io/cd/) compatible kubernetes HELM chart)
+You can build and run Catena-X@Home using this [Walkthrough](eclipsedataspaceconnector/api-wrapper/README.md) and the [Docker Compose Manifest](eclipsedataspaceconnector/api-wrapper/docker-compose.yml).
+
+You may deploy Catena-X@Kubernetes by forking this [Deployment Recipe for Hotel Budapest](https://github.com/catenax-ng/catenax-at-home) 
+(which is compliant to [Argo-CD](https://argoproj.github.io/cd/ and may serve as a repo for creating an Argo-CD application/namespace).
 
 ## Run It
 
 You can interact with the Catena-X API(s) using this [Postman Collection](catenax.postman_collection.json).
-Please do also import the [Localhost Postman Environment](catenax.localhost.postman_environment.json) in case you want to
+
+Please do also import the [Catena-X@Home Postman Environment](catenax.at-home.postman_environment.json) in case you want to
 interact with Catena-X@Home (or adapt according to the target Catena-X environment).
+
+Please do import the [Catena-X@Hotel-Budapest Postman Environment](catenax.hotel-budapest.postman_environment.json) in case you want to interact with 
+Catena-X@Hotel-Budapest (see the live [Argo CD application](https://argo.demo.catena-x.net/applications/catenax-at-home)).
 
 ## Scope
 

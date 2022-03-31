@@ -78,7 +78,7 @@ Here are some sample commands to the API Wrapper
 ```
 
 More Interactions with the Catena-X components can be found in the [Postman Collection](../../catenax.postman_collection.json) using the
-[Localhost Postman Environment](../../catenax.localhost.postman_environment.json). Both need to be imported into [Postman](http://postman.com).
+[Localhost Postman Environment](../../catenax.at-home.postman_environment.json). Both need to be imported into [Postman](http://postman.com).
 
 The most important sections therein would be Catenax>Semantic Layer>AAS Proxy (Data Consumer Side) and Catena-X>Semantic Layer>Semantic Adapter (Data Provider Side).
 

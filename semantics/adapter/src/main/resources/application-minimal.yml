@@ -82,9 +82,8 @@ idsadapter:
     dxc2material:
       file: classpath:dcx2material.xsl
       sourceModel: http://pwc.t-systems.com/datamodel/common
-  targetMediaType: application/json
-    targetModel:
-      urn:bamm:com.catenaX:0.0.1#Material
+      targetMediaType: application/json
+      targetModel: urn:bamm:com.catenaX:0.0.1#Material
     dcx2aas:
       file: classpath:dcx2aas.xsl
       sourceModel: http://pwc.t-systems.com/datamodel/common
