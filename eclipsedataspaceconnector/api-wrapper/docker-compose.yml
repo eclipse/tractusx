@@ -15,6 +15,7 @@ services:
       EDC_VAULT: vault.properties
       EDC_KEYSTORE: cert.pfx
       EDC_KEYSTORE_PASSWORD: 123456
+      EDC_FS_CONFIG: configuration.properties
     volumes:
       - ${PWD}/config/consumer-control-plane.properties:/app/configuration.properties
       - ${PWD}/config/consumer-control-plane-vault.properties:/app/vault.properties
@@ -30,6 +31,8 @@ services:
     ports:
       - "8192:9191" # default
       - "5006:8090"
+    environment:
+      EDC_FS_CONFIG: configuration.properties
     volumes:
      - ${PWD}/config/consumer-data-plane.properties:/app/configuration.properties
 
@@ -44,6 +47,8 @@ services:
       - "8193:9191" # default
 #      - "9192" # callback
       - "5007:8090"
+    environment:
+      EDC_FS_CONFIG: configuration.properties
     volumes:
       - ${PWD}/config/api-wrapper.properties:/app/configuration.properties
 
@@ -62,6 +67,7 @@ services:
       EDC_VAULT: vault.properties
       EDC_KEYSTORE: cert.pfx
       EDC_KEYSTORE_PASSWORD: 123456
+      EDC_FS_CONFIG: configuration.properties
     volumes:
       - ${PWD}/config/provider-control-plane.properties:/app/configuration.properties
       - ${PWD}/config/provider-control-plane-vault.properties:/app/vault.properties
@@ -78,6 +84,8 @@ services:
       - "8182:9191" # default
       - "8183:9192" # public
       - "5009:8090"
+    environment:
+      EDC_FS_CONFIG: configuration.properties
     volumes:
       - ${PWD}/config/provider-data-plane.properties:/app/configuration.properties
 
@@ -91,6 +99,8 @@ services:
     ports:
       - "8194:9191" # default
       - "5010:8090"
+    environment:
+      EDC_FS_CONFIG: configuration.properties
     volumes:
       - ${PWD}/config/provider-backend-service.properties:/app/configuration.properties
 

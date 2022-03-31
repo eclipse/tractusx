@@ -41,5 +41,4 @@ ENTRYPOINT java \
     -Daasproxy.registryUrl=${AASPROXY_REGISTRYURL}\
     -Daasproxy.wrapperUrl=${AASPROXY_WRAPPERURL}\
     -Djava.security.edg=file:/dev/.urandom \
-    -Dedc.fs.config="configuration.properties"\
     -jar app.jar

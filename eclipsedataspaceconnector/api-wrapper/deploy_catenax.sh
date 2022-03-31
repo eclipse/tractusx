@@ -29,5 +29,6 @@ docker push cxtsiacr.azurecr.io/edc/provider-control-plane:catenax-at-home-lates
 docker push cxtsiacr.azurecr.io/edc/provider-data-plane:catenax-at-home-latest
 docker push cxtsiacr.azurecr.io/edc/provider-api-wrapper:catenax-at-home-latest
 docker push cxtsiacr.azurecr.io/backend/simple-aas-adapter:catenax-at-home-latest
-docker push cxtsiacr.azurecr.io/semantics/services:catenax-at-home-latest
+docker push cxtsiacr.azurecr.io/semantics/hub:catenax-at-home-latest
+docker push cxtsiacr.azurecr.io/semantics/registry:catenax-at-home-latest
 docker push cxtsiacr.azurecr.io/edc/consumer-aas-proxy:catenax-at-home-latest
