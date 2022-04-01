@@ -48,7 +48,7 @@ public abstract class BaseConnector<Cmd extends Command, O extends Offer, Ct ext
     public void setup() throws StatusException {
         if (configurationData.isRegisterOnStart()) {
             for(Map.Entry<String,O> offer : configurationData.getOffers().entrySet()) {
-                getOrCreateContract(offer.getKey());
+                getOrCreateOffer(offer.getKey());
             }
             for(Map.Entry<String,Co> contract: configurationData.getContracts().entrySet()) {
                 getOrCreateContract(contract.getKey());
