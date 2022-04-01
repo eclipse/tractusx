@@ -59,8 +59,8 @@ public class ApiWrapperExtension implements ServiceExtension {
         var typeManager = context.getTypeManager();
 
         // Map exceptions to proper status codes
-        webService.registerResource(new EdcApiExceptionMapper(exceptionMapper));//, monitor));
-        webService.registerResource(CALLBACK_CONTEXT_ALIAS, new EdcApiExceptionMapper(exceptionMapper));//, monitor));
+        webService.registerResource(new EdcApiExceptionMapper(exceptionMapper));
+        webService.registerResource(CALLBACK_CONTEXT_ALIAS, new EdcApiExceptionMapper(exceptionMapper));
 
         // Register basic authentication filter
         if (!config.getBasicAuthUsers().isEmpty()) {
