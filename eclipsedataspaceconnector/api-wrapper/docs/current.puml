@@ -64,7 +64,7 @@ return shell with addresses
 == access submodel (aspect implementation) ==
 AASClient -> AASClient: rewrite shell URI to AAS-API-Wrapper
 
-AASClient -> AASAPIWrapper: GET /submodel/{submodelId}
+AASClient -> AASAPIWrapper: GET /service/{assetId}/{aasSpecificUrl:.+}
 activate AASClient
     activate AASAPIWrapper
 '        alt contractId not already known
@@ -99,16 +99,16 @@ activate AASClient
         end
         AASAPIWrapper -> AASAPIWrapper: Get EndpointDataReference\nfrom memory
 
-        AASAPIWrapper -> ConsumerData ++: GET/POST/... /public\nwith Token in Header
+        AASAPIWrapper -> ConsumerData ++: GET/POST/[..] /public/{aasSpecificUrl}\nwith Token in Header
             ConsumerData -> ConsumerControl ++: Validate call\nPOST /validate (Token)
             return true/false
 
-            ConsumerData -> ProviderData ++: GET/POST/... /public
+            ConsumerData -> ProviderData ++: GET/POST/[..] /public
 
                 ProviderData -> ProviderControl ++: Validate call\nPOST /validate (Token)
                 return true/false
 
-                ProviderData -> SubmodelBackendServer ++: GET/POST/... /service/data/{assetId}\n(Must be configured at the DataAddress of Asset)
+                ProviderData -> SubmodelBackendServer ++: GET/POST/[..] /{aasSpecificUrl}\n(Must be configured at the DataAddress of the Asset)
                 return data
             return data
         return data
