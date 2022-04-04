@@ -20,9 +20,12 @@
 # Comments:
 #
 
+export MAVEN_OPTS=(${GRADLE_PROPS[*]})
+
 if [ "${HTTP_PROXY_HOST}" != "" ]; then
-  export MAVEN_OPTS="-Dhttp.proxyHost=${HTTP_PROXY_HOST} -Dhttp.proxyPort=${HTTP_PROXY_PORT} -Dhttps.proxyHost=${HTTP_PROXY_HOST} -Dhttps.proxyPort=${HTTP_PROXY_PORT}"
+  export MAVEN_OPTS=(${GRADLE_PROPS[*]} -Dhttp.proxyHost=${HTTP_PROXY_HOST} -Dhttp.proxyPort=${HTTP_PROXY_PORT} -Dhttps.proxyHost=${HTTP_PROXY_HOST} -Dhttps.proxyPort=${HTTP_PROXY_PORT})
 fi
+
 cd ../../semantics
 mvn clean install -DskipTests
 cd ../eclipsedataspaceconnector/api-wrapper
@@ -32,10 +35,12 @@ rm -rf adapter
 rm -rf services
 rm -rf registry
 rm -rf semantic-hub
-ln -s ../../../semantics/adapter .
-ln -s ../../../semantics/registry .
-ln -s ../../../semantics/semantic-hub .
+cp -r ../../../semantics/adapter .
+cp -r ../../../semantics/registry .
+cp -r ../../../semantics/semantic-hub .
 cd aasproxy
 mvn clean install -DskipTests
 cd ../..
-docker-compose up --build
+export DOCKER_PLATFORM=${DOCKER_PLATFORM:-linux/amd64}
+docker-compose build
+docker-compose up

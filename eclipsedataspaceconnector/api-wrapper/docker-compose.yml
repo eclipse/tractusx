@@ -8,18 +8,17 @@ services:
         JAR: launchers/control-plane/build/libs/edc.jar
         HTTP_PROXY: ${HTTP_PROXY}
     image: cxtsiacr.azurecr.io/edc/consumer-control-plane:catenax-at-home-latest
+    platform: ${DOCKER_PLATFORM:-linux/amd64}
     ports:
       - "8191:9191" # default
       - "5005:8090"
     environment:
-      EDC_VAULT: vault.properties
-      EDC_KEYSTORE: cert.pfx
+      EDC_VAULT: /config/vault.properties
+      EDC_KEYSTORE: /config/cert.pfx
       EDC_KEYSTORE_PASSWORD: 123456
-      EDC_FS_CONFIG: configuration.properties
+      EDC_FS_CONFIG: /config/configuration.properties
     volumes:
-      - ${PWD}/config/consumer-control-plane.properties:/app/configuration.properties
-      - ${PWD}/config/consumer-control-plane-vault.properties:/app/vault.properties
-      - ${PWD}/certs/cert.pfx:/app/cert.pfx
+      - ${PWD}/config/consumer-control-plane.config:/config
 
   consumer-data-plane:
     build:
@@ -28,13 +27,14 @@ services:
         JAR: launchers/data-plane/build/libs/edc.jar
         HTTP_PROXY: ${HTTP_PROXY}
     image: cxtsiacr.azurecr.io/edc/consumer-data-plane:catenax-at-home-latest
+    platform: ${DOCKER_PLATFORM:-linux/amd64}
     ports:
       - "8192:9191" # default
       - "5006:8090"
     environment:
-      EDC_FS_CONFIG: configuration.properties
+      EDC_FS_CONFIG: /config/configuration.properties
     volumes:
-     - ${PWD}/config/consumer-data-plane.properties:/app/configuration.properties
+     - ${PWD}/config/consumer-data-plane.config:/config
 
   api-wrapper:
     build:
@@ -43,14 +43,15 @@ services:
         JAR: launchers/api-wrapper/build/libs/edc.jar
         HTTP_PROXY: ${HTTP_PROXY}
     image: cxtsiacr.azurecr.io/edc/consumer-api-wrapper:catenax-at-home-latest
+    platform: ${DOCKER_PLATFORM:-linux/amd64}
     ports:
       - "8193:9191" # default
 #      - "9192" # callback
       - "5007:8090"
     environment:
-      EDC_FS_CONFIG: configuration.properties
+      EDC_FS_CONFIG: /config/configuration.properties
     volumes:
-      - ${PWD}/config/api-wrapper.properties:/app/configuration.properties
+      - ${PWD}/config/api-wrapper.config:/config
 
   provider-control-plane:
     build:
@@ -59,19 +60,18 @@ services:
         JAR: launchers/control-plane/build/libs/edc.jar
         HTTP_PROXY: ${HTTP_PROXY}
     image: cxtsiacr.azurecr.io/edc/provider-control-plane:catenax-at-home-latest
+    platform: ${DOCKER_PLATFORM:-linux/amd64}
     ports:
       - "8181:9191" # default
       - "8184:9192" # validation
       - "5008:8090"
     environment:
-      EDC_VAULT: vault.properties
-      EDC_KEYSTORE: cert.pfx
+      EDC_VAULT: /config/vault.properties
+      EDC_KEYSTORE: /config/cert.pfx
       EDC_KEYSTORE_PASSWORD: 123456
-      EDC_FS_CONFIG: configuration.properties
+      EDC_FS_CONFIG: /config/configuration.properties
     volumes:
-      - ${PWD}/config/provider-control-plane.properties:/app/configuration.properties
-      - ${PWD}/config/provider-control-plane-vault.properties:/app/vault.properties
-      - ${PWD}/certs/cert.pfx:/app/cert.pfx
+      - ${PWD}/config/provider-control-plane.config:/config
 
   provider-data-plane:
     build:
@@ -80,14 +80,15 @@ services:
         JAR: launchers/data-plane/build/libs/edc.jar
         HTTP_PROXY: ${HTTP_PROXY}
     image: cxtsiacr.azurecr.io/edc/provider-data-plane:catenax-at-home-latest
+    platform: ${DOCKER_PLATFORM:-linux/amd64}
     ports:
       - "8182:9191" # default
       - "8183:9192" # public
       - "5009:8090"
     environment:
-      EDC_FS_CONFIG: configuration.properties
+      EDC_FS_CONFIG: /config/configuration.properties
     volumes:
-      - ${PWD}/config/provider-data-plane.properties:/app/configuration.properties
+      - ${PWD}/config/provider-data-plane.config:/config
 
   provider-backend-service:
     build:
@@ -96,13 +97,14 @@ services:
         JAR: launchers/provider-backend-service/build/libs/edc.jar
         HTTP_PROXY: ${HTTP_PROXY}
     image: cxtsiacr.azurecr.io/edc/provider-api-wrapper:catenax-at-home-latest
+    platform: ${DOCKER_PLATFORM:-linux/amd64}
     ports:
       - "8194:9191" # default
       - "5010:8090"
     environment:
-      EDC_FS_CONFIG: configuration.properties
+      EDC_FS_CONFIG: /config/configuration.properties
     volumes:
-      - ${PWD}/config/provider-backend-service.properties:/app/configuration.properties
+      - ${PWD}/config/provider-backend-service.config:/config
 
   provider-aas-service:
     build:
@@ -111,6 +113,7 @@ services:
         JAR: launchers/adapter/target/adapter-1.3.0-SNAPSHOT.jar
         HTTP_PROXY: ${HTTP_PROXY}
     image: cxtsiacr.azurecr.io/backend/simple-aas-adapter:catenax-at-home-latest
+    platform: ${DOCKER_PLATFORM:-linux/amd64}
     ports:
       - "4244:4244" # default
       - "5011:8090"
@@ -122,6 +125,7 @@ services:
         JAR: launchers/semantic-hub/target/semantic-hub-1.3.0-SNAPSHOT.jar
         HTTP_PROXY: ${HTTP_PROXY}
     image: cxtsiacr.azurecr.io/semantics/hub:catenax-at-home-latest
+    platform: ${DOCKER_PLATFORM:-linux/amd64}
     ports:
       - "4242:4242" # default
       - "5012:8090"
@@ -133,6 +137,7 @@ services:
         JAR: launchers/registry/target/registry-1.3.0-SNAPSHOT.jar
         HTTP_PROXY: ${HTTP_PROXY}
     image: cxtsiacr.azurecr.io/semantics/registry:catenax-at-home-latest
+    platform: ${DOCKER_PLATFORM:-linux/amd64}
     ports:
       - "4243:4243" # default
       - "5013:8090"
@@ -144,6 +149,7 @@ services:
         JAR: launchers/aasproxy/target/aasproxy-1.0.0-SNAPSHOT.jar
         HTTP_PROXY: ${HTTP_PROXY}
     image: cxtsiacr.azurecr.io/edc/consumer-aas-proxy:catenax-at-home-latest
+    platform: ${DOCKER_PLATFORM:-linux/amd64}
     ports:
       - "4245:4245" # default
       - "5014:8090"
