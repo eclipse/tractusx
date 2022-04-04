@@ -1,7 +1,0 @@
-{
-  "instrumentation": {
-    "logging": {
-      "level": "INFO"
-    }
-  }
-}

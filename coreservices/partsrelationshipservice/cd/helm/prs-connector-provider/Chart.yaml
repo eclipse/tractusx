@@ -1,5 +1,0 @@
-apiVersion: v2
-name: prs-connector-provider
-description: A Helm chart to deploy the PRS Connector Provider to Kubernetes.
-type: application
-version: 0.0.1
