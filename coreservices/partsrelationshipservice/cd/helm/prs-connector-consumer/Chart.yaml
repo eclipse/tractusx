@@ -1,5 +1,0 @@
-apiVersion: v2
-name: prs-connector-consumer
-description: A Helm chart to deploy the PRS Connector Consumer to Kubernetes.
-type: application
-version: 0.0.1
