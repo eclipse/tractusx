@@ -18,7 +18,7 @@ const TWIN_URL = `${process.env.REACT_APP_SEMANTIC_SERVICE_LAYER_URL}twin-regist
 
 function handleRequest(res: Response){
   if(res.status >= 400) {
-    throw new Error(`Server responds with ${res.status} error!`);
+    throw new Error(`${res.statusText}: Server responds with ${res.status} error!`);
   }
   return res.json();
 }
