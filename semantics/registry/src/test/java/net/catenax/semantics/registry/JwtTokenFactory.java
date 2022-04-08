@@ -30,13 +30,19 @@ import java.util.Map;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
 
-public class AuthenticationUtils {
+public class JwtTokenFactory {
 
-    private static RequestPostProcessor authenticationWithRoles(String ... roles){
+    private String publicClientId;
+
+    public JwtTokenFactory(String publicClientId){
+        this.publicClientId = publicClientId;
+    }
+
+    private RequestPostProcessor authenticationWithRoles(String ... roles){
         Jwt jwt = Jwt.withTokenValue("token")
                 .header("alg", "none")
                 .claim("sub", "user")
-                .claim("resource_access", Map.of("catenax-portal", Map.of("roles", toJsonArray(roles) )))
+                .claim("resource_access", Map.of(publicClientId, Map.of("roles", toJsonArray(roles) )))
                 .build();
         Collection<GrantedAuthority> authorities = Collections.emptyList();
         return authentication(new JwtAuthenticationToken(jwt, authorities));
@@ -52,7 +58,7 @@ public class AuthenticationUtils {
 
 
 
-    public static RequestPostProcessor allRoles(){
+    public RequestPostProcessor allRoles(){
         return authenticationWithRoles(
                 AuthorizationEvaluator.Roles.ROLE_VIEW_DIGITAL_TWIN,
                 AuthorizationEvaluator.Roles.ROLE_ADD_DIGITAL_TWIN,
@@ -61,23 +67,23 @@ public class AuthenticationUtils {
         );
     }
 
-    public static RequestPostProcessor readTwin(){
+    public RequestPostProcessor readTwin(){
         return authenticationWithRoles(AuthorizationEvaluator.Roles.ROLE_VIEW_DIGITAL_TWIN);
     }
 
-    public static RequestPostProcessor addTwin(){
+    public RequestPostProcessor addTwin(){
         return authenticationWithRoles(AuthorizationEvaluator.Roles.ROLE_ADD_DIGITAL_TWIN);
     }
 
-    public static RequestPostProcessor updateTwin(){
+    public RequestPostProcessor updateTwin(){
         return authenticationWithRoles(AuthorizationEvaluator.Roles.ROLE_UPDATE_DIGITAL_TWIN);
     }
 
-    public static RequestPostProcessor deleteTwin(){
+    public RequestPostProcessor deleteTwin(){
         return authenticationWithRoles(AuthorizationEvaluator.Roles.ROLE_DELETE_DIGITAL_TWIN);
     }
 
-    public static RequestPostProcessor withoutResourceAccess(){
+    public RequestPostProcessor withoutResourceAccess(){
         Jwt jwt = Jwt.withTokenValue("token")
                 .header("alg", "none")
                 .claim("sub", "user")
@@ -86,11 +92,11 @@ public class AuthenticationUtils {
         return authentication(new JwtAuthenticationToken(jwt, authorities));
     }
 
-    public static RequestPostProcessor withoutRoles(){
+    public RequestPostProcessor withoutRoles(){
         Jwt jwt = Jwt.withTokenValue("token")
                 .header("alg", "none")
                 .claim("sub", "user")
-                .claim("resource_access", Map.of("catenax-portal", new HashMap<String, String>()))
+                .claim("resource_access", Map.of(publicClientId, new HashMap<String, String>()))
                 .build();
         Collection<GrantedAuthority> authorities = Collections.emptyList();
         return authentication(new JwtAuthenticationToken(jwt, authorities));

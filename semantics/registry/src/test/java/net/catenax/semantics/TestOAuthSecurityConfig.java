@@ -16,6 +16,7 @@
 
 package net.catenax.semantics;
 
+import net.catenax.semantics.registry.JwtTokenFactory;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -39,5 +40,10 @@ public class TestOAuthSecurityConfig {
         return token -> {
             throw new UnsupportedOperationException("The JwtDecoder must not be called in tests by Spring.");
         };
+    }
+
+    @Bean
+    public JwtTokenFactory jwtTokenFactory(RegistryProperties registryProperties){
+        return new JwtTokenFactory(registryProperties.getIdm().getPublicClientId());
     }
 }

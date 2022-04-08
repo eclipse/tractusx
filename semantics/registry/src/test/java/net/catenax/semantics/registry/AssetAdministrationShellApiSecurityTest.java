@@ -70,7 +70,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
                             MockMvcRequestBuilders
                                     .get(SINGLE_SHELL_BASE_PATH, UUID.randomUUID())
                                     .accept(MediaType.APPLICATION_JSON)
-                                    .with(AuthenticationUtils.withoutResourceAccess())
+                                    .with(jwtTokenFactory.withoutResourceAccess())
                     )
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isForbidden());
@@ -79,7 +79,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
                             MockMvcRequestBuilders
                                     .get(SINGLE_SHELL_BASE_PATH, UUID.randomUUID())
                                     .accept(MediaType.APPLICATION_JSON)
-                                    .with(AuthenticationUtils.withoutRoles())
+                                    .with(jwtTokenFactory.withoutRoles())
                     )
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isForbidden());
@@ -106,7 +106,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
                                     .get(SHELL_BASE_PATH)
                                     .accept(MediaType.APPLICATION_JSON)
                                     // test with wrong role
-                                    .with(AuthenticationUtils.addTwin())
+                                    .with(jwtTokenFactory.addTwin())
                     )
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isForbidden());
@@ -115,7 +115,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
                             MockMvcRequestBuilders
                                     .get(SHELL_BASE_PATH)
                                     .accept(MediaType.APPLICATION_JSON)
-                                    .with(AuthenticationUtils.readTwin())
+                                    .with(jwtTokenFactory.readTwin())
                     )
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isOk());
@@ -129,7 +129,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
                                     .get(SINGLE_SHELL_BASE_PATH, shellId )
                                     .accept(MediaType.APPLICATION_JSON)
                                     // test with wrong role
-                                    .with(AuthenticationUtils.deleteTwin())
+                                    .with(jwtTokenFactory.deleteTwin())
                     )
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isForbidden());
@@ -138,7 +138,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
                             MockMvcRequestBuilders
                                     .get(SINGLE_SHELL_BASE_PATH, shellId )
                                     .accept(MediaType.APPLICATION_JSON)
-                                    .with(AuthenticationUtils.readTwin())
+                                    .with(jwtTokenFactory.readTwin())
                     )
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isOk());
@@ -153,7 +153,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content(toJson(shellPayloadForPost))
                                     // test with wrong role
-                                    .with(AuthenticationUtils.readTwin())
+                                    .with(jwtTokenFactory.readTwin())
                     )
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isForbidden());
@@ -163,7 +163,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
                                     .post(SHELL_BASE_PATH, toJson(shellPayloadForPost) )
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content(toJson(shellPayloadForPost))
-                                    .with(AuthenticationUtils.addTwin())
+                                    .with(jwtTokenFactory.addTwin())
                     )
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isCreated());
@@ -179,7 +179,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content(toJson(shellPayloadForUpdate))
                                     // test with wrong role
-                                    .with(AuthenticationUtils.readTwin())
+                                    .with(jwtTokenFactory.readTwin())
                     )
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isForbidden());
@@ -190,7 +190,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
                                     .put(SINGLE_SHELL_BASE_PATH, shellId )
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content(toJson(shellPayloadForUpdate))
-                                    .with(AuthenticationUtils.updateTwin())
+                                    .with(jwtTokenFactory.updateTwin())
                     )
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isNoContent());
@@ -203,7 +203,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
                             MockMvcRequestBuilders
                                     .delete(SINGLE_SHELL_BASE_PATH, shellId )
                                     // test with wrong role
-                                    .with(AuthenticationUtils.readTwin())
+                                    .with(jwtTokenFactory.readTwin())
                     )
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isForbidden());
@@ -212,7 +212,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
                             MockMvcRequestBuilders
                                     .delete(SINGLE_SHELL_BASE_PATH, shellId )
                                     // test with wrong role
-                                    .with(AuthenticationUtils.deleteTwin())
+                                    .with(jwtTokenFactory.deleteTwin())
                     )
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isNoContent());
@@ -246,7 +246,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
                                    .get(SUB_MODEL_BASE_PATH,  shellId )
                                    .accept(MediaType.APPLICATION_JSON)
                                    // test with wrong role
-                                   .with(AuthenticationUtils.addTwin())
+                                   .with(jwtTokenFactory.addTwin())
                    )
                    .andDo(MockMvcResultHandlers.print())
                    .andExpect(status().isForbidden());
@@ -255,7 +255,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
                            MockMvcRequestBuilders
                                    .get(SUB_MODEL_BASE_PATH,  shellId )
                                    .accept(MediaType.APPLICATION_JSON)
-                                   .with(AuthenticationUtils.readTwin())
+                                   .with(jwtTokenFactory.readTwin())
                    )
                    .andDo(MockMvcResultHandlers.print())
                    .andExpect(status().isOk());
@@ -268,7 +268,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
                                     .get(SINGLE_SUB_MODEL_BASE_PATH, shellId, submodelId )
                                     .accept(MediaType.APPLICATION_JSON)
                                     // test with wrong role
-                                    .with(AuthenticationUtils.deleteTwin())
+                                    .with(jwtTokenFactory.deleteTwin())
                     )
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isForbidden());
@@ -277,7 +277,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
                             MockMvcRequestBuilders
                                     .get(SINGLE_SUB_MODEL_BASE_PATH, shellId, submodelId )
                                     .accept(MediaType.APPLICATION_JSON)
-                                    .with(AuthenticationUtils.readTwin())
+                                    .with(jwtTokenFactory.readTwin())
                     )
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isOk());
@@ -291,7 +291,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content(toJson(createSubmodel("exampleSubmodel")))
                                     // test with wrong role
-                                    .with(AuthenticationUtils.readTwin())
+                                    .with(jwtTokenFactory.readTwin())
                     )
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isForbidden());
@@ -301,7 +301,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
                                     .post(SUB_MODEL_BASE_PATH, shellId)
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content(toJson(createSubmodel("exampleSubmodel")))
-                                    .with(AuthenticationUtils.addTwin())
+                                    .with(jwtTokenFactory.addTwin())
                     )
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isCreated());
@@ -317,7 +317,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content(toJson(submodelToUpdate))
                                     // test with wrong role
-                                    .with(AuthenticationUtils.readTwin())
+                                    .with(jwtTokenFactory.readTwin())
                     )
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isForbidden());
@@ -327,7 +327,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
                                     .put(SINGLE_SUB_MODEL_BASE_PATH, shellId, submodelId)
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content(toJson(submodelToUpdate))
-                                    .with(AuthenticationUtils.updateTwin())
+                                    .with(jwtTokenFactory.updateTwin())
                     )
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isNoContent());
@@ -340,7 +340,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
                                     .delete(SINGLE_SUB_MODEL_BASE_PATH, shellId, submodelId)
                                     .contentType(MediaType.APPLICATION_JSON)
                                     // test with wrong role
-                                    .with(AuthenticationUtils.readTwin())
+                                    .with(jwtTokenFactory.readTwin())
                     )
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isForbidden());
@@ -349,7 +349,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
                             MockMvcRequestBuilders
                                     .delete(SINGLE_SUB_MODEL_BASE_PATH, shellId, submodelId)
                                     .contentType(MediaType.APPLICATION_JSON)
-                                    .with(AuthenticationUtils.deleteTwin())
+                                    .with(jwtTokenFactory.deleteTwin())
                     )
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isNoContent());
@@ -375,7 +375,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
                             MockMvcRequestBuilders
                                     .get(SINGLE_LOOKUP_SHELL_BASE_PATH, shellId)
                                     .accept(MediaType.APPLICATION_JSON)
-                                    .with(AuthenticationUtils.deleteTwin())
+                                    .with(jwtTokenFactory.deleteTwin())
                     )
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isForbidden());
@@ -384,7 +384,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
                             MockMvcRequestBuilders
                                     .get(SINGLE_LOOKUP_SHELL_BASE_PATH, shellId)
                                     .accept(MediaType.APPLICATION_JSON)
-                                    .with(AuthenticationUtils.readTwin())
+                                    .with(jwtTokenFactory.readTwin())
                     )
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isOk());
@@ -401,7 +401,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
                                     .post(SINGLE_LOOKUP_SHELL_BASE_PATH, shellId)
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content(toJson(specificAssetIds))
-                                    .with(AuthenticationUtils.readTwin())
+                                    .with(jwtTokenFactory.readTwin())
                     )
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isForbidden());
@@ -411,7 +411,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
                                     .post(SINGLE_LOOKUP_SHELL_BASE_PATH, shellId)
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content(toJson(specificAssetIds))
-                                    .with(AuthenticationUtils.addTwin())
+                                    .with(jwtTokenFactory.addTwin())
                     )
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isCreated());
@@ -422,7 +422,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
             mvc.perform(
                             MockMvcRequestBuilders
                                     .delete(SINGLE_LOOKUP_SHELL_BASE_PATH, shellId)
-                                    .with(AuthenticationUtils.readTwin())
+                                    .with(jwtTokenFactory.readTwin())
                     )
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isForbidden());
@@ -430,7 +430,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
             mvc.perform(
                             MockMvcRequestBuilders
                                     .delete(SINGLE_LOOKUP_SHELL_BASE_PATH, shellId)
-                                    .with(AuthenticationUtils.deleteTwin())
+                                    .with(jwtTokenFactory.deleteTwin())
                     )
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isNoContent());
@@ -449,7 +449,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
                                     .get(LOOKUP_SHELL_BASE_PATH)
                                     .queryParam("assetIds",  toJson(specificAssetIds))
                                     .accept(MediaType.APPLICATION_JSON)
-                                    .with(AuthenticationUtils.addTwin())
+                                    .with(jwtTokenFactory.addTwin())
                     )
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isForbidden());
@@ -459,7 +459,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
                                     .get(LOOKUP_SHELL_BASE_PATH)
                                     .queryParam("assetIds",  toJson(specificAssetIds))
                                     .accept(MediaType.APPLICATION_JSON)
-                                    .with(AuthenticationUtils.readTwin())
+                                    .with(jwtTokenFactory.readTwin())
                     )
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isOk());
@@ -482,7 +482,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
                                     .accept(MediaType.APPLICATION_JSON)
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content(toJson(batchShellBody))
-                                    .with(AuthenticationUtils.readTwin())
+                                    .with(jwtTokenFactory.readTwin())
                     )
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isForbidden());
@@ -493,7 +493,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
                                     .accept(MediaType.APPLICATION_JSON)
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content(toJson(batchShellBody))
-                                    .with(AuthenticationUtils.addTwin())
+                                    .with(jwtTokenFactory.addTwin())
                     )
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isCreated());
@@ -509,7 +509,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
                                     .post(LOOKUP_SHELL_BASE_PATH + "/query")
                                     .content(toJson(anyMatchLookupPayload))
                                     .contentType(MediaType.APPLICATION_JSON)
-                                    .with(AuthenticationUtils.deleteTwin())
+                                    .with(jwtTokenFactory.deleteTwin())
                     )
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isForbidden());
@@ -519,7 +519,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
                                     .post(LOOKUP_SHELL_BASE_PATH + "/query")
                                     .content(toJson(anyMatchLookupPayload))
                                     .contentType(MediaType.APPLICATION_JSON)
-                                    .with(AuthenticationUtils.readTwin())
+                                    .with(jwtTokenFactory.readTwin())
                     )
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isOk());
@@ -532,7 +532,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
                                     .post(SHELL_BASE_PATH + "/fetch")
                                     .content(toJson(emptyArrayNode()))
                                     .contentType(MediaType.APPLICATION_JSON)
-                                    .with(AuthenticationUtils.deleteTwin())
+                                    .with(jwtTokenFactory.deleteTwin())
                     )
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isForbidden());
@@ -542,7 +542,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
                                     .post(SHELL_BASE_PATH + "/fetch")
                                     .content(toJson(emptyArrayNode()))
                                     .contentType(MediaType.APPLICATION_JSON)
-                                    .with(AuthenticationUtils.readTwin())
+                                    .with(jwtTokenFactory.readTwin())
                     )
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isOk())

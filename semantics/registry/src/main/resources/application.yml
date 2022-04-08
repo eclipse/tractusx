@@ -22,22 +22,6 @@ server:
     enabled: false
   forward-headers-strategy: framework
 
-hub:
-  triple-store:
-    embedded:
-      enabled: true
-# Below is an example configuration to connect with an external fuseki instance.
-# The configuration fits in when the above embedded.enabled property is set to false.
-# The /test-dataset/ is the name of the dataset to execute against. Adjust it to your setup accordingly.
-#   baseUrl: http://localhost:3030
-#   queryEndpoint: /test-dataset/query
-#   updateEndpoint: /test-dataset/update
-#   username: admin
-#   password: uThhL1IlENjtCKH
-
-
-
-
 #security:
 #  require-ssl: true
 # This is the http transport we use to talk to the connector
@@ -48,6 +32,10 @@ http:
     call: 10000
     read: 10000
 licence_url: '@licence_url@'
+
+registry:
+  idm:
+    public-client-id: catenax-portal
 
 spring:
   application:
@@ -103,7 +91,7 @@ springdoc:
       use-pkce-with-authorization-code-grant: true
       # the scopes and client id will be prefilled in the swagger ui
       scopes: openid profile
-      client-id: catenax-portal
+      client-id: ${registry.idm.public-client-id}
 
 project_desc: '@project.description@'
 contact_email: '@email@'

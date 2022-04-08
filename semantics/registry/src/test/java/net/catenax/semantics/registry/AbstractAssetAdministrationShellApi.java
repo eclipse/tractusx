@@ -21,7 +21,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import net.catenax.semantics.RegistryProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -37,6 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@EnableConfigurationProperties(RegistryProperties.class)
 public abstract class AbstractAssetAdministrationShellApi {
 
 
@@ -47,13 +50,16 @@ public abstract class AbstractAssetAdministrationShellApi {
     protected static final String SUB_MODEL_BASE_PATH = "/registry/shell-descriptors/{shellIdentifier}/submodel-descriptors";
     protected static final String SINGLE_SUB_MODEL_BASE_PATH = "/registry/shell-descriptors/{shellIdentifier}/submodel-descriptors/{submodelIdentifier}";
 
-    protected final RequestPostProcessor jwtAuthentication = AuthenticationUtils.allRoles();
-    
+
+
     @Autowired
     protected MockMvc mvc;
 
     @Autowired
     protected ObjectMapper mapper;
+
+    @Autowired
+    protected JwtTokenFactory jwtTokenFactory;
 
     protected String getId(ObjectNode payload) {
         return payload.get("identification").textValue();
@@ -66,7 +72,7 @@ public abstract class AbstractAssetAdministrationShellApi {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(payload)
-                                .with(jwtAuthentication)
+                                .with(jwtTokenFactory.allRoles())
                 )
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isCreated())
@@ -95,7 +101,7 @@ public abstract class AbstractAssetAdministrationShellApi {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(payload)
-                                .with(jwtAuthentication)
+                                .with(jwtTokenFactory.allRoles())
                 )
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isCreated())

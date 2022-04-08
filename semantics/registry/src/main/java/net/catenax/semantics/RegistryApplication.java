@@ -14,6 +14,7 @@ import org.springdoc.core.SpringDocConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jdbc.repository.config.EnableJdbcAuditing;
@@ -28,6 +29,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @SpringBootApplication
 @EnableJdbcAuditing
+@EnableConfigurationProperties(RegistryProperties.class)
 @ComponentScan(basePackages = {"net.catenax.semantics", "org.openapitools.configuration"})
 public class RegistryApplication {
 
@@ -67,8 +69,8 @@ public class RegistryApplication {
     }
 
 	@Bean
-	public AuthorizationEvaluator authorizationEvaluator(){
-		return new AuthorizationEvaluator("catenax-portal");
+	public AuthorizationEvaluator authorizationEvaluator(RegistryProperties registryProperties){
+		return new AuthorizationEvaluator(registryProperties.getIdm().getPublicClientId());
 	}
 
 	/**
