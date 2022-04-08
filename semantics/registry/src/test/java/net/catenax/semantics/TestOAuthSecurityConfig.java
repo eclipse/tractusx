@@ -28,14 +28,16 @@ import java.util.Map;
 @TestConfiguration
 public class TestOAuthSecurityConfig {
 
+    /**
+     * In tests the OAuth2 flow is mocked by Spring. The Spring Security test support directly creates the
+     * authentication object in the SecurityContextHolder.
+     *
+     * This decoder is only required for being present in the application context due to Spring autoconfiguration.
+     */
     @Bean
     public JwtDecoder jwtDecoder(){
-        return token -> new Jwt(
-                "token",
-                Instant.now(),
-                Instant.MAX,
-                Map.of("alg", "none"),
-                Map.of(JwtClaimNames.SUB, "testUser")
-        );
+        return token -> {
+            throw new UnsupportedOperationException("The JwtDecoder must not be called in tests by Spring.");
+        };
     }
 }

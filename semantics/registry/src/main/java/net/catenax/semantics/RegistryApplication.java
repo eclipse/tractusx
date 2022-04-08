@@ -66,6 +66,11 @@ public class RegistryApplication {
         return firewall;
     }
 
+	@Bean
+	public AuthorizationEvaluator authorizationEvaluator(){
+		return new AuthorizationEvaluator("catenax-portal");
+	}
+
 	/**
 	 * entry point if started as an app
 	 * @param args command line
