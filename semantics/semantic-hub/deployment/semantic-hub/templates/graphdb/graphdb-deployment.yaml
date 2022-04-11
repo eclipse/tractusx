@@ -45,6 +45,8 @@ spec:
             - name: graphdbdata
               mountPath: /fuseki/logs
               subPath: logs
+      imagePullSecrets:
+{{ .Values.graphdb.imagePullSecrets | toYaml | indent 8 }}
       volumes:
         - name: graphdbdata
           persistentVolumeClaim:

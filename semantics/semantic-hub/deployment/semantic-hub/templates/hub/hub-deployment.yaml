@@ -64,3 +64,5 @@ spec:
                   name: {{ $sec_name }}
           resources:
 {{ .Values.hub.resources | toYaml | indent 12 }}
+      imagePullSecrets:
+{{ .Values.hub.imagePullSecrets | toYaml | indent 8 }}
