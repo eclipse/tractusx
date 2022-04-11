@@ -178,6 +178,17 @@ const L = {
   companyName: 'DMG MORI', url: '', background: ''
 };
 
+const M = {
+  id: '0253dd4d-35af-43f5-a84c-7cc280840300',
+  title: 'COVANTO - AFQM (Agile Field Quality Management)', rating: 4.0, downloads: 3, tags: ['FREE FOR USE'],
+  screenshots: [],
+  description: 'The mobility industry is transforming from a component-based market into being a holistically connected ecosystem using data as well. Classical methods like analyzing parts are enriched by data driven methods.  AFQM (Agile Field Quality Management) provides a collaborative environment for OEM and suppliers as Single point of Information to react faster. A faster reaction means reduced costs and better customer experience.  AFQM supports quality engineers and developers: Combine different data sources from suppliers and OEMs to provide valuable insights with high quality data. Automatic monitoring (Early Warning System) of diagnostic data, to monitor measures that have been implemented, as part of error correction processes, for example. Explorative but targeted analysis of the data as part of the root cause analysis process.',
+  usage: 'free for use',
+  purchase: 'PURCHASE',
+  details: '',
+  companyName: 'BOSCH', url: 'afqm-support@bosch.com', background: ''
+};
+
 const N = {
   id: '0253dd4d-35af-43f5-a84c-7cc280840336',
   title: 'BPDM Services', rating: 4.8, downloads: 9.002, tags: ['SUPPLIER DATABASE', 'ONE ID', 'BUSINESS INFORMATION', 'COMPANY DATA'],
@@ -235,7 +246,7 @@ const R = {
 
 const S = {
   id: '0253dd4d-35af-43f5-a84c-7cc280840341',
-  title: 'Component Performance Monitor', rating: 0, downloads: 0, tags: [],
+  title: 'Component Performance Monitor', rating: 4.0, downloads: 0, tags: [],
   screenshots: ['/cpm_screenshot3.png'],
   description: 'Automotive suppliers must constantly monitor product performance and resolve quality issues quickly to ensure they don’t face costly claims. For quality analysts and engineers this involves a long, manual process of analyzing claims and failed parts that lacks vital information — including live vehicle data(such as Diagnostic Trouble Codes). Identifying root-cause issues is complex, issue resolution is slow, and costs quickly escalate. Component Performance Monitor (CPM) enables suppliers to better manage quality risk and significantly reduce the costs incurred from faulty parts by leveraging near-live vehicle data, empowering quality experts to: <br /><br /><ul><li>Identify failure patterns and root- cause quality issues in real time </li><li>Monitor the effectiveness of remediation measures in the fleet using live vehicle data </li><li>and proactively request faulty parts for further analysis.</li><br /> ...all in a single collaborative interface that supercharges the supplier to OEM feedback cycle, leading to faster proactive issue resolution, a reduction in claims, and better customer experiences.',
   usage: 'free for use',
@@ -246,7 +257,7 @@ const S = {
 
 const T = {
   id: '0253dd4d-35af-43f5-a84c-7cc280840342',
-  title: 'smart MOM', rating: 0, downloads: 0, tags: [],
+  title: 'smart MOM', rating: 4.0, downloads: 0, tags: [],
   screenshots: [],
   description: 'Manufacturing Operations Management (MOM) consolidates all production processes and systems for managing manufacturing processes in order to increase efficiency. The smart MOM solutions from German Edge Cloud include various services and enable holistic production management. This includes, for example, the management of production processes including specific production rules, parts lists, recipient data, resource management and much more.<br /><br />Our Edge Cloud data center ONCITE can combine various MES (Manufacturing Execution System) and MOM functionalities with an IIoT platform. Based on a microservices-oriented architecture, the MOM apps can, for example, carry out transaction control, data collection and analysis almost in real time.<br/><br/>customer advantage:<br/><ul><li>transparent production</li><li>increase in efficiency</li><li>increase in quality</li>',
   usage: 'free for use',
@@ -257,7 +268,7 @@ const T = {
 
 const U = {
   id: '0253dd4d-35af-43f5-a84c-7cc280840343',
-  title: 'SAP DCM', rating: 0, downloads: 0, tags: [],
+  title: 'SAP DCM', rating: 4.0, downloads: 0, tags: [],
   screenshots: [],
   description: 'The SAP Demand & Capacity Management application for Catena-X provides users the ability to increase transparency in their supply chains through a collaborative demand and capacity management.<br /><br />At a core functionality, the app provides a common view on customer\'s planned material demand and supplier\'s capacities. It provides a continuous monitoring of the planned demand and capacity situation and an automatic in-app alerting in case of bottleneck situations.<br /><br />Customers thereby get faster insights and notifications of capacity shortages or delivery problems before they impact their production. Suppliers benefit from the increased demand transparency avoiding over-capacities and capacity shortages by leveraging production flexibilities. Thus, partners can make collaborative decisions with respect to appropriate measures and achieve a more robust and resilient supply chain.',
   usage: 'free for use',
@@ -279,7 +290,7 @@ const V = {
 
 const Y = {
   id: '0253dd4d-35af-43f5-a84c-7cc280840345',
-  title: 'Catena-X Enabled Integrated Data Lake', rating: 0, downloads: 0, tags: ['IDL'],
+  title: 'Catena-X Enabled Integrated Data Lake', rating: null, downloads: 0, tags: ['IDL'],
   screenshots: ['/data-lake-ss-1.png', '/data-lake-ss-2.png', '/data-lake-ss-2.png'],
   description: 'Integrated Data Lake (IDL) is a S3 compatible MindSphere application that makes it easy to set up data collection in the cloud for your industrial assets and backend systems.<br />It provides complete flexibility on the type of data you want to import and store as objects. This gives you the ability to break down data silos in your business and consolidate structured, semi-structured as well as un-structured data within MindSphere. Accelerate the ability to get value out of your industrial data.<br />The Catena-X enabled Integrated Data Lake allows the users to exchange the industrial data with Catena-X network. The users can exchange both single files or results of the running industrial processes with partners in the Catena-X network.',
   usage: '',
@@ -291,7 +302,7 @@ const Y = {
 export class AppState {
   public static state: AppState;
   //public apps: Application[] = [F, E, C, A, D, B];
-  public apps: Application[] = [N, O, P, Q, R, S, T, U,Y];
+  public apps: Application[] = [M, N, O, P, Q, R, S, T, U,Y];
   public topApps: Application[] = [B, D, C, F, E];
   public bizApps: Application[] = [C, E, F];
   public myApps: Application[] = [A, B, R];
