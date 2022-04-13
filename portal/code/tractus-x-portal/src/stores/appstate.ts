@@ -189,6 +189,28 @@ const M = {
   companyName: 'BOSCH', url: 'https://portal-staging.afqm-services.com/', background: ''
 };
 
+const M1 = {
+  id: '0253dd4d-35af-43f5-a84c-7cc000840300',
+  title: 'Fleet Manager', rating: 4.0, downloads: 3, tags: ['Behavior Twin'],
+  screenshots: ['/adac1.png'],
+  description: 'The Fleet Manager application shows the possibilities of the usage of a behaviour twin. A list of vehicles is displayed, a Fleet Manager can get a quick overview of the condition of the managed vehicles, including: Damage Values, DTCs, Remaining Useful Life. </ br> It builds on the following data, models and services we developed in the BTP: BMW vehicle usage data, ZF FMU for IGBT damage model, ZF Remaining Useful Life Service, Siemens service to incorporate ZF FMU, Siemens service generic Data Conversion Service, DLR service to incorporate ZF FMU, ADAC DTC-Translator.',
+  usage: 'free for use',
+  purchase: 'OPEN APP',
+  details: 'SEE DETAILS',
+  companyName: 'ADAC', url: 'https://fleet-management.adac.openresearch.com', background: ''
+};
+
+const M2 = {
+  id: '0253dd4d-35af-43f5-a84c-7cc001840300',
+  title: 'DTC-Translator', rating: 4.0, downloads: 3, tags: ['Behavior Twin'],
+  screenshots: ['/adac2.png'],
+  description: 'The DTC-Translator application is an administrative interface for a DTC-Translator API. The DTC-Translator API can return: a description, possible causes, affected parts based on ISO-18542-2 </ br> based on a DTC code. </ br> The actual application allows different use cases based on roles: Admin, OEM, Customer.',
+  usage: 'free for use',
+  purchase: 'OPEN APP',
+  details: 'SEE DETAILS',
+  companyName: 'ADAC', url: 'https://dtc-translator.adac.openresearch.com', background: ''
+};
+
 const N = {
   id: '0253dd4d-35af-43f5-a84c-7cc280840336',
   title: 'BPDM Services', rating: 4.8, downloads: 9.002, tags: ['SUPPLIER DATABASE', 'ONE ID', 'BUSINESS INFORMATION', 'COMPANY DATA'],
@@ -302,7 +324,7 @@ const Y = {
 export class AppState {
   public static state: AppState;
   //public apps: Application[] = [F, E, C, A, D, B];
-  public apps: Application[] = [M, N, O, P, Q, R, S, T, U,Y];
+  public apps: Application[] = [M, M1, M2, N, O, P, Q, R, S, T, U,Y];
   public topApps: Application[] = [B, D, C, F, E];
   public bizApps: Application[] = [C, E, F];
   public myApps: Application[] = [A, B, R];
