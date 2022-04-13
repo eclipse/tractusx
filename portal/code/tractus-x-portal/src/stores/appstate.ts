@@ -180,8 +180,8 @@ const L = {
 
 const M = {
   id: '0253dd4d-35af-43f5-a84c-7cc280840300',
-  title: 'COVANTO - AFQM (Agile Field Quality Management)', rating: 4.0, downloads: 3, tags: ['FREE FOR USE', 'QUALITY MANAGEMENT'],
-  screenshots: [],
+  title: 'COVANTO - AFQM (Agile Field Quality Management)', rating: 4.0, downloads: 3, tags: ['QUALITY MANAGEMENT'],
+  screenshots: ['/covanto1.png'],
   description: 'The mobility industry is transforming from a component-based market into being a holistically connected ecosystem using data as well. Classical methods like analyzing parts are enriched by data driven methods.  AFQM (Agile Field Quality Management) provides a collaborative environment for OEM and suppliers as Single point of Information to react faster. A faster reaction means reduced costs and better customer experience.  AFQM supports quality engineers and developers: Combine different data sources from suppliers and OEMs to provide valuable insights with high quality data. Automatic monitoring (Early Warning System) of diagnostic data, to monitor measures that have been implemented, as part of error correction processes, for example. Explorative but targeted analysis of the data as part of the root cause analysis process.',
   usage: 'free for use',
   purchase: 'OPEN APP',
