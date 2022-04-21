@@ -29,7 +29,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import java.util.UUID;
 
 import static org.hamcrest.Matchers.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class AssetAdministrationShellApiTest extends AbstractAssetAdministrationShellApi {
@@ -429,11 +428,15 @@ public class AssetAdministrationShellApiTest extends AbstractAssetAdministration
 
         @Test
         public void testCreateSubmodelWithExistingIdExpectBadRequest() throws Exception {
-            ObjectNode shellPayload = createShell(false);
-            performShellCreateRequest(toJson(shellPayload));
-            String shellId = getId(shellPayload);
+            ObjectNode shellPayload1 = createShell(false);
+            performShellCreateRequest(toJson(shellPayload1));
 
-            JsonNode existingSubmodel = shellPayload.get("submodelDescriptors").get(0);
+            ObjectNode shellPayload2 = createShell(false);
+            performShellCreateRequest(toJson(shellPayload2));
+
+            // assign submodel with existing id to shellPayload1 to ensure global uniqueness
+            String shellId = getId(shellPayload1);
+            JsonNode existingSubmodel = shellPayload2.get("submodelDescriptors").get(0);
             mvc.perform(
                             MockMvcRequestBuilders
                                     .post(SUB_MODEL_BASE_PATH, shellId)
@@ -444,7 +447,7 @@ public class AssetAdministrationShellApiTest extends AbstractAssetAdministration
                     )
                     .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.error.message", is("A SubmodelDescriptor with the given identification does already exists for this AssetAdministrationShell.")));
+                    .andExpect(jsonPath("$.error.message", is("A SubmodelDescriptor with the given identification does already exists.")));
         }
 
         @Test

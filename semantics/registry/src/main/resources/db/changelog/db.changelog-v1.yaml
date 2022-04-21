@@ -324,4 +324,16 @@ databaseChangeLog:
              tableName: SUBMODEL_ENDPOINT
              columnName:  ENDPOINT_PROTOCOL_VERSION
              newDataType:  nvarchar(24)
-
+  - changeSet:
+      id: 12042022-01
+      author: fmisir
+      changes:
+        - dropUniqueConstraint:
+            tableName: SUBMODEL
+            uniqueColumns: ID_EXTERNAL, FK_SHELL_ID
+            constraintName: SUBMODEL_SHELL_AK_01
+        - addUniqueConstraint:
+            columnNames: ID_EXTERNAL
+            constraintName: SUBMODEL_AK_01
+            tableName: SUBMODEL
+            validate: true
