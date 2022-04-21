@@ -337,3 +337,10 @@ databaseChangeLog:
             constraintName: SUBMODEL_AK_01
             tableName: SUBMODEL
             validate: true
+  - changeSet:
+      id: 20042022-01
+      author: fmisir
+      changes:
+        - dropColumn:
+            tableName: SHELL_IDENTIFIER
+            columnName: IS_UNIQUE

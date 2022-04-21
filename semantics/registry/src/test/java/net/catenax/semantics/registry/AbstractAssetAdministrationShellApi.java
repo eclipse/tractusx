@@ -109,16 +109,14 @@ public abstract class AbstractAssetAdministrationShellApi {
     }
 
 
-    protected ObjectNode createShell( boolean global ) throws JsonProcessingException {
+    protected ObjectNode createShell() throws JsonProcessingException {
         ObjectNode shellPayload = createBaseIdPayload("exampleShellIdPrefix", "exampleShellShortId");
         shellPayload.set("description", emptyArrayNode()
                 .add(createDescription("en", "this is an example description"))
                 .add(createDescription("de", "das ist ein beispiel")));
 
         String globalId="exampleGlobalAssetId";
-        if(global) {
-            globalId="exampleShellIdPrefix#"+globalId;
-        }
+
         shellPayload.set("globalAssetId", mapper.createObjectNode()
                 .set("value", emptyArrayNode().add(globalId) ));
 

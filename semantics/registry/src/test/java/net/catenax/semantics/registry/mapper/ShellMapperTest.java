@@ -114,9 +114,9 @@ public class ShellMapperTest {
     }
 
     private Shell createCompleteShell() {
-        ShellIdentifier shellIdentifier1 = new ShellIdentifier(UUID.randomUUID(), "key1", "value1", false,null);
-        ShellIdentifier shellIdentifier2 = new ShellIdentifier(UUID.randomUUID(), "key1", "value1", false,null);
-        ShellIdentifier shellIdentifier3 = new ShellIdentifier(UUID.randomUUID(), ShellIdentifier.GLOBAL_ASSET_ID_KEY, "exampleGlobalAssetId", false,null);
+        ShellIdentifier shellIdentifier1 = new ShellIdentifier(UUID.randomUUID(), "key1", "value1", null);
+        ShellIdentifier shellIdentifier2 = new ShellIdentifier(UUID.randomUUID(), "key1", "value1", null);
+        ShellIdentifier shellIdentifier3 = new ShellIdentifier(UUID.randomUUID(), ShellIdentifier.GLOBAL_ASSET_ID_KEY, "exampleGlobalAssetId", null);
         Set<ShellIdentifier> shellIdentifiers = Set.of(shellIdentifier1, shellIdentifier2, shellIdentifier3);
 
         ShellDescription shellDescription1 = new ShellDescription(UUID.randomUUID(), "en", "example description1");

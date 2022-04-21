@@ -94,7 +94,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
 
         @BeforeEach
         public void before() throws Exception{
-            ObjectNode shell = createShell(false);
+            ObjectNode shell = createShell();
             performShellCreateRequest(toJson(shell));
             shellId = getId(shell);
         }
@@ -146,7 +146,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
 
         @Test
         public void testRbacForCreate() throws Exception {
-            ObjectNode shellPayloadForPost = createShell(false);
+            ObjectNode shellPayloadForPost = createShell();
             mvc.perform(
                             MockMvcRequestBuilders
                                     .post(SHELL_BASE_PATH)
@@ -171,7 +171,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
 
         @Test
         public void testRbacForUpdate() throws Exception {
-            ObjectNode shellPayloadForUpdate = createShell(false)
+            ObjectNode shellPayloadForUpdate = createShell()
                     .put("identification", shellId);
             mvc.perform(
                             MockMvcRequestBuilders
@@ -228,7 +228,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
 
        @BeforeEach
        public void before() throws Exception{
-           ObjectNode shell = createShell(false);
+           ObjectNode shell = createShell();
            performShellCreateRequest(toJson(shell));
 
            ObjectNode submodel = createSubmodel("submodelIdPrefix");
@@ -364,7 +364,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
 
         @BeforeEach
         public void before() throws Exception{
-            ObjectNode shell = createShell(false);
+            ObjectNode shell = createShell();
             performShellCreateRequest(toJson(shell));
             shellId = getId(shell);
         }
@@ -473,7 +473,7 @@ public class AssetAdministrationShellApiSecurityTest extends AbstractAssetAdmini
 
         @Test
         public void testRbacCreateShellInBatch() throws Exception {
-            ObjectNode shell = createShell(false);
+            ObjectNode shell = createShell();
             ArrayNode batchShellBody = emptyArrayNode().add(shell);
 
             mvc.perform(

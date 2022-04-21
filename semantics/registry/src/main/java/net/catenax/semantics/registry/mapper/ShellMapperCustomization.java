@@ -55,33 +55,24 @@ public class ShellMapperCustomization {
         globalAssetId.ifPresent(apiDto::setGlobalAssetId);
     }
 
-    public static void removeGlobalAssetIdIdentifier(Set<ShellIdentifier> shellIds, List<IdentifierKeyValuePair> apiDto){
-        ShellIdentifier[] sis=shellIds.toArray(new ShellIdentifier[0]);
-        for(int count=apiDto.size()-1;count>=0;count--) {
-            IdentifierKeyValuePair kvp=apiDto.get(count);
-            ShellIdentifier shellId=sis[count];
-            if(shellId.isUnique() || ShellIdentifier.GLOBAL_ASSET_ID_KEY.equals(shellId.getKey())) {
-                apiDto.remove(count);
-            }
+    public static void removeGlobalAssetIdIdentifier(List<IdentifierKeyValuePair> specificAssetIds){
+        if(specificAssetIds == null || specificAssetIds.isEmpty()){
+            return;
         }
+        specificAssetIds.removeIf(identifierKeyValuePair -> ShellIdentifier.GLOBAL_ASSET_ID_KEY.equals(identifierKeyValuePair.getKey()) );
     }
 
     private static Optional<Reference> extractGlobalAssetId(Set<ShellIdentifier> shellIdentifiers){
         if(shellIdentifiers == null || shellIdentifiers.isEmpty()){
             return Optional.empty();
         }
-        Optional<String> globalAssetId = shellIdentifiers
+        Optional<ShellIdentifier> globalAssetId = shellIdentifiers
                 .stream()
-                .filter(shellIdentifier -> shellIdentifier.isUnique() || ShellIdentifier.GLOBAL_ASSET_ID_KEY.equals(shellIdentifier.getKey()))
-                .map(shellIdentifier -> {
-                   if(ShellIdentifier.GLOBAL_ASSET_ID_KEY.equals(shellIdentifier.getKey())) {
-                       return shellIdentifier.getValue();
-                   }
-                   return shellIdentifier.getKey()+shellIdentifier.getValue();
-                }).findFirst();
+                .filter(shellIdentifier -> ShellIdentifier.GLOBAL_ASSET_ID_KEY.equals(shellIdentifier.getKey()))
+                .findFirst();
         return globalAssetId.map(value -> {
             Reference reference = new Reference();
-            reference.setValue(List.of(globalAssetId.get()));
+            reference.setValue(List.of(globalAssetId.get().getValue()));
             return reference;
         });
     }
@@ -98,13 +89,6 @@ public class ShellMapperCustomization {
         if(Strings.isNullOrEmpty(globalAssetId)){
             return Optional.empty();
         }
-        String namespace=ShellIdentifier.GLOBAL_ASSET_ID_KEY;
-        if(globalAssetId.contains("#")) {
-            int lastIndex=globalAssetId.lastIndexOf("#")+1;
-            namespace=globalAssetId.substring(0,lastIndex);
-            globalAssetId=globalAssetId.substring(lastIndex);
-        }
-        return Optional.of(new ShellIdentifier(null, namespace, globalAssetId, true,null));
+        return Optional.of(new ShellIdentifier(null, ShellIdentifier.GLOBAL_ASSET_ID_KEY, globalAssetId, null));
     }
-
 }

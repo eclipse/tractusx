@@ -881,7 +881,7 @@ components:
           ],
           "globalAssetId": {
             "value": [
-                "urn:twin:net.catenax#3c7556f7-6956-4360-8036-d03e5a79c3c8"
+                "urn:uuid:882fc530-b69b-4707-95f6-5dbc5e9baaa8"
             ]
           },
           "idShort": "future concept x",
@@ -958,7 +958,7 @@ components:
               ],
               "globalAssetId": {
                 "value": [
-                    "urn:twin:net.catenax#3c7556f7-6956-4360-8036-d03e5a79c3c8"
+                    "urn:uuid:882fc530-b69b-4707-95f6-5dbc5e9baaa8"
                 ]
               },
               "idShort": "future concept x",
@@ -1020,7 +1020,7 @@ components:
               ],
               "globalAssetId": {
                 "value": [
-                    "urn:twin:net.catenax#3c7556f7-6956-4360-8036-d03e5a79c3c8"
+                    "urn:uuid:882fc530-b69b-4707-95f6-5dbc5e9baaa8"
                 ]
               },
               "idShort": "future concept x",
@@ -1089,7 +1089,7 @@ components:
             ],
             "globalAssetId": {
               "value": [
-                  "urn:twin:net.catenax#3c7556f7-6956-4360-8036-d03e5a79c3c8"
+                  "urn:uuid:882fc530-b69b-4707-95f6-5dbc5e9baaa8"
               ]
             },
             "specificAssetIds": [
@@ -1252,15 +1252,11 @@ components:
         [
             {
               "key" :   "globalAssetId",
-              "value" :  "urn:twin:net.catenax#3c7556f7-6956-4360-8036-d03e5a79c3c8"
+              "value" :  "urn:uuid:882fc530-b69b-4707-95f6-5dbc5e9baaa8"
             },
             {
               "key": "PartInstanceID",
               "value": "24975539203421"
-            },
-            {
-              "key": "VAN",
-              "value": "WEBFC102u30912"
             }
         ]
     lookup-shells-by-aas-identifier-response:
