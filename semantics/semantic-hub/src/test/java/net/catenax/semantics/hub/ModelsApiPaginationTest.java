@@ -16,7 +16,6 @@
 
 package net.catenax.semantics.hub;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +24,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
 
+import static net.catenax.semantics.hub.TestUtils.post;
 import static org.hamcrest.Matchers.*;
-import static org.hamcrest.Matchers.greaterThan;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -62,7 +59,7 @@ public class ModelsApiPaginationTest {
 
       prefixes.forEach(urnPrefix -> {
          try {
-            mvc.perform(post( TestUtils.createValidModelRequest(urnPrefix, "DRAFT")  ))
+            mvc.perform(post( TestUtils.createValidModelRequest(urnPrefix), "DRAFT")  )
                     .andDo( MockMvcResultHandlers.print() )
                     .andExpect( status().isOk() );
          } catch (Exception e) {
@@ -157,14 +154,6 @@ public class ModelsApiPaginationTest {
               .andExpect( jsonPath( "$.totalPages", equalTo(2) ) )
               .andExpect( jsonPath( "$.itemCount", equalTo( 3 ) ) )
               .andExpect( status().isOk() );
-   }
-
-   private MockHttpServletRequestBuilder post(String payload ) {
-      return MockMvcRequestBuilders.post( "/api/v1/models" )
-              .accept( MediaType.APPLICATION_JSON )
-              .contentType( MediaType.APPLICATION_JSON )
-              .content( payload )
-              .with(jwt());
    }
 
    private static String toMovementUrn(String urn){

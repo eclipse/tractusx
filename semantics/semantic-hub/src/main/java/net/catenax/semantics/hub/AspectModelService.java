@@ -22,10 +22,10 @@ import net.catenax.semantics.hub.api.ModelsApiDelegate;
 import net.catenax.semantics.hub.bamm.BammHelper;
 import net.catenax.semantics.hub.domain.ModelPackageStatus;
 import net.catenax.semantics.hub.domain.ModelPackageUrn;
-import net.catenax.semantics.hub.model.NewSemanticModel;
 import net.catenax.semantics.hub.model.SemanticModel;
 import net.catenax.semantics.hub.model.SemanticModelList;
 import net.catenax.semantics.hub.model.SemanticModelStatus;
+import net.catenax.semantics.hub.model.SemanticModelType;
 import net.catenax.semantics.hub.persistence.PersistenceLayer;
 
 public class AspectModelService implements ModelsApiDelegate {
@@ -82,8 +82,8 @@ public class AspectModelService implements ModelsApiDelegate {
    }
 
    @Override
-   public ResponseEntity<SemanticModel> createModelWithUrn( final NewSemanticModel newModel ) {
-      final SemanticModel resultingModel = persistenceLayer.save( newModel );
+   public ResponseEntity<SemanticModel> createModelWithUrn(final SemanticModelType type, final String newModel, final SemanticModelStatus status ) {
+      final SemanticModel resultingModel = persistenceLayer.save( type, newModel, status );
       return new ResponseEntity<>( resultingModel, HttpStatus.OK );
    }
 
@@ -128,8 +128,8 @@ public class AspectModelService implements ModelsApiDelegate {
    }
 
    @Override
-   public ResponseEntity<SemanticModel> modifyModel( final NewSemanticModel newModel ) {
-      final SemanticModel resultingModel = persistenceLayer.save( newModel );
+   public ResponseEntity<SemanticModel> modifyModel( final SemanticModelType type, final String newModel, final SemanticModelStatus status  ) {
+      final SemanticModel resultingModel = persistenceLayer.save( type, newModel, status );
       return new ResponseEntity<>( resultingModel, HttpStatus.OK );
    }
 

@@ -48,7 +48,6 @@ import net.catenax.semantics.hub.ModelPackageNotFoundException;
 import net.catenax.semantics.hub.domain.ModelPackage;
 import net.catenax.semantics.hub.domain.ModelPackageStatus;
 import net.catenax.semantics.hub.domain.ModelPackageUrn;
-import net.catenax.semantics.hub.model.NewSemanticModel;
 import net.catenax.semantics.hub.model.SemanticModel;
 import net.catenax.semantics.hub.model.SemanticModelList;
 import net.catenax.semantics.hub.model.SemanticModelStatus;
@@ -103,14 +102,14 @@ public class TripleStorePersistence implements PersistenceLayer {
    }
 
    @Override
-   public SemanticModel save( NewSemanticModel model ) {
-      final Model rdfModel = sdsSdk.load( model.getModel().getBytes( StandardCharsets.UTF_8 ) );
+   public SemanticModel save( SemanticModelType type, String newModel, SemanticModelStatus status ) {
+      final Model rdfModel = sdsSdk.load( newModel.getBytes( StandardCharsets.UTF_8 ) );
       final AspectModelUrn modelUrn = sdsSdk.getAspectUrn( rdfModel );
       Optional<ModelPackage> existsByPackage = findByPackageByUrn( ModelPackageUrn.fromUrn( modelUrn ) );
 
       if ( existsByPackage.isPresent() ) {
          ModelPackageStatus persistedModelStatus = existsByPackage.get().getStatus();
-         final ModelPackageStatus desiredModelStatus  = ModelPackageStatus.valueOf( model.getStatus().name() );
+         final ModelPackageStatus desiredModelStatus  = ModelPackageStatus.valueOf( status.name() );
          switch ( persistedModelStatus ) {
             case DRAFT:
                if(desiredModelStatus.equals(RELEASED) && !hasReferenceToDraftPackage(modelUrn, rdfModel)) {
@@ -139,7 +138,7 @@ public class TripleStorePersistence implements PersistenceLayer {
 
       final Resource rootResource = ResourceFactory.createResource( modelUrn.getUrnPrefix() );
       rdfModel.add( rootResource, SparqlQueries.STATUS_PROPERTY,
-            ModelPackageStatus.valueOf( model.getStatus().name() ).toString() );
+            ModelPackageStatus.valueOf( status.name() ).toString() );
 
       try ( final RDFConnection rdfConnection = rdfConnectionRemoteBuilder.build() ) {
          rdfConnection.update( new UpdateBuilder().addInsert( rdfModel ).build() );

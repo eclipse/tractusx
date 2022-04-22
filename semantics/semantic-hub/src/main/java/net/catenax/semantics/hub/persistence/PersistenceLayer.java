@@ -21,9 +21,10 @@ import javax.annotation.Nullable;
 import io.openmanufacturing.sds.aspectmodel.urn.AspectModelUrn;
 import net.catenax.semantics.hub.domain.ModelPackageStatus;
 import net.catenax.semantics.hub.domain.ModelPackageUrn;
-import net.catenax.semantics.hub.model.NewSemanticModel;
 import net.catenax.semantics.hub.model.SemanticModel;
 import net.catenax.semantics.hub.model.SemanticModelList;
+import net.catenax.semantics.hub.model.SemanticModelStatus;
+import net.catenax.semantics.hub.model.SemanticModelType;
 
 /**
  * Interface to any model persistency implementation
@@ -46,7 +47,7 @@ public interface PersistenceLayer {
 
    SemanticModel getModel( AspectModelUrn urn );
 
-   SemanticModel save( NewSemanticModel model );
+   SemanticModel save(SemanticModelType type, String newModel, SemanticModelStatus status);
 
    String getModelDefinition( AspectModelUrn urn );
 

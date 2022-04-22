@@ -67,15 +67,25 @@ paths:
       tags:
         - SemanticHub
       operationId: createModelWithUrn
+      parameters:
+      - in: query
+        name: status
+        schema:
+          $ref: '#/components/schemas/SemanticModelStatus'
+      - in: query
+        name: type
+        required: true
+        schema:
+          $ref: '#/components/schemas/SemanticModelType'
       requestBody:
         description: >-
           The request body contains all necessary properties to create a new
           model entry.
         required: true
         content:
-          application/json:
+          text/plain:
             schema:
-              $ref: '#/components/schemas/NewSemanticModel'
+              type: string
       responses:
         '201':
           $ref: '#/components/responses/SemanticModel'
@@ -89,14 +99,24 @@ paths:
       tags:
         - SemanticHub
       operationId: modifyModel
+      parameters:
+        - in: query
+          name: status
+          schema:
+            $ref: '#/components/schemas/SemanticModelStatus'
+        - in: query
+          name: type
+          required: true
+          schema:
+            $ref: '#/components/schemas/SemanticModelType'
       requestBody:
         description: >-
           The request body contains the updated model.
         required: true
         content:
-          application/json:
+          text/plain:
             schema:
-              $ref: '#/components/schemas/NewSemanticModel'
+              type: string
       responses:
         '200':
           $ref: '#/components/responses/SemanticModel'

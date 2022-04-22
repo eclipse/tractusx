@@ -20,7 +20,11 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.text.StringEscapeUtils;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 
 public class TestUtils {
 
@@ -44,53 +48,66 @@ public class TestUtils {
       return IOUtils.resourceToString( resourceName, StandardCharsets.UTF_8, TestUtils.class.getClassLoader() );
    }
 
-   public static String createNewModelRequestJson( String model, String status ) {
-      return String.format( "{\n"
-            + "  \"model\": \"%s\",\n"
-            + "  \"status\": \"%s\",\n"
-            + "  \"type\": \"BAMM\"\n"
-            + "}", StringEscapeUtils.escapeJava( model ), status );
-   }
-
-   public static String createValidModelRequest( String urn, String status ) {
+   public static String createValidModelRequest( String urn) {
       String model;
       try {
          model = loadModelFromResources(MODEL_FOR_API_TESTS).replace("{{URN_PREFIX}}", urn);
       } catch (IOException e) {
          throw new RuntimeException("Failed to load file");
       }
-      return String.format( "{\n"
-              + "  \"model\": \"%s\",\n"
-              + "  \"status\": \"%s\",\n"
-              + "  \"type\": \"BAMM\"\n"
-              + "}", StringEscapeUtils.escapeJava( model ), status );
+      return model;
    }
 
-   public static String createDependentModel (String urn, String status) {
+   public static String createDependentModel (String urn) {
       String model;
       try {
          model = loadModelFromResources(DEPENDENT_MODEL).replace("{{URN_PREFIX}}", urn);
       } catch (IOException e) {
          throw new RuntimeException("Failed to load file");
       }
-      return String.format( "{\n"
-              + "  \"model\": \"%s\",\n"
-              + "  \"status\": \"%s\",\n"
-              + "  \"type\": \"BAMM\"\n"
-              + "}", StringEscapeUtils.escapeJava( model ), status );
+      return model;
    }
 
-   public static String createModelDependency (String status) {
+   public static String createModelDependency () {
       String model;
       try {
          model = loadModelFromResources(MODEL_DEPENDENCY);
       } catch (IOException e) {
          throw new RuntimeException("Failed to load file");
       }
-      return String.format( "{\n"
-              + "  \"model\": \"%s\",\n"
-              + "  \"status\": \"%s\",\n"
-              + "  \"type\": \"BAMM\"\n"
-              + "}", StringEscapeUtils.escapeJava( model ), status );
+      return model;
+   }
+
+   public static MockHttpServletRequestBuilder post(String payload) {
+      return post(payload, "DRAFT");
+   }
+
+   public static MockHttpServletRequestBuilder post( String payload, String status ) {
+      String type = "BAMM";
+      return MockMvcRequestBuilders.post( "/api/v1/models")
+              .queryParam("type", type)
+              .queryParam( "status", status)
+              .accept( MediaType.APPLICATION_JSON )
+              .contentType( MediaType.TEXT_PLAIN)
+              .content( payload )
+              .with(jwt());
+   }
+
+   public static MockHttpServletRequestBuilder put( String payload, String status ) {
+      String type = "BAMM";
+      return MockMvcRequestBuilders.put( "/api/v1/models")
+              .queryParam("type", type)
+              .queryParam( "status", status )
+              .accept( MediaType.APPLICATION_JSON )
+              .contentType( MediaType.TEXT_PLAIN )
+              .content( payload )
+              .with(jwt());
+   }
+
+   public static MockHttpServletRequestBuilder delete(String urnPrefix){
+      return MockMvcRequestBuilders.delete(
+                      "/api/v1/models/{urn}",
+                      urnPrefix )
+              .with(jwt());
    }
 }

@@ -215,9 +215,11 @@ public class ModelsApiFilterTest {
       mvc.perform(
                MockMvcRequestBuilders
                      .post( "/api/v1/models" )
+                     .queryParam("status", status)
+                     .queryParam("type", "BAMM")
                      .accept( MediaType.APPLICATION_JSON )
-                     .contentType( MediaType.APPLICATION_JSON )
-                     .content( TestUtils.createNewModelRequestJson( modelWithReferenceToTraceability, status ) )
+                     .contentType( MediaType.TEXT_PLAIN )
+                     .content(modelWithReferenceToTraceability)
                      .with(jwt())
          )
          .andDo( MockMvcResultHandlers.print() )
