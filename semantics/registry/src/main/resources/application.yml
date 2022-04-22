@@ -7,11 +7,6 @@
 # additional information regarding license terms.
 #
 
-###########################################################
-# Configuration of the Semantic Layer
-###########################################################
-
-#  Endpoint configuration for service provisioning and data pull
 server:
   port: 4243
   ssl:
@@ -22,60 +17,30 @@ server:
     enabled: false
   forward-headers-strategy: framework
 
-#security:
-#  require-ssl: true
-# This is the http transport we use to talk to the connector
 http:
   timeout:
     write: 10000
     connect: 10000
     call: 10000
     read: 10000
-licence_url: '@licence_url@'
-
-registry:
-  idm:
-    public-client-id: catenax-portal
 
 spring:
   application:
     name: semantics-services
   banner:
     location: "classpath:banner.txt"
-# configuring the semantic services as a resource server and defining the corresponding IdP
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: https://catenaxdev042akssrv.germanywestcentral.cloudapp.azure.com/iamcentralidp/auth/realms/CX-Central
-# Builtin persistence for hosting models, twins & data
-  sql:
-    init:
-      platform: h2
-      mode: always
-  datasource:
-    driverClassName: org.h2.Driver
-    password: tractusx
-    username: tractusx
-    url: jdbc:h2:file:./semantics/persistence;CASE_INSENSITIVE_IDENTIFIERS=TRUE
-  # Configuration of http-endpoint host
   servlet:
     multipart:
       enabled: true
       max-file-size: 200MB
       max-request-size: 215MB
       file-size-threshold: 2KB
-  # Builtin persistence console
-  h2:
-    console:
-      path: /admin/database
-      enabled: true
-      settings:
-        web-allow-others: true
-  # How to deal with REST representation problems
   jackson:
     default-property-inclusion: non_null
-title: '@project.name@'
+
+registry:
+  idm:
+    public-client-id: catenax-portal
 
 springdoc:
   cache:
@@ -93,13 +58,17 @@ springdoc:
       scopes: openid profile
       client-id: ${registry.idm.public-client-id}
 
+management:
+  endpoints:
+    enabled-by-default: false
+
+title: '@project.name@'
 project_desc: '@project.description@'
 contact_email: '@email@'
 licence: '@licence_name@'
 contact_url: '@project.url@'
+licence_url: '@licence_url@'
 organization_name: '@project.organization.name@'
 version: '@project.version@'
-management:
-  endpoints:
-    enabled-by-default: false       
+
     

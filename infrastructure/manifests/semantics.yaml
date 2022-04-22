@@ -44,17 +44,7 @@ spec:
             value: "admin"
           - name: HUB_TRIPLE_STORE_PASSWORD
             value: "admin"
-          - name: HTTPUSERNAME
-            valueFrom:
-              secretKeyRef:
-                key: http_basic_auth_user
-                name: semantics-secret
-          - name: HTTPPASSWORD
-            valueFrom:
-              secretKeyRef:
-                key: http_basic_auth_password
-                name: semantics-secret
-          - name: IDP_ISSUER_URI
+          - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
             valueFrom:
               secretKeyRef:
                 key: idp_issuer_uri
@@ -81,20 +71,8 @@ spec:
         imagePullPolicy: $IMAGE_PULL_POLICY
         ports:
         env:
-          - name: HTTPUSERNAME
-            valueFrom:
-              secretKeyRef:
-                key: http_basic_auth_user
-                name: semantics-secret
-          - name: HTTPPASSWORD
-            valueFrom:
-              secretKeyRef:
-                key: http_basic_auth_password
-                name: semantics-secret
           - name: SPRING_DATASOURCE_DRIVERCLASSNAME
             value: org.postgresql.Driver
-          - name: SPRING_SQL_INIT_PLATFORM
-            value: pg
           - name: SPRING_DATASOURCE_URL          
             valueFrom:
               secretKeyRef:
@@ -110,7 +88,7 @@ spec:
               secretKeyRef:
                 key: database_password
                 name: semantics-secret
-          - name: IDP_ISSUER_URI
+          - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
             valueFrom:
               secretKeyRef:
                 key: idp_issuer_uri

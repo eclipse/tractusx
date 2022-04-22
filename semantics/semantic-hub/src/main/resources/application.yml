@@ -7,11 +7,6 @@
 # additional information regarding license terms.
 #
 
-###########################################################
-# Configuration of the Semantic Layer
-###########################################################
-
-#  Endpoint configuration for service provisioning and data pull
 server:
   port: 4242
   ssl:
@@ -35,32 +30,18 @@ hub:
 #   username: admin
 #   password: uThhL1IlENjtCKH
 
-
-
-
-#security:
-#  require-ssl: true
-# This is the http transport we use to talk to the connector
 http:
   timeout:
     write: 10000
     connect: 10000
     call: 10000
     read: 10000
-licence_url: '@licence_url@'
 
 spring:
   application:
     name: semantics-services
   banner:
     location: "classpath:banner.txt"
-# configuring the semantic services as a resource server and defining the corresponding IdP
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: https://catenaxdev042akssrv.germanywestcentral.cloudapp.azure.com/iamcentralidp/auth/realms/CX-Central
-  # Configuration of http-endpoint host
   servlet:
     multipart:
       enabled: true
@@ -70,7 +51,6 @@ spring:
   # How to deal with REST representation problems
   jackson:
     default-property-inclusion: non_null
-title: '@project.name@'
 
 springdoc:
   cache:
@@ -88,13 +68,15 @@ springdoc:
       scopes: openid profile
       client-id: catenax-portal
 
+management:
+  endpoints:
+    enabled-by-default: false
+
+title: '@project.name@'
 project_desc: '@project.description@'
 contact_email: '@email@'
 licence: '@licence_name@'
 contact_url: '@project.url@'
 organization_name: '@project.organization.name@'
 version: '@project.version@'
-management:
-  endpoints:
-    enabled-by-default: false       
-    
+licence_url: '@licence_url@'

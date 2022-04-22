@@ -16,7 +16,6 @@
 package net.catenax.semantics.registry.service;
 
 import com.google.common.collect.ImmutableSet;
-import net.catenax.semantics.aas.registry.model.BatchResult;
 import net.catenax.semantics.registry.dto.BatchResultDto;
 import net.catenax.semantics.registry.dto.ShellCollectionDto;
 import net.catenax.semantics.registry.model.Shell;
@@ -40,7 +39,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @Service

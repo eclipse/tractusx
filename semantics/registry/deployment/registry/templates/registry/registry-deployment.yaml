@@ -40,26 +40,9 @@ spec:
               value: {{ .Values.registry.dataSource.driverClassName }}
             - name: SPRING_SQL_INIT_PLATFORM
               value: {{ .Values.registry.dataSource.sqlInitPlatform }}
-            - name: SPRING_DATASOURCE_URL          
-              valueFrom:
-                secretKeyRef:
-                  key: database_url
-                  name: {{ $sec_name }}
-            - name: SPRING_DATASOURCE_USERNAME          
-              valueFrom:
-                secretKeyRef:
-                  key: database_user
-                  name: {{ $sec_name }}
-            - name: SPRING_DATASOURCE_PASSWORD          
-              valueFrom:
-                secretKeyRef:
-                  key: database_password
-                  name: {{ $sec_name }}
-            - name: IDP_ISSUER_URI
-              valueFrom:
-                secretKeyRef:
-                  key: idp_issuer_uri
-                  name: {{ $sec_name }}
+          envFrom:
+            - secretRef:
+                name: {{ $sec_name }}
           resources:
 {{ .Values.registry.resources | toYaml | indent 12 }}
       imagePullSecrets:

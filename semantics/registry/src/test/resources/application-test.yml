@@ -1,4 +1,5 @@
-# Copyright (c) 2022 Robert Bosch Manufacturing Solutions GmbH
+#
+# Copyright (c) 2021-2022 T-Systems International GmbH (Catena-X Consortium)
 #
 # See the AUTHORS file(s) distributed with this work for additional
 # information regarding authorship.
@@ -13,3 +14,7 @@ spring:
       resourceserver:
         jwt:
           issuer-uri:
+
+  datasource:
+    driverClassName: org.h2.Driver
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;CASE_INSENSITIVE_IDENTIFIERS=TRUE

@@ -19,7 +19,7 @@ services:
     #image: registry:latest
     container_name: aas_registry
     ports:
-      - "4242:4242"
+      - "4243:4243"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://host.docker.internal:5432/postgres
       SPRING_DATASOURCE_DRIVERCLASSNAME: org.postgresql.Driver

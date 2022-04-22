@@ -9,8 +9,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Active profiles can only be set in non-profile specific files.
-# To avoid the activation of the profile in each test, we activate the test profile here.
-# The file must be named application.properties file. For whatever reason application.yml does not work.
-
-spring.profiles.active=test
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri:

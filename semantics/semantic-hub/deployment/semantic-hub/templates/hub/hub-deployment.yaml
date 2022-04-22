@@ -51,17 +51,9 @@ spec:
               value: {{ .Values.graphdb.queryEndpoint }}
             - name: HUB_TRIPLE_STORE_UPDATE_ENDPOINT
               value: {{ .Values.graphdb.updateEndpoint }}
-            # the fuseki instance does not require authentication yet
-            # this variables need to be provided because they are mandatory in the application
-            - name: HUB_TRIPLE_STORE_USERNAME
-              value: {{ .Values.graphdb.username }}
-            - name: HUB_TRIPLE_STORE_PASSWORD
-              value: {{ .Values.graphdb.password }}
-            - name: IDP_ISSUER_URI
-              valueFrom:
-                secretKeyRef:
-                  key: idp_issuer_uri
-                  name: {{ $sec_name }}
+          envFrom:
+            - secretRef:
+                name: {{ $sec_name }}
           resources:
 {{ .Values.hub.resources | toYaml | indent 12 }}
       imagePullSecrets:
