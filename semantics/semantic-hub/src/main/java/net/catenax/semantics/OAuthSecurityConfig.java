@@ -21,6 +21,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 
 @Profile("!local")
 @Configuration
@@ -30,10 +31,12 @@ public class OAuthSecurityConfig extends WebSecurityConfigurerAdapter {
         http
           .authorizeRequests(auth -> auth
             .antMatchers(HttpMethod.OPTIONS).permitAll()
-            .antMatchers("/**/registry/**").authenticated()
-            .antMatchers("/**/lookup/**").authenticated()
-            .antMatchers("/**/models/**").authenticated())
-          .oauth2ResourceServer()
-          .jwt();
+            .mvcMatchers(HttpMethod.GET,"/**/models/**").access("@authorizationEvaluator.hasRoleViewSemanticModel()")
+            .mvcMatchers(HttpMethod.POST,"/**/models/**").access("@authorizationEvaluator.hasRoleAddSemanticModel()")
+            .mvcMatchers(HttpMethod.PUT,"/**/models/**").access("@authorizationEvaluator.hasRoleUpdateSemanticModel()")
+            .mvcMatchers(HttpMethod.DELETE,"/**/models/**").access("@authorizationEvaluator.hasRoleDeleteSemanticModel()"))
+            .csrf().disable()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+            .oauth2ResourceServer().jwt();
     }
 }

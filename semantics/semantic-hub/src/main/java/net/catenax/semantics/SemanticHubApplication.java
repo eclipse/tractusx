@@ -14,6 +14,7 @@ import org.springdoc.core.SpringDocConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.web.firewall.HttpFirewall;
@@ -27,6 +28,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @SpringBootApplication
 @ComponentScan(basePackages = {"net.catenax.semantics", "org.openapitools.configuration"})
+@EnableConfigurationProperties(GeneralProperties.class)
 public class SemanticHubApplication {
 
 	private static final String OPEN_ID_CONNECT_DISCOVERY_PATH = "/.well-known/openid-configuration";
@@ -63,6 +65,11 @@ public class SemanticHubApplication {
 		firewall.setAllowUrlEncodedSlash(true);
         return firewall;
     }
+
+	@Bean
+	public AuthorizationEvaluator authorizationEvaluator(GeneralProperties generalProperties){
+		return new AuthorizationEvaluator(generalProperties.getIdm().getPublicClientId());
+	}
 
 	/**
 	 * entry point if started as an app

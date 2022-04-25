@@ -78,36 +78,4 @@ public class TestUtils {
       return model;
    }
 
-   public static MockHttpServletRequestBuilder post(String payload) {
-      return post(payload, "DRAFT");
-   }
-
-   public static MockHttpServletRequestBuilder post( String payload, String status ) {
-      String type = "BAMM";
-      return MockMvcRequestBuilders.post( "/api/v1/models")
-              .queryParam("type", type)
-              .queryParam( "status", status)
-              .accept( MediaType.APPLICATION_JSON )
-              .contentType( MediaType.TEXT_PLAIN)
-              .content( payload )
-              .with(jwt());
-   }
-
-   public static MockHttpServletRequestBuilder put( String payload, String status ) {
-      String type = "BAMM";
-      return MockMvcRequestBuilders.put( "/api/v1/models")
-              .queryParam("type", type)
-              .queryParam( "status", status )
-              .accept( MediaType.APPLICATION_JSON )
-              .contentType( MediaType.TEXT_PLAIN )
-              .content( payload )
-              .with(jwt());
-   }
-
-   public static MockHttpServletRequestBuilder delete(String urnPrefix){
-      return MockMvcRequestBuilders.delete(
-                      "/api/v1/models/{urn}",
-                      urnPrefix )
-              .with(jwt());
-   }
 }

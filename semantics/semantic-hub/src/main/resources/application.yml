@@ -29,6 +29,10 @@ hub:
 #   updateEndpoint: /test-dataset/update
 #   username: admin
 #   password: uThhL1IlENjtCKH
+  general:
+    idm:
+      public-client-id: catenax-portal
+
 
 http:
   timeout:

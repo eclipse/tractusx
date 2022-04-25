@@ -18,20 +18,15 @@ package net.catenax.semantics.hub;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.util.List;
 
-import static net.catenax.semantics.hub.TestUtils.post;
 import static org.hamcrest.Matchers.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -39,14 +34,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Tests the models filter api with different filter combinations.
  * The Fuseki Server is cleared with @DirtiesContext and ensures test runs on a fresh Fuseki Server.
  */
-@SpringBootTest
-@AutoConfigureMockMvc
 @TestInstance( TestInstance.Lifecycle.PER_CLASS )
 @DirtiesContext( classMode = DirtiesContext.ClassMode.AFTER_CLASS )
-public class ModelsApiPaginationTest {
-
-   @Autowired
-   private MockMvc mvc;
+public class ModelsApiPaginationTest extends AbstractModelsApiTest {
 
    @Test
    public void testGetModelsWithPaginationExpectSuccess() throws Exception {
@@ -71,7 +61,7 @@ public class ModelsApiPaginationTest {
       mvc.perform(
                       MockMvcRequestBuilders.get( "/api/v1/models" )
                               .accept( MediaType.APPLICATION_JSON )
-                              .with(jwt())
+                              .with(jwtTokenFactory.allRoles())
               )
         .andDo( MockMvcResultHandlers.print() )
         .andExpect( jsonPath( "$.items" ).isArray() )
@@ -84,7 +74,7 @@ public class ModelsApiPaginationTest {
       mvc.perform(
                       MockMvcRequestBuilders.get( "/api/v1/models?pageSize=2&page=0" )
                               .accept( MediaType.APPLICATION_JSON )
-                              .with(jwt())
+                              .with(jwtTokenFactory.allRoles())
               )
               .andDo( MockMvcResultHandlers.print() )
               .andExpect( jsonPath( "$.items" ).isArray() )
@@ -102,7 +92,7 @@ public class ModelsApiPaginationTest {
       mvc.perform(
                       MockMvcRequestBuilders.get( "/api/v1/models?pageSize=2&page=1" )
                               .accept( MediaType.APPLICATION_JSON )
-                              .with(jwt())
+                              .with(jwtTokenFactory.allRoles())
               )
               .andDo( MockMvcResultHandlers.print() )
               .andExpect( jsonPath( "$.items" ).isArray() )
@@ -120,7 +110,7 @@ public class ModelsApiPaginationTest {
       mvc.perform(
                       MockMvcRequestBuilders.get( "/api/v1/models?pageSize=1&page=3" )
                               .accept( MediaType.APPLICATION_JSON )
-                              .with(jwt())
+                              .with(jwtTokenFactory.allRoles())
               )
               .andDo( MockMvcResultHandlers.print() )
               .andExpect( jsonPath( "$.items" ).isArray() )
@@ -138,7 +128,7 @@ public class ModelsApiPaginationTest {
       mvc.perform(
                       MockMvcRequestBuilders.get( "/api/v1/models?pageSize=3" )
                               .accept( MediaType.APPLICATION_JSON )
-                              .with(jwt())
+                              .with(jwtTokenFactory.allRoles())
               )
               .andDo( MockMvcResultHandlers.print() )
               .andExpect( jsonPath( "$.items" ).isArray() )

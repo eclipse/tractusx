@@ -16,34 +16,27 @@
 
 package net.catenax.semantics.hub;
 
-import static org.hamcrest.Matchers.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Tests the models filter api with different filter combinations.
  * The Fuseki Server is cleared with @DirtiesContext and ensures test runs on a fresh Fuseki Server.
  */
-@SpringBootTest
-@AutoConfigureMockMvc
 @TestInstance( TestInstance.Lifecycle.PER_CLASS )
 @DirtiesContext( classMode = DirtiesContext.ClassMode.AFTER_CLASS )
-public class ModelsApiFilterTest {
-   @Autowired
-   private MockMvc mvc;
+public class ModelsApiFilterTest extends AbstractModelsApiTest{
 
    @BeforeAll
    public void init() throws Exception {
@@ -57,7 +50,7 @@ public class ModelsApiFilterTest {
                MockMvcRequestBuilders.get(
                                            "/api/v1/models?namespaceFilter=urn:bamm:com.catena" )
                                      .accept( MediaType.APPLICATION_JSON )
-                                     .with(jwt())
+                                     .with(jwtTokenFactory.allRoles())
          )
          .andDo( MockMvcResultHandlers.print() )
          .andExpect( jsonPath( "$.items" ).isArray() )
@@ -70,7 +63,7 @@ public class ModelsApiFilterTest {
                MockMvcRequestBuilders.get(
                                            "/api/v1/models?namespaceFilter=urn:bamm:com.catenax.traceability" )
                                      .accept( MediaType.APPLICATION_JSON )
-                                     .with(jwt())
+                                     .with(jwtTokenFactory.allRoles())
          )
          .andDo( MockMvcResultHandlers.print() )
          .andExpect( jsonPath( "$.items" ).isArray() )
@@ -86,7 +79,7 @@ public class ModelsApiFilterTest {
                MockMvcRequestBuilders.get(
                                            "/api/v1/models?nameType=bamm:SingleEntity&nameFilter=SpatialPositionCharacteristic" )
                                      .accept( MediaType.APPLICATION_JSON )
-                                     .with(jwt())
+                                     .with(jwtTokenFactory.allRoles())
          )
          .andDo( MockMvcResultHandlers.print() )
          .andExpect( jsonPath( "$.items" ).isArray() )
@@ -102,7 +95,7 @@ public class ModelsApiFilterTest {
                MockMvcRequestBuilders.get(
                                            "/api/v1/models?nameType=bamm:Property&nameFilter=Static%20Data" )
                                      .accept( MediaType.APPLICATION_JSON )
-                                     .with(jwt())
+                                     .with(jwtTokenFactory.allRoles())
          )
          .andDo( MockMvcResultHandlers.print() )
          .andExpect( jsonPath( "$.items" ).isArray() )
@@ -115,7 +108,7 @@ public class ModelsApiFilterTest {
                MockMvcRequestBuilders.get(
                                            "/api/v1/models?nameType=bamm:Property&nameFilter=Individual%20Data" )
                                      .accept( MediaType.APPLICATION_JSON )
-                                     .with(jwt())
+                                     .with(jwtTokenFactory.allRoles())
          )
          .andDo( MockMvcResultHandlers.print() )
          .andExpect( jsonPath( "$.items" ).isArray() )
@@ -129,7 +122,7 @@ public class ModelsApiFilterTest {
                MockMvcRequestBuilders.get(
                                            "/api/v1/models?namespaceFilter=urn:bamm:com.catenax.traceability&nameType=bamm:Property&nameFilter=Individual%20Data" )
                                      .accept( MediaType.APPLICATION_JSON )
-                                     .with(jwt())
+                                     .with(jwtTokenFactory.allRoles())
          )
          .andDo( MockMvcResultHandlers.print() )
          .andExpect( jsonPath( "$.items" ).isArray() )
@@ -142,7 +135,7 @@ public class ModelsApiFilterTest {
                MockMvcRequestBuilders.get(
                                            "/api/v1/models?namespaceFilter=urn:bamm:com.catenaX.modelwithreferencetotraceability&nameType=bamm:Property&nameFilter=Individual%20Data" )
                                      .accept( MediaType.APPLICATION_JSON )
-                                     .with(jwt())
+                                     .with(jwtTokenFactory.allRoles())
          )
          .andDo( MockMvcResultHandlers.print() )
          .andExpect( jsonPath( "$.items" ).isArray() )
@@ -158,7 +151,7 @@ public class ModelsApiFilterTest {
                MockMvcRequestBuilders.get(
                                            "/api/v1/models?nameType=_DESCRIPTION_&nameFilter=This%20model%20references" )
                                      .accept( MediaType.APPLICATION_JSON )
-                                     .with(jwt())
+                                     .with(jwtTokenFactory.allRoles())
          )
          .andDo( MockMvcResultHandlers.print() )
          .andExpect( jsonPath( "$.items.length()" ).value( 1 ) )
@@ -178,7 +171,7 @@ public class ModelsApiFilterTest {
       mvc.perform(
                MockMvcRequestBuilders.get( "/api/v1/models?status=DRAFT" )
                                      .accept( MediaType.APPLICATION_JSON )
-                                     .with(jwt())
+                                     .with(jwtTokenFactory.allRoles())
          )
          .andDo( MockMvcResultHandlers.print() )
          .andExpect( jsonPath( "$.items" ).isArray() )
@@ -195,7 +188,7 @@ public class ModelsApiFilterTest {
       mvc.perform(
                MockMvcRequestBuilders.get( "/api/v1/models?status=RELEASED" )
                                      .accept( MediaType.APPLICATION_JSON )
-                                     .with(jwt())
+                                     .with(jwtTokenFactory.allRoles())
          )
          .andDo( MockMvcResultHandlers.print() )
          .andExpect( jsonPath( "$.items" ).isArray() )
@@ -220,7 +213,7 @@ public class ModelsApiFilterTest {
                      .accept( MediaType.APPLICATION_JSON )
                      .contentType( MediaType.TEXT_PLAIN )
                      .content(modelWithReferenceToTraceability)
-                     .with(jwt())
+                     .with(jwtTokenFactory.allRoles())
          )
          .andDo( MockMvcResultHandlers.print() )
          .andExpect( status().isOk() );

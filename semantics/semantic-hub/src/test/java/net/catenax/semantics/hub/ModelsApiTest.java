@@ -16,37 +16,19 @@
 
 package net.catenax.semantics.hub;
 
-import static net.catenax.semantics.hub.TestUtils.delete;
-import static net.catenax.semantics.hub.TestUtils.post;
-import static net.catenax.semantics.hub.TestUtils.put;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.is;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@DirtiesContext( classMode = DirtiesContext.ClassMode.AFTER_CLASS )
-public class ModelsApiTest {
+import static org.hamcrest.Matchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-   @Autowired
-   private MockMvc mvc;
+@DirtiesContext( classMode = DirtiesContext.ClassMode.AFTER_CLASS )
+public class ModelsApiTest extends AbstractModelsApiTest{
 
    @Test
    public void testWithoutAuthenticationTokenProvidedExpectForbidden() throws Exception {
@@ -65,7 +47,7 @@ public class ModelsApiTest {
                       MockMvcRequestBuilders
                               .get("/api/v1/models")
                               .accept(MediaType.APPLICATION_JSON)
-                              .with(jwt())
+                              .with(jwtTokenFactory.allRoles())
               )
               .andDo(MockMvcResultHandlers.print())
               .andExpect(status().isOk());
@@ -83,7 +65,7 @@ public class ModelsApiTest {
       mvc.perform(
                MockMvcRequestBuilders.get( "/api/v1/models" )
                                      .accept( MediaType.APPLICATION_JSON )
-                                     .with(jwt())
+                                     .with(jwtTokenFactory.allRoles())
          )
          .andDo( MockMvcResultHandlers.print() )
          .andExpect( jsonPath( "$.items" ).isArray() )
@@ -135,7 +117,7 @@ public class ModelsApiTest {
       mvc.perform(
                MockMvcRequestBuilders.get(
                      "/api/v1/models/{urn}/json-schema", toMovementUrn(urnPrefix))
-                                    .with(jwt())
+                                    .with(jwtTokenFactory.allRoles())
          )
          .andDo( MockMvcResultHandlers.print() )
          .andExpect( content().json(
@@ -149,7 +131,7 @@ public class ModelsApiTest {
                MockMvcRequestBuilders.delete(
                      "/api/v1/models/{urn}",
                      "urn:bamm:net.catenax.notexistingpackage:2.0.0#" )
-                       .with(jwt())
+                       .with(jwtTokenFactory.allRoles())
          )
          .andDo( MockMvcResultHandlers.print() )
          .andExpect( status().isNotFound() );
@@ -164,7 +146,7 @@ public class ModelsApiTest {
 
       mvc.perform(
                MockMvcRequestBuilders.get( "/api/v1/models/{urn}/openapi?baseUrl=example.com",
-                     toMovementUrn(urnPrefix) ).with(jwt()))
+                     toMovementUrn(urnPrefix) ).with(jwtTokenFactory.allRoles()))
          .andDo( MockMvcResultHandlers.print() )
          .andExpect( status().isOk() )
          .andExpect( content().json(
@@ -176,14 +158,14 @@ public class ModelsApiTest {
    public void testExampleGenerateExamplePayloadJsonExpectSuccess() throws Exception {
       String urnPrefix = "urn:bamm:net.catenax.testjsonschema:2.0.0#";
       mvc.perform(post( TestUtils.createValidModelRequest(urnPrefix),"DRAFT")
-                      .with(jwt()))
+                      .with(jwtTokenFactory.allRoles()))
          .andDo( MockMvcResultHandlers.print() )
          .andExpect( status().isOk() );
 
       mvc.perform(
                MockMvcRequestBuilders.get( "/api/v1/models/{urn}/example-payload",
                      toMovementUrn(urnPrefix) )
-                       .with(jwt())
+                       .with(jwtTokenFactory.allRoles())
          )
          .andDo( MockMvcResultHandlers.print() )
          .andExpect( jsonPath( "$.moving" ).exists() )
@@ -225,7 +207,7 @@ public class ModelsApiTest {
       mvc.perform(
                MockMvcRequestBuilders.get( "/api/v1/models/{urn}/example-payload",
                      "urn:bamm:com.catenaX.modelwithreferencetotraceability:0.1.1#ModelWithReferenceToTraceability" )
-                       .with(jwt())
+                       .with(jwtTokenFactory.allRoles())
          )
          .andDo( MockMvcResultHandlers.print() )
          .andExpect( jsonPath( "$.staticData" ).exists() )
@@ -245,7 +227,7 @@ public class ModelsApiTest {
       mvc.perform(
                MockMvcRequestBuilders.get( "/api/v1/models/{urn}/file",
                      "urn:bamm:com.catenaX.modelwithreferencetotraceability:0.1.1#ModelWithReferenceToTraceability" )
-                       .with(jwt())
+                       .with(jwtTokenFactory.allRoles())
          )
          .andDo( MockMvcResultHandlers.print() )
          .andExpect( status().isOk() )
