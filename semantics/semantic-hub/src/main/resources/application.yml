@@ -72,10 +72,6 @@ springdoc:
       scopes: openid profile
       client-id: catenax-portal
 
-management:
-  endpoints:
-    enabled-by-default: false
-
 title: '@project.name@'
 project_desc: '@project.description@'
 contact_email: '@email@'
@@ -84,3 +80,15 @@ contact_url: '@project.url@'
 organization_name: '@project.organization.name@'
 version: '@project.version@'
 licence_url: '@licence_url@'
+
+management:
+  endpoint:
+    health:
+      security:
+        enabled: true
+      probes:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health

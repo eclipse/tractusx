@@ -171,6 +171,12 @@ public class TripleStorePersistence implements PersistenceLayer {
       deleteByUrn( urn );
    }
 
+   public boolean echo() {
+      final RDFConnection rdfConnection = rdfConnectionRemoteBuilder.build();
+
+      return rdfConnection.queryAsk(SparqlQueries.echoQuery());
+   }
+
    private boolean hasReferenceToDraftPackage(AspectModelUrn modelUrn, Model model) {
       Pattern pattern = Pattern.compile(SparqlQueries.ALL_BAMM_ASPECT_URN_PREFIX);
          

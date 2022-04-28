@@ -193,6 +193,10 @@ public class SparqlQueries {
       return pss.asUpdate();
    }
 
+   public static Query echoQuery() {
+      return create("ASK {}").asQuery();
+   }
+
 
    /**
     * Returns a Sparql Query based on the given filter parameters.

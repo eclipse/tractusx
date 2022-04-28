@@ -58,10 +58,6 @@ springdoc:
       scopes: openid profile
       client-id: ${registry.idm.public-client-id}
 
-management:
-  endpoints:
-    enabled-by-default: false
-
 title: '@project.name@'
 project_desc: '@project.description@'
 contact_email: '@email@'
@@ -70,5 +66,13 @@ contact_url: '@project.url@'
 licence_url: '@licence_url@'
 organization_name: '@project.organization.name@'
 version: '@project.version@'
-
     
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health

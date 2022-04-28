@@ -52,4 +52,6 @@ public interface PersistenceLayer {
    String getModelDefinition( AspectModelUrn urn );
 
    void deleteModelsPackage( ModelPackageUrn urn );
+
+   boolean echo();
 }
