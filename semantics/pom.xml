@@ -15,7 +15,7 @@
 	<parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.6</version> <!-- need to be repeated in properties section for technical purposes -->
+        <version>2.5.13</version> <!-- need to be repeated in properties section for technical purposes -->
         <relativePath/> <!-- lookup parent from repository and not the filesystem -->
     </parent>
 
@@ -55,7 +55,7 @@
 
 		<!-- version properties -->
 		<!-- framework and base stuff -->
-		<spring.boot.version>2.5.6</spring.boot.version>
+		<spring.boot.version>2.5.13</spring.boot.version>
 		<spring.cloud.version>2020.0.3</spring.cloud.version>
 		<spring.version>5.3.12</spring.version>
 		<spring.feign.version>3.0.5</spring.feign.version>
@@ -89,8 +89,8 @@
 		<oltu-version>1.0.2</oltu-version>
 
 		<!-- semantics -->
-		<bamm.version>1.0.1</bamm.version>
-		<bamm.sdk.version>1.0.0</bamm.sdk.version>
+		<bamm.version>1.0.0</bamm.version>
+		<bamm.sdk.version>1.0.2</bamm.sdk.version>
 		<jena.version>4.2.0</jena.version>
 		<shacl.version>1.3.1</shacl.version>
 
@@ -99,7 +99,7 @@
 		<mapstruct.lombok.version>0.2.0</mapstruct.lombok.version>
 		<postgresql.version>42.2.25</postgresql.version>
 		<h2.version>2.1.210</h2.version>
-		<liquibase.version>4.7.1</liquibase.version>
+		<liquibase.version>4.9.1</liquibase.version>
 		<!-- test libs -->
 		<assertj.version>3.18.1</assertj.version>
 		<junit.version>5.6.3</junit.version>
@@ -347,12 +347,12 @@
 			<dependency>
 				<groupId>io.openmanufacturing</groupId>
 				<artifactId>sds-aspect-meta-model</artifactId>
-				<version>${bamm.sdk.version}</version>
+				<version>${bamm.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>io.openmanufacturing</groupId>
 				<artifactId>sds-aspect-model-starter</artifactId>
-				<version>${bamm.version}</version>
+				<version>${bamm.sdk.version}</version>
 			</dependency>			
 			<dependency>
 				<groupId>org.apache.jena</groupId>
