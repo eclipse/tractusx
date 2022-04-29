@@ -40,6 +40,20 @@ spec:
               value: {{ .Values.registry.dataSource.driverClassName }}
             - name: SPRING_SQL_INIT_PLATFORM
               value: {{ .Values.registry.dataSource.sqlInitPlatform }}
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: {{ .Values.registry.containerPort }}
+            initialDelaySeconds: 100
+            periodSeconds: 3
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: {{ .Values.registry.containerPort }}
+            initialDelaySeconds: 60
+            periodSeconds: 3
+            failureThreshold: 3
           envFrom:
             - secretRef:
                 name: {{ $sec_name }}

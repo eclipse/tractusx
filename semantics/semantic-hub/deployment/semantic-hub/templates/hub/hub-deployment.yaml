@@ -54,6 +54,20 @@ spec:
           envFrom:
             - secretRef:
                 name: {{ $sec_name }}
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: { { .Values.hub.containerPort } }
+            initialDelaySeconds: 100
+            periodSeconds: 3
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: { { .Values.hub.containerPort } }
+            initialDelaySeconds: 60
+            periodSeconds: 3
+            failureThreshold: 3
           resources:
 {{ .Values.hub.resources | toYaml | indent 12 }}
       imagePullSecrets:

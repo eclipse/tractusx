@@ -84,11 +84,11 @@ licence_url: '@licence_url@'
 management:
   endpoint:
     health:
-      security:
-        enabled: true
       probes:
         enabled: true
+    info:
+      enabled: true
   endpoints:
     web:
       exposure:
-        include: health
+        include: health,info

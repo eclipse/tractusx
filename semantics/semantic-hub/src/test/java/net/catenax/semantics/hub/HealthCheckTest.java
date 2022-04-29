@@ -1,6 +1,7 @@
 package net.catenax.semantics.hub;
 
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -41,5 +42,13 @@ public class HealthCheckTest {
             .andExpect(jsonPath("$.status", is("UP")))
             .andExpect(status().is2xxSuccessful());
     }
+
+    @Test
+    public void testInfoEndpoint() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/actuator/info"))
+                .andExpect(jsonPath("$.git.commit.id", notNullValue()))
+                .andExpect(status().is2xxSuccessful());
+    }
+
 
 }
