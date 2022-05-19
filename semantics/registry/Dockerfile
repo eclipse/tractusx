@@ -9,7 +9,7 @@
 #
 
 # Docker buildfile to containerize the semantics layer
-FROM openjdk:11-jre-buster
+FROM eclipse-temurin:11-jre
 
 RUN adduser --system --group spring \
     && mkdir -p /service \

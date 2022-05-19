@@ -8,7 +8,7 @@
 # additional information regarding license terms.
 #
 
-FROM openjdk:11-jre-buster
+FROM eclipse-temurin:11-jre
 
 RUN apt-get -y upgrade \
     && apt-get -y update \
