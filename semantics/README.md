@@ -8,6 +8,10 @@ See the LICENSE file(s) distributed with this work for
 additional information regarding license terms.
 -->
 
+# The Code for Catena-X Digital Twin & Semantic Layer is now official part of the Eclipse Tractus-X project. Do not change code here but use the repositories
+in https://github.com/eclipse-tractusx instead
+
+
 The Digital Twin & Semantic Layer is a logical and architectural component of Catena-X.
 The source code under this folder helps to implement its modules in the form of blueprints/frameworks as well 
 as concrete services.
