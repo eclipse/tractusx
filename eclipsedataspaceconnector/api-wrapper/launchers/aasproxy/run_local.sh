@@ -50,7 +50,17 @@ do
   fi
 done
 
-CALL_ARGS="-classpath ./src/main/resources;target/aasproxy-1.0.0-SNAPSHOT.jar \
+CP_SEP=";"
+
+if [ "$(uname)" == "Darwin" ]; then
+    # Do something under Mac OS X platform
+    CP_SEP=":"
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+    # Do something under GNU/Linux platform
+    CP_SEP=":"
+fi
+
+CALL_ARGS="-classpath ./src/main/resources${CP_SEP}target/aasproxy-1.0.0-SNAPSHOT.jar \
            -Dserver.ssl.enabled=false $PROXY $DEBUG_OPTIONS\
            org.springframework.boot.loader.JarLauncher"
 

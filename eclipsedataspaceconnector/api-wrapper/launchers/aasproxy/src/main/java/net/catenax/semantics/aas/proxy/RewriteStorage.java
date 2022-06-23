@@ -15,6 +15,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.net.URLEncoder;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.io.UnsupportedEncodingException;
 
 /**
  * A little memory storage to
@@ -45,16 +49,40 @@ public class RewriteStorage {
 
     Map<ModelKey,String> urnMap=new HashMap<>();
 
+    // Method to encode a string value using `UTF-8` encoding scheme
+    public static String encodeValue(String value) {
+        try {
+            return URLEncoder.encode(value, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException ex) {
+            throw new RuntimeException(ex.getCause());
+        }
+    }
+
+    // Decodes a URL encoded string using `UTF-8`
+    public static String decodeValue(String value) {
+        try {
+            return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException ex) {
+            throw new RuntimeException(ex.getCause());
+        }
+    }
+
+    public static boolean isEncoded(String value) {
+        return !decodeValue(value).equals(value);
+    }
+
+    public static String encodeIfUndecoded(String value) {
+        if(!isEncoded(value)) {
+            return encodeValue(value);
+        }
+        return value;
+    }
+
     public synchronized String getEndpoint(String assetId, String submodelId) {
-        assetId=assetId.replace("#","%23");
-        submodelId=submodelId.replace("#","%23");
         return urnMap.get(new ModelKey(assetId,submodelId));
     }
 
     public synchronized void setEndpoint(String assetId, String submodelId, String endpoint) {
-        assetId=assetId.replace("#","%23");
-        submodelId=submodelId.replace("#","%23");
-        endpoint=endpoint.replace("#","%23");
         urnMap.put(new ModelKey(assetId,submodelId),endpoint);
     }
 }

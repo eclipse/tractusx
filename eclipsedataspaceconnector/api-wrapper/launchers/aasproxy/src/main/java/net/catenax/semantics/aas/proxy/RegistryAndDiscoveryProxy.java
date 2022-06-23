@@ -152,6 +152,8 @@ public class RegistryAndDiscoveryProxy implements LookupApiDelegate, RegistryApi
             endpointAddress=endpointAddress.substring(0,params+submodelId.length());
         }
         storage.setEndpoint(assetId,submodelId,endpointAddress);
+        assetId=RewriteStorage.encodeIfUndecoded(assetId);
+        submodelId=RewriteStorage.encodeIfUndecoded(submodelId);
         // TODO get from configuration
         pi.setEndpointAddress(config.getProxyUrl()+"/shells/"+assetId+"/aas/"+submodelId+query);
         if(config.getProxyUrl().startsWith("https")) {
