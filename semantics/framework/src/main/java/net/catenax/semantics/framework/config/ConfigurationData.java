@@ -34,6 +34,7 @@ public class ConfigurationData<Cmd extends Command, O extends Offer, Ct extends 
      * determines the callback method to access artifacts
      */
     private String callbackPattern="%1$s/%2$s/download?offer=%3$s&representation=%4$s&artifact=%5$s";
+    private String aasSchema="https://admin-shell.io/aas/API/AssetAdministrationShellDescriptor/1/0/RC02";
     private String serviceName = "adapter";
     private boolean offerOnStart=false;
     private boolean registerOnStart=false;

@@ -25,9 +25,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * The Submodel Repository Proxy implements the service layer behind the web protocol layer.
  */
@@ -39,11 +36,6 @@ public class SubmodelProxy implements AssetIdentifierApiDelegate {
      */
     protected final RewriteStorage storage;
     protected final ConfigurationData config;
-
-    /**
-     * creates a logger
-     */
-    protected Logger logger= LoggerFactory.getLogger(getClass());
 
     /**
      * we need to build delegates on the fly
@@ -58,7 +50,7 @@ public class SubmodelProxy implements AssetIdentifierApiDelegate {
      * create a client based on the
      * actual endpoint
      * @param assetIdentifier identifier of the twin
-     * @param submodelIdentifie‚r identifier of the representation/aspect
+     * @param submodelIdentifier identifier of the representation/aspect
      * @return client pointing to the correct original url
      */
     public Map.Entry<SubmodelInterfaceApi,Map<String,Object>> getSubmodelInterfaceApi(String assetIdentifier, String submodelIdentifier) throws StatusException {
@@ -77,7 +69,6 @@ public class SubmodelProxy implements AssetIdentifierApiDelegate {
      * @return client pointing to the correct original url
      */
     public Map.Entry<SubmodelInterfaceApi,Map<String,Object>> getSubmodelInterfaceApi(String endpoint) throws StatusException {
-        logger.debug("Computing API access to endpoint "+endpoint);
         Matcher urlMatcher=URL_WITH_PARAMS.matcher(endpoint);
         if(!urlMatcher.matches()) {
             throw new StatusException("Endpoint url is not well-formed",501);
@@ -85,19 +76,16 @@ public class SubmodelProxy implements AssetIdentifierApiDelegate {
         endpoint=urlMatcher.group("url");
         Map<String,Object> params=new HashMap<>();
         String uparams=urlMatcher.group("params");
-        logger.debug("Separating parameters "+uparams);
         if(uparams!=null && !uparams.isEmpty()) {
             Matcher urlParam=URL_PARAM.matcher(uparams);
             while(urlParam.find()) {
                 String key=urlParam.group("key");
                 String value=urlParam.group("value");
-                logger.debug("Mapping parameter key "+key+" to value "+value);
                 params.put(key,value);
             }
         }
         Matcher edcMatcher=URL_EDC.matcher(endpoint);
         if(edcMatcher.matches()) {
-            logger.debug("Found an EDC compatible URL. Using the wrapper.");
             endpoint=config.getWrapperUrl()+"/";
             endpoint=endpoint+RewriteStorage.encodeIfUndecoded(edcMatcher.group("idsresource"));
             endpoint=endpoint+edcMatcher.group("suburl");
@@ -107,7 +95,6 @@ public class SubmodelProxy implements AssetIdentifierApiDelegate {
             }
             String bpn=edcMatcher.group("bpn");
             String targetConnector=protocol+"://"+edcMatcher.group("provider")+"/"+bpn;
-            logger.debug("Found target connector "+targetConnector);
             params.put("provider-connector-url",targetConnector);
         }
         SubmodelInterfaceApi api=builder.target(SubmodelInterfaceApi.class,endpoint);
