@@ -116,6 +116,12 @@ public class SubmodelProxy implements AssetIdentifierApiDelegate {
             return ResponseEntity.ok(api.getKey().getSubmodel(api.getValue()));
         } catch(StatusException se) {
             return ResponseEntity.status(se.getStatus()).build();
+        } catch(feign.FeignException e) {
+            var response=ResponseEntity.status(e.status());
+            if(e.responseBody().isPresent()) {
+                response.body(e.responseBody().get().toString());
+            }
+            return response.build();
         }
     }
 
@@ -138,6 +144,12 @@ public class SubmodelProxy implements AssetIdentifierApiDelegate {
             return ResponseEntity.ok(api.getKey().getSubmodel(api.getValue()));
         } catch(StatusException se) {
             return ResponseEntity.status(se.getStatus()).build();
+        } catch(feign.FeignException e) {
+            var response=ResponseEntity.status(e.status());
+            if(e.responseBody().isPresent()) {
+                response.body(e.responseBody().get().toString());
+            }
+            return response.build();
         }
     }
 
@@ -160,6 +172,12 @@ public class SubmodelProxy implements AssetIdentifierApiDelegate {
             return ResponseEntity.ok(api.getKey().getOperationAsyncResult(idShortPath,handleId,api.getValue()));
         } catch(StatusException se) {
             return ResponseEntity.status(se.getStatus()).build();
+        } catch(feign.FeignException e) {
+            var response=ResponseEntity.status(e.status());
+            if(e.responseBody().isPresent()) {
+                response.body(e.responseBody().get().toString());
+            }
+            return response.build();
         }
     }
 
@@ -184,6 +202,12 @@ public class SubmodelProxy implements AssetIdentifierApiDelegate {
             return ResponseEntity.ok(api.getKey().invokeOperation(body,idShortPath, api.getValue()));
         } catch(StatusException se) {
             return ResponseEntity.status(se.getStatus()).build();
+        } catch(feign.FeignException e) {
+            var response=ResponseEntity.status(e.status());
+            if(e.responseBody().isPresent()) {
+                response.body(e.responseBody().get().toString());
+            }
+            return response.build();
         }
     }
 }

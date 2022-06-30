@@ -94,14 +94,30 @@ public class RegistryAndDiscoveryProxy implements LookupApiDelegate, RegistryApi
 
     @Override
     public ResponseEntity<Void> deleteAssetAdministrationShellDescriptorById(String aasIdentifier) {
-        delegate.deleteAssetAdministrationShellDescriptorById(aasIdentifier);
-        return ResponseEntity.ok().build();
+        try {
+            delegate.deleteAssetAdministrationShellDescriptorById(aasIdentifier);
+            return ResponseEntity.ok().build();
+        } catch(feign.FeignException e) {
+            var response=ResponseEntity.status(e.status());
+            if(e.responseBody().isPresent()) {
+                response.body(e.responseBody().get().toString());
+            }
+            return response.build();
+        }
     }
 
     @Override
     public ResponseEntity<Void> deleteSubmodelDescriptorById(String aasIdentifier, String submodelIdentifier) {
-        delegate.deleteSubmodelDescriptorById(aasIdentifier, submodelIdentifier);
-        return ResponseEntity.ok().build();
+        try {
+            delegate.deleteSubmodelDescriptorById(aasIdentifier, submodelIdentifier);
+            return ResponseEntity.ok().build();
+        } catch(feign.FeignException e) {
+            var response=ResponseEntity.status(e.status());
+            if(e.responseBody().isPresent()) {
+                response.body(e.responseBody().get().toString());
+            }
+            return response.build();
+        }
     }
 
     /**
@@ -190,7 +206,15 @@ public class RegistryAndDiscoveryProxy implements LookupApiDelegate, RegistryApi
      */
     @Override
     public ResponseEntity<List<SubmodelDescriptor>> getAllSubmodelDescriptors(String aasIdentifier) {
-        return ResponseEntity.ok(delegate.getAllSubmodelDescriptors(aasIdentifier).stream().map(subModel->rewrite(aasIdentifier,subModel)).collect(Collectors.toList()));
+        try {
+            return ResponseEntity.ok(delegate.getAllSubmodelDescriptors(aasIdentifier).stream().map(subModel->rewrite(aasIdentifier,subModel)).collect(Collectors.toList()));
+        } catch(feign.FeignException e) {
+            var response=ResponseEntity.status(e.status());
+            if(e.responseBody().isPresent()) {
+                response.body(e.responseBody().get().toString());
+            }
+            return response.build();
+        }
     }
 
     /**
@@ -200,7 +224,15 @@ public class RegistryAndDiscoveryProxy implements LookupApiDelegate, RegistryApi
      */
     @Override
     public ResponseEntity<AssetAdministrationShellDescriptor> getAssetAdministrationShellDescriptorById(String aasIdentifier) {
-        return ResponseEntity.ok(rewrite(delegate.getAssetAdministrationShellDescriptorById(aasIdentifier)));
+        try {
+            return ResponseEntity.ok(rewrite(delegate.getAssetAdministrationShellDescriptorById(aasIdentifier)));
+        } catch(feign.FeignException e) {
+            var response=ResponseEntity.status(e.status());
+            if(e.responseBody().isPresent()) {
+                response.body(e.responseBody().get().toString());
+            }
+            return response.build();
+        }
     }
 
     /**
@@ -211,7 +243,15 @@ public class RegistryAndDiscoveryProxy implements LookupApiDelegate, RegistryApi
      */
     @Override
     public ResponseEntity<SubmodelDescriptor> getSubmodelDescriptorById(String aasIdentifier, String submodelIdentifier) {
-        return ResponseEntity.ok(rewrite(aasIdentifier,delegate.getSubmodelDescriptorById(aasIdentifier, submodelIdentifier)));
+        try {
+            return ResponseEntity.ok(rewrite(aasIdentifier,delegate.getSubmodelDescriptorById(aasIdentifier, submodelIdentifier)));
+        } catch(feign.FeignException e) {
+            var response=ResponseEntity.status(e.status());
+            if(e.responseBody().isPresent()) {
+                response.body(e.responseBody().get().toString());
+            }
+            return response.build();
+        }
     }
 
     /**
@@ -221,7 +261,15 @@ public class RegistryAndDiscoveryProxy implements LookupApiDelegate, RegistryApi
      */
     @Override
     public ResponseEntity<AssetAdministrationShellDescriptor> postAssetAdministrationShellDescriptor(AssetAdministrationShellDescriptor assetAdministrationShellDescriptor) {
-        return ResponseEntity.ok(rewrite(delegate.postAssetAdministrationShellDescriptor(assetAdministrationShellDescriptor)));
+        try {
+            return ResponseEntity.ok(rewrite(delegate.postAssetAdministrationShellDescriptor(assetAdministrationShellDescriptor)));
+        } catch(feign.FeignException e) {
+            var response=ResponseEntity.status(e.status());
+            if(e.responseBody().isPresent()) {
+                response.body(e.responseBody().get().toString());
+            }
+            return response.build();
+        }
     }
 
     /**
@@ -232,25 +280,57 @@ public class RegistryAndDiscoveryProxy implements LookupApiDelegate, RegistryApi
      */
     @Override
     public ResponseEntity<SubmodelDescriptor> postSubmodelDescriptor(String aasIdentifier, SubmodelDescriptor submodelDescriptor) {
-        return ResponseEntity.ok(rewrite(aasIdentifier,delegate.postSubmodelDescriptor(submodelDescriptor,aasIdentifier)));
+        try {
+            return ResponseEntity.ok(rewrite(aasIdentifier,delegate.postSubmodelDescriptor(submodelDescriptor,aasIdentifier)));
+        } catch(feign.FeignException e) {
+            var response=ResponseEntity.status(e.status());
+            if(e.responseBody().isPresent()) {
+                response.body(e.responseBody().get().toString());
+            }
+            return response.build();
+        }
     }
 
     @Override
     public ResponseEntity<Void> putAssetAdministrationShellDescriptorById(String aasIdentifier, AssetAdministrationShellDescriptor assetAdministrationShellDescriptor) {
-        delegate.putAssetAdministrationShellDescriptorById(assetAdministrationShellDescriptor, aasIdentifier);
-        return ResponseEntity.ok().build();
+        try {
+            delegate.putAssetAdministrationShellDescriptorById(assetAdministrationShellDescriptor, aasIdentifier);
+            return ResponseEntity.ok().build();
+        } catch(feign.FeignException e) {
+            var response=ResponseEntity.status(e.status());
+            if(e.responseBody().isPresent()) {
+                response.body(e.responseBody().get().toString());
+            }
+            return response.build();
+        }
     }
 
     @Override
     public ResponseEntity<Void> putSubmodelDescriptorById(String aasIdentifier, String submodelIdentifier, SubmodelDescriptor submodelDescriptor) {
-        delegate.putSubmodelDescriptorById(submodelDescriptor,aasIdentifier, submodelIdentifier);
-        return ResponseEntity.ok().build();
+        try {
+            delegate.putSubmodelDescriptorById(submodelDescriptor,aasIdentifier, submodelIdentifier);
+            return ResponseEntity.ok().build();
+        } catch(feign.FeignException e) {
+            var response=ResponseEntity.status(e.status());
+            if(e.responseBody().isPresent()) {
+                response.body(e.responseBody().get().toString());
+            }
+            return response.build();
+        }
     }
 
     @Override
     public ResponseEntity<Void> deleteAllAssetLinksById(String aasIdentifier) {
-        delegate.deleteAllAssetLinksById(aasIdentifier);
-        return ResponseEntity.ok().build();
+        try {
+            delegate.deleteAllAssetLinksById(aasIdentifier);
+            return ResponseEntity.ok().build();
+        } catch(feign.FeignException e) {
+            var response=ResponseEntity.status(e.status());
+            if(e.responseBody().isPresent()) {
+                response.body(e.responseBody().get().toString());
+            }
+            return response.build();
+        }
     }
 
     List<IdentifierKeyValuePair> orgaTwinAddress=List.of(new IdentifierKeyValuePair().key("urn:twin:com.catenax#").value("")) ;
@@ -301,16 +381,40 @@ public class RegistryAndDiscoveryProxy implements LookupApiDelegate, RegistryApi
 
     @Override
     public ResponseEntity<List<String>> getAllAssetAdministrationShellIdsByAssetLink(List<IdentifierKeyValuePair> assetIds) {
-        return ResponseEntity.ok(delegate.getAllAssetAdministrationShellIdsByAssetLink(convertIds(assetIds)));
+        try {
+            return ResponseEntity.ok(delegate.getAllAssetAdministrationShellIdsByAssetLink(convertIds(assetIds)));
+        } catch(feign.FeignException e) {
+            var response=ResponseEntity.status(e.status());
+            if(e.responseBody().isPresent()) {
+                response.body(e.responseBody().get().toString());
+            }
+            return response.build();
+        }
     }
 
     @Override
     public ResponseEntity<List<IdentifierKeyValuePair>> getAllAssetLinksById(String aasIdentifier) {
-        return ResponseEntity.ok(delegate.getAllAssetLinksById(aasIdentifier));
+        try {
+            return ResponseEntity.ok(delegate.getAllAssetLinksById(aasIdentifier));
+        } catch(feign.FeignException e) {
+            var response=ResponseEntity.status(e.status());
+            if(e.responseBody().isPresent()) {
+                response.body(e.responseBody().get().toString());
+            }
+            return response.build();
+        }
     }
 
     @Override
     public ResponseEntity<List<IdentifierKeyValuePair>> postAllAssetLinksById(String aasIdentifier, List<IdentifierKeyValuePair> identifierKeyValuePair) {
-        return ResponseEntity.ok(delegate.postAllAssetLinksById(convertIds(identifierKeyValuePair),aasIdentifier));
+        try {
+            return ResponseEntity.ok(delegate.postAllAssetLinksById(convertIds(identifierKeyValuePair),aasIdentifier));
+        } catch(feign.FeignException e) {
+            var response=ResponseEntity.status(e.status());
+            if(e.responseBody().isPresent()) {
+                response.body(e.responseBody().get().toString());
+            }
+            return response.build();
+        }
     }
 }
