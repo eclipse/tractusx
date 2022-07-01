@@ -161,6 +161,7 @@ public class RegistryAndDiscoveryProxy implements LookupApiDelegate, RegistryApi
     protected Endpoint rewrite(String assetId, String submodelId, Endpoint endpoint) {
         ProtocolInformation pi=endpoint.getProtocolInformation();
         String endpointAddress=pi.getEndpointAddress();
+        endpoint.setInterface("Proxy for "+String.valueOf(endpoint.getInterface())+" of "+endpointAddress);
         String query="";
         int params=endpointAddress.indexOf(submodelId);
         if(params>=0) {
