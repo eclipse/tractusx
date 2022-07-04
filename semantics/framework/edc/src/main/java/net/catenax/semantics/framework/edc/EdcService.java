@@ -21,6 +21,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -98,7 +99,19 @@ public class EdcService<Cmd extends Command, O extends Offer, Ct extends Catalog
 
     public Offer getOrCreateOffer(String title) throws StatusException {
         O result=configurationData.getOffers().get(title);
-        HttpPost httppost = new HttpPost(configurationData.getConnectorUrl() + "/api/assets");
+        String assetUri=configurationData.getConnectorUrl() + "/data/assets";
+        HttpGet httpget=new HttpGet(assetUri+"/"+title);
+        try {
+            HttpResponse lookup=getEdcClient().execute(httpget);
+            lookup.getEntity().consumeContent();
+            if(lookup.getStatusLine().getStatusCode()>=200 && lookup.getStatusLine().getStatusCode()<300) {
+                result.setPayload(EntityUtils.toString(lookup.getEntity(), "UTF-8"));
+                return result;
+            }
+        } catch(IOException e) {
+            throw new StatusException("Could not test whether offer is already present in EDC control plane",e,501);
+        }
+        HttpPost httppost = new HttpPost(assetUri);
         httppost.addHeader("accept", "*/*");
         httppost.setHeader("Content-type", "application/json");
         String userName=result.getUser();
@@ -107,22 +120,26 @@ public class EdcService<Cmd extends Command, O extends Offer, Ct extends Catalog
         String authCode="Basic "+new String(java.util.Base64.getEncoder().encode(token.getBytes()));
         String thatPayLoad="{\n" +
                 "  \"asset\": {\n" +
-                "    \"asset:prop:id\": \""+title+"\",\n" +
-                "    \"asset:prop:name\": \""+ result.getDescription()+"\",\n" +
-                "    \"asset:prop:contenttype\": \"application/json\",\n" +
-                "    \"asset:prop:policy-id\": \"use-eu\"\n" +
+                "    \"properties\":{\n" +
+                "      \"asset:prop:id\": \""+title+"\",\n" +
+                "      \"asset:prop:name\": \""+ result.getDescription()+"\",\n" +
+                "      \"asset:prop:contenttype\": \"application/json\",\n" +
+                "      \"asset:prop:policy-id\": \"use-eu\"\n" +
+                "    }\n" + 
                 "  },\n" +
                 "  \"dataAddress\": {\n" +
-                "    \"endpoint\": \""+configurationData.getAdapterUrl()+"/"+title+"\",\n" +
-                "    \"authKey\": \"Authorization\",\n" +
-                "    \"authCode\": \""+authCode+"\",\n" +
-                "    \"type\": \"HttpData\"\n" +
+                "    \"properties\":{\n" +
+                "      \"endpoint\": \""+configurationData.getAdapterUrl()+"/"+title+"\",\n" +
+                "      \"authKey\": \"Authorization\",\n" +
+                "      \"authCode\": \""+authCode+"\",\n" +
+                "      \"type\": \"HttpData\"\n" +
+                "    }\n" + 
                 "  }\n" +
                 "}";
         try {
             httppost.setEntity(new StringEntity(thatPayLoad));
-            HttpClient client=getEdcClient();
-            HttpResponse offerResponse = client.execute(httppost);
+            HttpResponse offerResponse = getEdcClient().execute(httppost);
+            offerResponse.getEntity().consumeContent();
             if(offerResponse.getStatusLine().getStatusCode()<200 || offerResponse.getStatusLine().getStatusCode()>299) {
                 throw new StatusException("Could not create offer",offerResponse.getStatusLine().getStatusCode());
             }
@@ -135,80 +152,105 @@ public class EdcService<Cmd extends Command, O extends Offer, Ct extends Catalog
 
     public Contract getOrCreateContract(String title) throws StatusException {
         Co result=configurationData.getContracts().get(title);
-        HttpPost httppost = new HttpPost(configurationData.getConnectorUrl() + "/api/contractdefinitions");
-        httppost.addHeader("accept", "*/*");
-        httppost.setHeader("Content-type", "application/json");
 
         var relevantOffers= configurationData.getOffers().entrySet().stream().filter(offerEntry -> {
            if(title.equals(offerEntry.getValue().getContract())) {
                 try {
-                    HttpGet httpget = new HttpGet(configurationData.getConnectorUrl() + "/api/assets/" + offerEntry.getKey());
+                    HttpGet httpget = new HttpGet(configurationData.getConnectorUrl() + "/data/assets/" + offerEntry.getKey());
                     httpget.addHeader("accept", "*/*");
                     HttpResponse offerResponse = getEdcClient().execute(httpget);
-                    if (offerResponse.getStatusLine().getStatusCode() == 200) {
+                    if (offerResponse.getStatusLine().getStatusCode() >= 200 && offerResponse.getStatusLine().getStatusCode()<300) {
                         String responseString = EntityUtils.toString(offerResponse.getEntity(), "UTF-8");
-                        if (responseString.equals(offerEntry.getKey())) {
+                        if (responseString.contains(offerEntry.getKey())) {
                             return true;
                         }
                     }
+                    offerResponse.getEntity().consumeContent();
                 } catch(IOException e) {
-                    // ignore the asset
+                    // should rather except.
                 }
            }
            return false;
         });
 
+        HttpGet httpget = new HttpGet(configurationData.getConnectorUrl() + "/data/policies/"+title);
+        try {
+            HttpResponse policyResponse=getEdcClient().execute(httpget);
+            if(policyResponse.getStatusLine().getStatusCode() == 200) {
+                // policy already registered. may be should delete contract and policy?
+                HttpDelete delete = new HttpDelete(configurationData.getConnectorUrl() + "/data/contractdefinitions/"+title);
+                try {
+                    getEdcClient().execute(delete);
+                } catch(IOException e) {
+                    throw new StatusException("Could not delete contractdefinition for update",e,501);
+                }
+                delete = new HttpDelete(configurationData.getConnectorUrl() + "/data/policies/"+title);
+                try {
+                    HttpResponse policyDelete=getEdcClient().execute(delete);
+                    if(policyDelete.getStatusLine().getStatusCode()<200 ||  policyDelete.getStatusLine().getStatusCode()>=300) {
+                        throw new StatusException("Could not delete policy for update",501);
+                    }
+                } catch(IOException e) {
+                    throw new StatusException("Could not delete policy for update",e,501);
+                }
+            }
+        } catch (IOException e) {
+            throw new StatusException("Could not check policy "+title,e,501);
+        }
+
         String permissions = relevantOffers.map( offerEntry ->
                    "      {\n" +
                    "        \"edctype\": \"dataspaceconnector:permission\",\n" +
-                   "        \"uid\": null,\n" +
                    "        \"target\": \""+offerEntry.getKey()+"\",\n" +
                    "        \"action\": {\n" +
                    "          \"type\": \"USE\"\n" +
-                   "        },\n"+
-                   "        \"constraints\": [],\n" +
-                   "        \"duties\": []\n" +
+                   "        }\n"+
                    "      }\n"
         ).collect(Collectors.joining(","));
-        String thatPayLoad="{\n" +
-                "  \"id\": \""+title+"\",\n" +
-                "  \"accessPolicy\": {\n" +
-                "    \"uid\": \"AP_0\",\n" +
-                "    \"permissions\": [\n" + permissions +
-                "    ],\n" +
-                "    \"prohibitions\": [],\n" +
-                "    \"obligations\": [],\n" +
-                "    \"extensibleProperties\": {},\n" +
-                "    \"@type\": {\n" +
-                "      \"@policytype\": \"set\"\n" +
-                "    }\n" +
-                "  },\n" +
-                "  \"contractPolicy\": {\n" +
-                "    \"uid\": \"CP_0\",\n" +
-                "    \"permissions\": [\n" + permissions +
-                "    ],\n" +
-                "    \"prohibitions\": [],\n" +
-                "    \"obligations\": [],\n" +
-                "    \"extensibleProperties\": {},\n" +
-                "    \"@type\": {\n" +
-                "      \"@policytype\": \"set\"\n" +
-                "    }\n" +
-                "  },\n" +
-                "  \"selectorExpression\": {\n" +
-                "    \"criteria\": []\n" +
+
+        String policy="{\n" +
+                "  \"uid\": \""+title+"\",\n" +
+                "  \"permissions\": [\n" + permissions +
+                "  ],\n" +
+                "  \"@type\": {\n" +
+                "    \"@policytype\": \"set\"\n" +
                 "  }\n" +
-                "}\n";
+                "}";
+
+        HttpPost httppost = new HttpPost(configurationData.getConnectorUrl() + "/data/policies");
+        httppost.addHeader("accept", "*/*");
+        httppost.setHeader("Content-type", "application/json");
         try {
-            httppost.setEntity(new StringEntity(thatPayLoad));
-            HttpClient client=getEdcClient();
-            HttpResponse contractResponse = client.execute(httppost);
+            httppost.setEntity(new StringEntity(policy));
+            HttpResponse policyResponse=getEdcClient().execute(httppost);
+            if(policyResponse.getStatusLine().getStatusCode() < 200 || policyResponse.getStatusLine().getStatusCode() >= 299) {
+                throw new StatusException("Could not create policy",policyResponse.getStatusLine().getStatusCode());
+            }
+        } catch (IOException e) {
+            throw new StatusException("Could not create policy "+title,e,501);
+        }
+
+        String contract = "{\n" +
+                "  \"id\": \""+title+"\",\n" +
+                "  \"accessPolicyId\": \""+title+"\",\n" +
+                "  \"contractPolicyId\": \""+title+"\",\n" +
+                "  \"criteria\": []\n" +
+                "}";
+
+        httppost = new HttpPost(configurationData.getConnectorUrl() + "/data/contractdefinitions");
+        httppost.addHeader("accept", "*/*");
+        httppost.setHeader("Content-type", "application/json");
+        try {
+            httppost.setEntity(new StringEntity(contract));
+            HttpResponse contractResponse = getEdcClient().execute(httppost);
             if(contractResponse.getStatusLine().getStatusCode()<200 || contractResponse.getStatusLine().getStatusCode()>299) {
                 throw new StatusException("Could not create contract",contractResponse.getStatusLine().getStatusCode());
             }
-            result.setPayload(thatPayLoad);
+            result.setPayload(contract);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new StatusException("Could not create contract "+title,e,501);
         }
+
         return result;
     }
 
