@@ -62,13 +62,13 @@ public class AASAdapter extends BaseAdapter implements AssetIdentifierApiDelegat
      */
     @Override
     public ResponseEntity<Submodel> getSubmodel(String idsOffer, String assetIdentifier, String submodelIdentifier, String level, String content, String extent, Map<String,String> otherParams) {
-        if(!"deep".equals(level)) {
+        if(!"DEEP".equals(level.toUpperCase())) {
             return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
         }
-        if(!"value".equals(content)) {
+        if(!"VALUE".equals(content.toUpperCase())) {
             return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
         }
-        if(!"withBlobValue".equals(extent)) {
+        if(!"WITHBLOBVALUE".equals(extent.toUpperCase())) {
             return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
         }
         IdsRequest request=new IdsRequest();
@@ -111,7 +111,7 @@ public class AASAdapter extends BaseAdapter implements AssetIdentifierApiDelegat
                                                     OperationRequest  body,
                                                     Boolean  async,
                                                     String  content, Map<String,String> otherParams) {
-        if(!"value".equals(content)) {
+        if(!"VALUE".equals(content.toUpperCase())) {
             return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
         }
         if(async) {

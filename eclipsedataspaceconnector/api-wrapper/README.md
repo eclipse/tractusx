@@ -41,7 +41,7 @@ export DOCKER_PLATFORM=linux/arm64
 ```bash
 # Adapt to the path of your Azul JDK11
 export JDK11=~/Projects/jdk/zulu11.54.25-ca-jdk11.0.14.1-macosx_aarch64
-export GRADLE_PROPS=(--no-parallel -Porg.gradle.java.installations.fromEnv=JDK11)
+export GRADLE_PROPS=(--no-parallel -Porg.gradle.java.installations.fromEnv=JDK11 -Pversion=0.0.3-CATENAX)
 ```
 
 #### JDK11/Gradle with Apple Silicon Users

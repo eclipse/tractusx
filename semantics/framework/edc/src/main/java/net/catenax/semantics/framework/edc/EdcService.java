@@ -103,7 +103,6 @@ public class EdcService<Cmd extends Command, O extends Offer, Ct extends Catalog
         HttpGet httpget=new HttpGet(assetUri+"/"+title);
         try {
             HttpResponse lookup=getEdcClient().execute(httpget);
-            lookup.getEntity().consumeContent();
             if(lookup.getStatusLine().getStatusCode()>=200 && lookup.getStatusLine().getStatusCode()<300) {
                 result.setPayload(EntityUtils.toString(lookup.getEntity(), "UTF-8"));
                 return result;
@@ -132,6 +131,10 @@ public class EdcService<Cmd extends Command, O extends Offer, Ct extends Catalog
                 "      \"endpoint\": \""+configurationData.getAdapterUrl()+"/"+title+"\",\n" +
                 "      \"authKey\": \"Authorization\",\n" +
                 "      \"authCode\": \""+authCode+"\",\n" +
+                "      \"proxyPath\": \"true\",\n" +
+                "      \"proxyMethod\": \"true\",\n" +
+                "      \"proxyQueryParams\": \"true\",\n" +
+                "      \"proxyBody\": \"true\",\n" +
                 "      \"type\": \"HttpData\"\n" +
                 "    }\n" + 
                 "  }\n" +
@@ -139,7 +142,6 @@ public class EdcService<Cmd extends Command, O extends Offer, Ct extends Catalog
         try {
             httppost.setEntity(new StringEntity(thatPayLoad));
             HttpResponse offerResponse = getEdcClient().execute(httppost);
-            offerResponse.getEntity().consumeContent();
             if(offerResponse.getStatusLine().getStatusCode()<200 || offerResponse.getStatusLine().getStatusCode()>299) {
                 throw new StatusException("Could not create offer",offerResponse.getStatusLine().getStatusCode());
             }
@@ -165,7 +167,6 @@ public class EdcService<Cmd extends Command, O extends Offer, Ct extends Catalog
                             return true;
                         }
                     }
-                    offerResponse.getEntity().consumeContent();
                 } catch(IOException e) {
                     // should rather except.
                 }
