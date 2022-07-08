@@ -8,11 +8,13 @@ additional information regarding license terms.
 */
 package net.catenax.semantics.framework.aas.api.proxy;
 
-import io.swagger.annotations.Api;
 import net.catenax.semantics.framework.aas.model.OperationRequest;
 import net.catenax.semantics.framework.aas.model.OperationResult;
 import net.catenax.semantics.framework.aas.model.Submodel;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -35,7 +37,7 @@ import java.util.Map;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-03-04T18:11:14.812382100+01:00[Europe/Berlin]")
 @Validated
-@Api(tags="AAS", value = "aas", description = "Catena-X AAS Server Profile")
+@OpenAPIDefinition(tags = @Tag(name="AAS"), info=@Info( title="aas", description = "Catena-X AAS Server Profile"))
 public interface AssetIdentifierApi {
 
     AssetIdentifierApiDelegate getDelegate();

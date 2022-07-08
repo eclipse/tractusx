@@ -9,7 +9,6 @@ additional information regarding license terms.
 
 package net.catenax.semantics.framework.aas.api.proxy;
 
-import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
