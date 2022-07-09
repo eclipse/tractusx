@@ -37,7 +37,6 @@ import java.util.Map;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-03-04T18:11:14.812382100+01:00[Europe/Berlin]")
 @Validated
-@OpenAPIDefinition(tags = @Tag(name="AAS"), info=@Info( title="aas", description = "Catena-X AAS Server Profile"))
 public interface AssetIdentifierApi {
 
     AssetIdentifierApiDelegate getDelegate();
